@@ -42,7 +42,7 @@ function parseInlineMarkdown(text: string): React.ReactNode[] {
     // Inline Code: `code`
     if (part.startsWith('`') && part.endsWith('`') && part.length >= 2) {
       return (
-        <code key={i} className="bg-slate-800 text-sky-300 px-1.5 py-0.5 rounded font-mono text-[11px] border border-slate-700/50">
+        <code key={i} className="bg-slate-800 text-sky-300 px-1.5 py-0.5 rounded font-mono text-[0.6875rem] border border-slate-700/50">
           {part.slice(1, -1)}
         </code>
       );
@@ -81,7 +81,7 @@ function FormattedMessage({ content }: { content: string }) {
         elements.push(
           <pre
             key={`code-${codeBlockKey++}`}
-            className="bg-slate-950 p-3 rounded-xl border border-slate-800 font-mono text-[11px] text-sky-300 overflow-x-auto my-2 select-all"
+            className="bg-slate-950 p-3 rounded-xl border border-slate-800 font-mono text-[0.6875rem] text-sky-300 overflow-x-auto my-2 select-all"
           >
             <code>{codeBlockLines.join('\n')}</code>
           </pre>
@@ -169,7 +169,7 @@ function FormattedMessage({ content }: { content: string }) {
     elements.push(
       <pre
         key={`code-${codeBlockKey++}`}
-        className="bg-slate-950 p-3 rounded-xl border border-slate-800 font-mono text-[11px] text-sky-300 overflow-x-auto my-2 select-all"
+        className="bg-slate-950 p-3 rounded-xl border border-slate-800 font-mono text-[0.6875rem] text-sky-300 overflow-x-auto my-2 select-all"
       >
         <code>{codeBlockLines.join('\n')}</code>
       </pre>
@@ -698,7 +698,7 @@ export const AiTutorTab: React.FC<AiTutorTabProps> = ({ initialPrompt = '' }) =>
                         className={`w-full text-left p-3 rounded-xl border text-xs transition flex items-center justify-between cursor-pointer ${style}`}
                       >
                         <div className="flex items-center space-x-2.5">
-                          <span className="w-6 h-6 rounded bg-slate-800 flex items-center justify-center font-bold text-[10px] text-slate-300">
+                          <span className="w-6 h-6 rounded bg-slate-800 flex items-center justify-center font-bold text-[0.625rem] text-slate-300">
                             {String.fromCharCode(65 + idx)}
                           </span>
                           <span>{opt}</span>
@@ -726,7 +726,7 @@ export const AiTutorTab: React.FC<AiTutorTabProps> = ({ initialPrompt = '' }) =>
                 <h4 className="text-sm font-bold text-amber-400 flex items-center gap-2">
                   <RotateCw className="w-4 h-4" /> Baralho de Flashcards Interativos (Clique no cartão para virar 3D)
                 </h4>
-                <span className="text-[11px] text-slate-400">
+                <span className="text-[0.6875rem] text-slate-400">
                   Frente: Pergunta &bull; Verso: Gabarito e Conceito
                 </span>
               </div>
@@ -748,20 +748,20 @@ export const AiTutorTab: React.FC<AiTutorTabProps> = ({ initialPrompt = '' }) =>
                         {/* FRONT */}
                         <div className="backface-hidden absolute inset-0 p-5 bg-slate-900 border border-amber-500/40 rounded-2xl flex flex-col justify-between shadow-lg">
                           <div className="flex justify-between items-center">
-                            <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider bg-amber-950/60 border border-amber-800/60 px-2.5 py-0.5 rounded-full">
+                            <span className="text-[0.625rem] font-bold text-amber-400 uppercase tracking-wider bg-amber-950/60 border border-amber-800/60 px-2.5 py-0.5 rounded-full">
                               {card.tag}
                             </span>
-                            <span className="text-[10px] text-slate-400 font-mono">Card #{idx + 1}</span>
+                            <span className="text-[0.625rem] text-slate-400 font-mono">Card #{idx + 1}</span>
                           </div>
                           <div className="my-auto py-2">
-                            <span className="text-[10px] text-amber-300 font-bold uppercase block mb-1">
+                            <span className="text-[0.625rem] text-amber-300 font-bold uppercase block mb-1">
                               Pergunta / Conceito:
                             </span>
                             <p className="text-xs font-semibold text-slate-100 leading-relaxed">
                               {card.front}
                             </p>
                           </div>
-                          <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[10px] text-slate-400">
+                          <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[0.625rem] text-slate-400">
                             <span>Clique para virar o card</span>
                             <RotateCw className="w-3.5 h-3.5 text-amber-400" />
                           </div>
@@ -770,10 +770,10 @@ export const AiTutorTab: React.FC<AiTutorTabProps> = ({ initialPrompt = '' }) =>
                         {/* BACK */}
                         <div className="rotate-y-180 backface-hidden absolute inset-0 p-5 bg-gradient-to-br from-emerald-950 via-slate-900 to-emerald-950 border border-emerald-500/50 rounded-2xl flex flex-col justify-between shadow-2xl text-emerald-100">
                           <div className="flex justify-between items-center border-b border-emerald-800/60 pb-1.5">
-                            <span className="text-[10px] font-bold text-emerald-300 uppercase tracking-wider flex items-center gap-1">
+                            <span className="text-[0.625rem] font-bold text-emerald-300 uppercase tracking-wider flex items-center gap-1">
                               <CheckCircle2 className="w-3 h-3 text-emerald-400" /> Resposta & Gabarito Técnico
                             </span>
-                            <span className="text-[10px] bg-emerald-900/80 text-emerald-200 font-mono px-2 py-0.5 rounded">
+                            <span className="text-[0.625rem] bg-emerald-900/80 text-emerald-200 font-mono px-2 py-0.5 rounded">
                               AZ-104
                             </span>
                           </div>
@@ -782,7 +782,7 @@ export const AiTutorTab: React.FC<AiTutorTabProps> = ({ initialPrompt = '' }) =>
                               {card.back}
                             </p>
                           </div>
-                          <div className="pt-2 border-t border-emerald-800/60 flex items-center justify-between text-[10px] text-emerald-400">
+                          <div className="pt-2 border-t border-emerald-800/60 flex items-center justify-between text-[0.625rem] text-emerald-400">
                             <span>Clique para desvirar</span>
                             <RotateCw className="w-3.5 h-3.5" />
                           </div>

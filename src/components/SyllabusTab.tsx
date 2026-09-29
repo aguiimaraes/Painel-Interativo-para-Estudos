@@ -53,7 +53,7 @@ export const SyllabusTab: React.FC = () => {
 
           <div className="flex items-center space-x-3">
             <div className="text-right">
-              <span className="text-[10px] text-slate-400 block font-semibold">Progresso no Edital</span>
+              <span className="text-[0.625rem] text-slate-400 block font-semibold">Progresso no Edital</span>
               <span className="text-xs font-bold text-sky-400">{completedItems} de {totalItems} tópicos ({progressPercent}%)</span>
             </div>
             <button

@@ -19,7 +19,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab 
   ];
 
   return (
-    <nav className="bg-slate-900 border-b border-slate-800 px-4 lg:px-8 sticky top-[65px] z-40">
+    <nav className="bg-slate-900 border-b border-slate-800 px-4 lg:px-8">
       <div className="max-w-7xl mx-auto flex space-x-1.5 overflow-x-auto py-2.5 text-xs font-semibold scrollbar-thin">
         {navItems.map((item) => {
           const Icon = item.icon;

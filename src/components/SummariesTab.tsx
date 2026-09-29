@@ -123,7 +123,7 @@ export const SummariesTab: React.FC<SummariesTabProps> = ({ onAskAi }) => {
                   </div>
                   <div>
                     <div className="flex flex-wrap items-center gap-2 mb-1">
-                      <span className="text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded-md bg-slate-800 text-sky-400 border border-slate-700">
+                      <span className="text-[0.625rem] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded-md bg-slate-800 text-sky-400 border border-slate-700">
                         Domínio {topic.domainNumber} &bull; {topic.category}
                       </span>
                     </div>
@@ -200,9 +200,9 @@ export const SummariesTab: React.FC<SummariesTabProps> = ({ onAskAi }) => {
                       <div className="space-y-2">
                         {topic.commands.map((cmdItem, cIdx) => (
                           <div key={cIdx} className="bg-slate-900 p-3 rounded-xl border border-slate-800 space-y-1">
-                            <div className="flex items-center justify-between text-[11px]">
+                            <div className="flex items-center justify-between text-[0.6875rem]">
                               <span className="font-semibold text-purple-300">{cmdItem.description}</span>
-                              <span className="text-[10px] font-mono bg-slate-800 text-slate-400 px-2 py-0.5 rounded">
+                              <span className="text-[0.625rem] font-mono bg-slate-800 text-slate-400 px-2 py-0.5 rounded">
                                 {cmdItem.tool}
                               </span>
                             </div>

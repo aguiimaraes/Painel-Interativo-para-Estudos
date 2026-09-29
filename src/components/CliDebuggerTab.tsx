@@ -82,17 +82,17 @@ export const CliDebuggerTab: React.FC = () => {
             <div key={idx} className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2 flex flex-col justify-between">
               <div className="flex justify-between items-center border-b border-slate-800/80 pb-2">
                 <span className="font-bold text-sky-400">{s.title}</span>
-                <span className="text-[10px] bg-slate-900 text-slate-400 px-2 py-0.5 rounded border border-slate-800 font-mono">
+                <span className="text-[0.625rem] bg-slate-900 text-slate-400 px-2 py-0.5 rounded border border-slate-800 font-mono">
                   {s.lang}
                 </span>
               </div>
-              <pre className="text-slate-300 font-mono text-[11px] bg-slate-900/80 p-3 rounded-lg overflow-x-auto my-1">
+              <pre className="text-slate-300 font-mono text-[0.6875rem] bg-slate-900/80 p-3 rounded-lg overflow-x-auto my-1">
                 {s.code}
               </pre>
               <div className="flex justify-end pt-1">
                 <button
                   onClick={() => handleCopy(s.code, idx)}
-                  className="text-slate-400 hover:text-white flex items-center gap-1 text-[11px] cursor-pointer"
+                  className="text-slate-400 hover:text-white flex items-center gap-1 text-[0.6875rem] cursor-pointer"
                 >
                   {copiedIndex === idx ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                   <span>{copiedIndex === idx ? 'Copiado!' : 'Copiar'}</span>
@@ -113,7 +113,7 @@ export const CliDebuggerTab: React.FC = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="text-[11px] text-slate-400 block font-semibold">
+              <label className="text-[0.6875rem] text-slate-400 block font-semibold">
                 Comando ou Código (CLI / Bicep / PowerShell / ARM):
               </label>
               <textarea
@@ -126,7 +126,7 @@ export const CliDebuggerTab: React.FC = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[11px] text-slate-400 block font-semibold">
+              <label className="text-[0.6875rem] text-slate-400 block font-semibold">
                 Mensagem de Erro do Azure (Opcional):
               </label>
               <textarea

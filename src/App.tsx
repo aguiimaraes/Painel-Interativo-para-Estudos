@@ -202,11 +202,13 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
-      {/* Header with Readiness & Study Timer */}
-      <Header globalReadinessPercent={globalReadinessPercent} />
-
-      {/* Navigation Tabs */}
-      <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
+      {/* Header + Navigation ficam juntos num único wrapper "sticky", assim
+          a barra de navegação sempre gruda exatamente sob o cabeçalho,
+          mesmo quando a altura dele muda (ex.: modo de fonte "Grande"). */}
+      <div className="sticky top-0 z-50">
+        <Header globalReadinessPercent={globalReadinessPercent} />
+        <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
+      </div>
 
       {/* Main Content Area */}
       <main className="flex-grow max-w-7xl w-full mx-auto p-4 lg:p-8">

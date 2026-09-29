@@ -13,18 +13,21 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ domains, onStartQuiz
     <div className="space-y-6">
       {/* 5 Domain Progress Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        {domains.map((dom) => {
+        {domains.map((dom, idx) => {
           const percent = dom.totalQuestions > 0 ? Math.round((dom.correctAnswers / dom.totalQuestions) * 100) : 0;
+          const isLast = idx === domains.length - 1;
           return (
             <div
               key={dom.id}
-              className="bg-slate-900/80 backdrop-blur border border-slate-800 p-4 rounded-2xl flex flex-col justify-between hover:border-slate-700 transition"
+              className={`bg-slate-900/80 backdrop-blur border border-slate-800 p-4 rounded-2xl flex flex-col justify-between hover:border-slate-700 transition ${
+                isLast ? 'sm:col-span-2 lg:col-span-1' : ''
+              }`}
             >
               <div className="flex justify-between items-start">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                <span className="text-[0.6875rem] font-bold text-slate-400 uppercase tracking-wider">
                   Domínio {dom.id}
                 </span>
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${dom.color}`}>
+                <span className={`text-[0.625rem] font-bold px-2 py-0.5 rounded-full ${dom.color}`}>
                   {dom.weightRange}
                 </span>
               </div>
