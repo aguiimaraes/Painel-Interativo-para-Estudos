@@ -10,12 +10,12 @@ export const questionsSimulado3: Question[] = [
     domainName: "Identidade & Governança",
     question: "Sua organização utiliza o Microsoft Entra Connect para sincronizar contas de usuários do Active Directory local com o Microsoft Entra ID. Durante a sincronização diária, um novo colaborador criado localmente não aparece no Microsoft Entra ID. No portal do Microsoft Entra Connect Health, você identifica um erro de 'Atributo Duplicado' (DuplicateAttribute) no atributo UserPrincipalName. O que você deve fazer para resolver o problema de sincronização?",
     options: [
+      "Habilitar a regra de junção personalizada no Synchronization Rules Editor para o atributo ObjectGUID e forçar uma sincronização inicial completa com 'Start-ADSyncSyncCycle -PolicyType Initial' no PowerShell.",
       "Alterar o UserPrincipalName ou o ProxyAddresses do usuário local para garantir que seja exclusivo em todo o diretório e forçar uma sincronização delta com 'Start-ADSyncSyncCycle -PolicyType Delta'.",
-      "Excluir o locatário do Microsoft Entra ID e recriá-lo do zero.",
-      "Desinstalar o agente do Microsoft Entra Connect no servidor local.",
-      "Criar uma política de Acesso Condicional bloqueando o usuário duplicado."
+      "Executar o comando 'Clear-ADSyncSyncCycle' no servidor do Entra Connect e redefinir a senha do usuário local com o cmdlet 'Set-ADUser -Identity User1 -PasswordNeverExpires $true'.",
+      "Remover o objeto de usuário do escopo de filtragem de Unidade Organizacional (UO) e executar uma sincronização de esquema completa utilizando o cmdlet 'Import-ADSyncChanges -FullScan'."
     ],
-    answer: 0,
+    answer: 1,
     explanation: "Erros de atributo duplicado (como conflito de UserPrincipalName ou ProxyAddresses) ocorrem quando dois objetos no diretório compartilham o mesmo valor em um atributo de identificação exclusiva. Para corrigir a falha, deve-se ajustar o valor conflitante no Active Directory local para que seja exclusivo e, em seguida, disparar um ciclo de sincronização delta com o cmdlet 'Start-ADSyncSyncCycle -PolicyType Delta'."
   },
   {
@@ -24,12 +24,12 @@ export const questionsSimulado3: Question[] = [
     domainName: "Identidade & Governança",
     question: "Você gerencia políticas de Acesso Condicional no Microsoft Entra ID. Você precisa garantir que colaboradores remotos que acessem o Exchange Online e o SharePoint Online a partir de computadores pessoais não corporativos possam visualizar e-mails e arquivos no navegador, mas fiquem estritamente impedidos de baixar (download), imprimir ou sincronizar documentos confidenciais localmente. Qual controle de sessão do Acesso Condicional você deve habilitar?",
     options: [
-      "Usar o Controle de Aplicativos de Acesso Condicional (Conditional Access App Control) integrado com o Microsoft Defender for Cloud Apps.",
-      "Habilitar a frequência de entrada para 1 hora.",
-      "Exigir redefinição de senha na próxima entrada.",
-      "Bloquear totalmente o acesso a partir de navegadores web."
+      "Habilitar o controle de Frequência de Entrada (Sign-in Frequency) configurado para expirar a sessão a cada 1 hora com exigência de reautenticação contínua e confirmação de MFA.",
+      "Selecionar a política de Concessão de Acesso exigindo redefinição de senha obrigatória na próxima entrada e bloqueio de protocolo POP3/IMAP4.",
+      "Configurar o controle de Resiliência de Avaliação Contínua de Acesso (CAE) com bloqueio irrestrito de qualquer agente de usuário baseado em navegador web.",
+      "Usar o Controle de Aplicativos de Acesso Condicional (Conditional Access App Control) integrado com o Microsoft Defender for Cloud Apps para impor inspeção de sessão."
     ],
-    answer: 0,
+    answer: 3,
     explanation: "O 'Controle de Aplicativos de Acesso Condicional' (Conditional Access App Control) roteia as sessões dos usuários através do proxy reverso do Microsoft Defender for Cloud Apps. Isso permite aplicar controles de sessão em tempo real, como monitorar a navegação e bloquear downloads, impressões ou cópias de dados confidenciais quando o usuário se conecta a partir de dispositivos não corporativos ou não compatíveis."
   },
   {
@@ -39,9 +39,9 @@ export const questionsSimulado3: Question[] = [
     question: "Sua empresa utiliza o Privileged Identity Management (PIM) no Microsoft Entra ID para proteger funções administrativas de alto privilégio. Você precisa configurar a atribuição da função de 'Administrador Global' para três engenheiros seniores para que eles NÃO tenham permissões ativas permanentes, mas possam solicitar a ativação da função por no máximo 4 horas quando necessário, exigindo aprovação obrigatória do gerente de segurança e justificativa com número de chamado. Como você deve configurar essa função no PIM?",
     options: [
       "Definir a atribuição como 'Elegível' (Eligible) nas atribuições de função e configurar a política da função com duração máxima de 4 horas, exigência de aprovação e justificativa de tíquete.",
-      "Definir a atribuição como 'Ativa' (Active) permanente com bloqueio de leitura.",
-      "Atribuir a função de Leitor Global permanente e delegar senhas por e-mail.",
-      "Criar uma Unidade Administrativa contendo apenas os três engenheiros."
+      "Definir a atribuição como 'Ativa' (Active) permanente nas atribuições de função e aplicar uma regra de bloqueio de leitura via Acesso Condicional com chave FIDO2 física corporativa.",
+      "Atribuir a função de Leitor Global permanente aos três engenheiros e configurar um fluxo do Power Automate para trocar senhas temporárias por e-mail criptografado.",
+      "Criar uma Unidade Administrativa restrita contendo os três engenheiros e delegar privilégios de Administrador de Autenticação com renovação semanal manual."
     ],
     answer: 0,
     explanation: "No Microsoft Entra Privileged Identity Management (PIM), a atribuição 'Elegível' (Eligible) concede ao usuário o direito de ativar a função privilegiada sob demanda (just-in-time). Nas configurações de política da função, define-se a duração máxima da sessão (4 horas), a exigência de autenticação multifator (MFA), a necessidade de justificativa com ticket e a aprovação formal de um fluxo de aprovadores antes que os privilégios sejam liberados."
@@ -52,12 +52,12 @@ export const questionsSimulado3: Question[] = [
     domainName: "Identidade & Governança",
     question: "Sua empresa (Locatário A) colabora frequentemente com um parceiro estratégico (Locatário B). Os usuários do Locatário B já cumprem requisitos rigorosos de MFA e usam dispositivos compatíveis no locatário de origem. Você precisa configurar o Acesso Condicional no Locatário A para que os usuários convidados do Locatário B não sejam solicitados a registrar um segundo MFA no Locatário A, confiando na autenticação multifator já realizada no locatário do parceiro. O que você deve configurar?",
     options: [
+      "Configurar uma Federação Direta baseada em SAML/WS-Fed adicionando os endereços de domínio do parceiro como domínios verificados de primeiro nível no Locatário A corporativo.",
+      "Adicionar a conta de serviço do parceiro como Administrador de Segurança no Locatário A e desabilitar os Padrões de Segurança (Security Defaults) na raiz.",
       "Configurações de Acesso Entre Locatários (Cross-Tenant Access Settings) > Configurações de Confiança (Trust Settings), marcando 'Confiar na autenticação multifator de locatários do Microsoft Entra'.",
-      "Uma federação direta baseada em Google ID.",
-      "Adicionar o parceiro como Administrador de Segurança no Locatário A.",
-      "Um grupo de segurança dinâmico atribuído a uma licença Free."
+      "Criar um Grupo de Segurança Dinâmico no Locatário A com regra baseada no atributo issuer e atribuir uma licença Microsoft Entra ID Free para cada convidado."
     ],
-    answer: 0,
+    answer: 2,
     explanation: "Nas 'Configurações de Acesso Entre Locatários' (Cross-tenant access settings) do Microsoft Entra ID, a guia 'Configurações de Confiança' (Trust Settings) permite que sua organização confie em declarações de autenticação multifator (MFA), dispositivos em conformidade e dispositivos ingressados no Entra ID emitidos por locatários externos parceiros, eliminando a necessidade de o usuário convidado refazer o registro de MFA no seu diretório."
   },
   {
@@ -66,99 +66,98 @@ export const questionsSimulado3: Question[] = [
     domainName: "Identidade & Governança",
     question: "Você está analisando a seguinte definição JSON de uma função personalizada do Azure RBAC:\n{\n  \"Name\": \"Gerente de VMs\",\n  \"Actions\": [\"Microsoft.Compute/virtualMachines/*\"],\n  \"NotActions\": [\"Microsoft.Compute/virtualMachines/delete\"],\n  \"AssignableScopes\": [\"/subscriptions/sub-1234\"]\n}\nQual é o comportamento exato desta função quando atribuída a um operador?",
     options: [
+      "O operador é impedido de realizar qualquer ação em máquinas virtuais se tiver qualquer outra função atribuída à sua conta corporativa.",
       "O operador pode executar todas as operações em máquinas virtuais na assinatura, EXCETO excluir máquinas virtuais.",
-      "O operador é impedido de realizar qualquer ação em máquinas virtuais se tiver qualquer outra função atribuída.",
-      "O operador só pode excluir máquinas virtuais.",
-      "O operador ganha acesso de leitura a todas as contas de armazenamento."
+      "O operador pode apenas listar e reiniciar máquinas virtuais, sendo bloqueado para qualquer operação de escrita em discos ou redes.",
+      "A cláusula NotActions atua como uma negação explícita de negação (Deny Assignment), sobrepondo qualquer outra permissão de Proprietário."
     ],
-    answer: 0,
-    explanation: "No Azure RBAC, 'NotActions' funciona como uma regra de subtração das permissões listadas em 'Actions'. Neste caso, 'Microsoft.Compute/virtualMachines/*' concede todas as operações em VMs, mas 'NotActions' subtrai a permissão 'Microsoft.Compute/virtualMachines/delete'. Logo, o operador pode ler, criar, reiniciar e redimensionar VMs, mas não pode excluí-las. (Observação: NotActions não é um Deny explícito; se outra função conceder a exclusão, ela será permitida)."
+    answer: 1,
+    explanation: "Em funções personalizadas do Azure RBAC, a seção 'NotActions' simplesmente subtrai operações específicas da lista permitida em 'Actions'. Ela NÃO é uma atribuição de negação (Deny Assignment). Se o usuário receber outra função (como Contribuidor) que conceda a permissão de exclusão, ele poderá excluir as VMs normalmente."
   },
   {
     id: 106,
     domain: 1,
     domainName: "Identidade & Governança",
-    question: "Você precisa garantir que todos os novos grupos de recursos criados em uma assinatura corporativa recebam automaticamente uma marcação (tag) chamada 'Ambiente' com o valor padrão 'Producao', caso a solicitação de implantação do grupo de recursos não inclua a referida tag. Qual efeito do Azure Policy você deve utilizar?",
+    question: "Um desenvolvedor com a função de 'Proprietário' (Owner) em um grupo de recursos tenta excluir uma máquina virtual associada a um Aplicativo Gerenciado do Azure (Azure Managed Application), mas a operação falha com um erro indicando uma 'Atribuição de Negação' (Deny Assignment). O desenvolvedor solicita que você remova essa atribuição de negação. O que você deve fazer?",
     options: [
-      "Modify",
-      "Deny",
-      "AuditIfNotExists",
-      "Disabled"
+      "Elevar suas credenciais para Administrador Global no Entra ID e executar o cmdlet 'Remove-AzDenyAssignment' no console do PowerShell com privilégios de locatário.",
+      "Elevar suas credenciais para Administrador Global no Entra ID e executar o cmdlet 'Remove-AzDenyAssignment' no console do PowerShell.",
+      "Modificar o escopo da atribuição no painel Controle de Acesso (IAM) para 'Herdado apenas' e aplicar um bloqueio de recursos do tipo CanNotDelete.",
+      "Adicionar o desenvolvedor à função Administrador de Acesso do Usuário no Tenant Root Group para anular as negações em cascata."
     ],
     answer: 0,
-    explanation: "O efeito 'Modify' do Azure Policy é utilizado para adicionar, atualizar ou remover marcas e propriedades em recursos ou grupos de recursos durante o processo de criação ou atualização gerenciado pelo ARM. Ele permite injetar automaticamente a marcação 'Ambiente: Producao' no grupo de recursos sem rejeitar a solicitação de implantação."
+    explanation: "As Atribuições de Negação (Deny Assignments) do Azure RBAC bloqueiam ações mesmo que uma função conceda permissão (deny overrules allow). Elas são criadas exclusivamente pelo Azure para proteger recursos gerenciados (como Blueprints e Managed Applications) e NÃO podem ser editadas ou excluídas diretamente pelos usuários."
   },
   {
     id: 107,
     domain: 1,
     domainName: "Identidade & Governança",
-    question: "Em uma estrutura corporativa complexa do Azure, qual é a profundidade máxima permitida para a hierarquia de Grupos de Gerenciamento (Management Groups), excluindo o Grupo de Gerenciamento Raiz (Root Management Group) e as assinaturas?",
+    question: "Você precisa delegar a um analista de segurança júnior a capacidade de criar definições de políticas no Azure Policy, atribuir iniciativas existentes e gerenciar tarefas de correção (Remediation Tasks) no nível de um Grupo de Gerenciamento, aplicando o princípio do menor privilégio (least privilege). Qual função interna (built-in role) do Azure RBAC deve ser atribuída a ele?",
     options: [
-      "6 níveis de profundidade.",
-      "2 níveis de profundidade.",
-      "10 níveis de profundidade.",
-      "Ilimitada."
+      "Proprietário da Assinatura (Subscription Owner com controle total sobre governança e faturamento).",
+      "Administrador de Acesso do Usuário (User Access Administrator com permissões delegadas de atribuição IAM).",
+      "Leitor de Segurança (Security Reader integrado exclusivamente aos painéis do Microsoft Defender for Cloud).",
+      "Colaborador de Política de Recursos (Resource Policy Contributor no nível do Grupo de Gerenciamento)."
     ],
-    answer: 0,
-    explanation: "A hierarquia de Grupos de Gerenciamento do Azure suporta uma profundidade máxima de até 6 níveis de árvore, sem contar o nível Raiz (Root Management Group) no topo e as assinaturas vinculadas na base. Essa restrição de arquitetura garante a eficiência na avaliação e herança de políticas e permissões RBAC."
+    answer: 3,
+    explanation: "A função interna 'Colaborador de Política de Recursos' (Resource Policy Contributor) concede permissões completas para criar, modificar e atribuir definições de política e iniciativas do Azure Policy, além de disparar tarefas de correção, sem conceder controle total de acesso ou direitos de criação de recursos arbitrários."
   },
   {
     id: 108,
     domain: 1,
     domainName: "Identidade & Governança",
-    question: "Sua empresa decide transferir a propriedade de cobrança de uma assinatura Azure existente para um locatário diferente do Microsoft Entra ID. O que acontece com as atribuições de funções existentes do Azure RBAC (como Proprietário, Colaborador e Leitor) configuradas na assinatura após a conclusão da transferência de diretório?",
+    question: "Sua empresa precisa transferir uma assinatura existente do Azure que contém dezenas de máquinas virtuais, contas de armazenamento e redes virtuais para um novo locatário do Microsoft Entra ID após uma fusão corporativa. Qual é o impacto direto e imediato dessa transferência nas atribuições de função do Azure RBAC existentes na assinatura?",
     options: [
-      "Todas as atribuições de função do Azure RBAC existentes na assinatura são excluídas permanentemente e precisam ser recriadas no novo diretório.",
-      "As atribuições de função são migradas e associadas automaticamente às contas do novo diretório.",
-      "Todos os recursos da assinatura são excluídos imediatamente.",
-      "As máquinas virtuais perdem suas configurações de rede privada."
+      "As atribuições de função são migradas automaticamente mapeando os usuários homônimos encontrados no locatário de destino através do Object ID correspondente.",
+      "Apenas as funções atribuídas a Contas de Serviço (Service Principals) são mantidas, enquanto usuários comuns perdem o acesso.",
+      "Todas as atribuições de função do Azure RBAC existentes na assinatura são excluídas permanentemente e devem ser recriadas no novo locatário.",
+      "Os bloqueios de recursos são desativados temporariamente por 48 horas enquanto os grupos do Azure AD são sincronizados via Kerberos."
     ],
-    answer: 0,
-    explanation: "Ao transferir uma assinatura do Azure para um locatário diferente do Microsoft Entra ID, a relação de confiança de identidade é desfeita. Como as atribuições de função do Azure RBAC apontam para identificadores de segurança (ObjectIDs) do diretório de origem, todas as atribuições de função são excluídas permanentemente da assinatura e devem ser reatribuídas aos usuários do novo diretório."
+    answer: 2,
+    explanation: "Ao transferir uma assinatura do Azure para outro locatário do Microsoft Entra ID, todas as atribuições de controle de acesso baseado em função (Azure RBAC) são removidas permanentemente. As identidades gerenciadas (Managed Identities) também são desativadas ou invalidadas, exigindo reconfiguração completa das permissões no locatário de destino."
   },
   {
     id: 109,
     domain: 1,
     domainName: "Identidade & Governança",
-    question: "Você gerencia um locatário do Microsoft Entra ID com 10.000 usuários em vários países. Você precisa delegar a administração de contas de usuários aos administradores de suporte local da filial do Brasil. Você cria uma Unidade Administrativa (AU) chamada 'AU-Brasil'. Você precisa que todos os usuários cujo atributo de país (UsageLocation ou Country) seja 'Brasil' entrem automaticamente nessa Unidade Administrativa. Qual tipo de associação deve ser configurado na AU?",
+    question: "Você está configurando a Redefinição de Senha por Autoatendimento (SSPR) no Microsoft Entra ID. Você precisa definir quais métodos de autenticação os colaboradores poderão utilizar para verificar sua identidade ao redefinir suas senhas. Quais dos seguintes conjuntos de métodos são oficialmente suportados para registro no fluxo de SSPR do Entra ID?",
     options: [
-      "Associação de usuário dinâmica (Dynamic User).",
-      "Associação atribuída manualmente (Assigned).",
-      "Sincronização de hash de senha.",
-      "Grupo de segurança estático."
+      "Reconhecimento Facial biométrico por webcam, Certificados Digitais em cartão inteligente e Chave Privada PGP enviada por e-mail corporativo criptografado.",
+      "Reconhecimento Facial biométrico por webcam, Certificados Digitais em cartão inteligente e Chave Privada PGP por e-mail.",
+      "Chamada de Voz automática para ramal PABX interno sem discagem direta e Token de Acesso OAuth 2.0 temporário emitido via API.",
+      "Senha de Uso Único (OTP) enviada via aplicativo WhatsApp e Autenticação de Passagem (PTA) com agentes locais dedicados."
     ],
     answer: 0,
-    explanation: "O Microsoft Entra ID dá suporte a Unidades Administrativas com associação dinâmica (Dynamic Membership). Assim como nos grupos de segurança dinâmicos, você pode definir regras de consulta baseadas em atributos (ex: user.country -eq \"Brasil\") para que os usuários que atendem aos critérios sejam adicionados ou removidos da Unidade Administrativa automaticamente sem intervenção manual."
+    explanation: "O Microsoft Entra SSPR suporta oficialmente: notificação no aplicativo móvel, código no aplicativo móvel (TOTP), SMS (mensagem de texto para celular), chamada telefônica (telefone celular ou comercial) e perguntas de segurança (configuradas pelo usuário)."
   },
   {
     id: 110,
     domain: 1,
     domainName: "Identidade & Governança",
-    question: "Você precisa exigir que todos os consultores terceirizados visualizem e aceitem eletronicamente um Termo de Confidencialidade e Uso Aceitável (NDA) antes de obterem acesso aos aplicativos e recursos corporativos do Microsoft Entra ID. Se o termo for atualizado, eles devem ser solicitados a aceitar novamente a nova versão. Qual funcionalidade você deve utilizar?",
+    question: "A equipe jurídica da sua organização exige que todos os colaboradores e parceiros externos visualizem e aceitem formalmente a 'Política de Uso Aceitável de Ativos Corporativos' antes de receberem acesso a qualquer recurso do Azure ou aplicativo do Microsoft 365 no primeiro logon. Caso o usuário recuse os termos, o acesso deve ser bloqueado imediatamente. Qual recurso do Microsoft Entra ID atende diretamente a esse requisito?",
     options: [
-      "Termos de Uso (Terms of Use - ToU) no Acesso Condicional.",
-      "Política de Bloqueio Inteligente do Entra ID.",
-      "Controle de versão de modelos ARM.",
-      "Monitor de Rede do Azure."
+      "Gerenciamento de Direitos (Entitlement Management) baseado em aprovação manual por e-mail em pacotes de acesso estáticos.",
+      "Termos de Uso (Terms of Use - ToU) configurados como controle de concessão em uma política de Acesso Condicional.",
+      "Revisões de Acesso (Access Reviews) disparadas anualmente para contas com atributo employeeType preenchido.",
+      "Políticas de Proteção de Identidade (Identity Protection) com alerta de login em navegadores sem certificado confiável."
     ],
-    answer: 0,
-    explanation: "Os 'Termos de Uso' (Terms of Use - ToU) do Microsoft Entra ID permitem publicar documentos PDF de políticas legais ou termos de consentimento. Integrados a uma política de Acesso Condicional, eles garantem que os usuários (ou convidados externos) devam ler e consentir explicitamente com os termos antes de acessar aplicativos protegidos, permitindo ainda exigir novo consentimento em caso de atualizações no documento."
+    answer: 1,
+    explanation: "Os 'Termos de Uso' (Terms of Use - ToU) do Microsoft Entra ID permitem que as organizações apresentem documentos contratuais ou regulatórios (PDF) aos usuários. Integrados a políticas de Acesso Condicional, eles exigem o consentimento formal e auditável antes que o acesso seja concedido."
   },
   {
     id: 111,
     domain: 1,
     domainName: "Identidade & Governança",
-    question: "Você precisa automatizar a implantação de um bloqueio de recursos do tipo 'ReadOnly' em um grupo de recursos crítico usando código de Infraestrutura como Código (Bicep/ARM Template). Qual tipo de provedor de recursos deve ser declarado no modelo para criar o bloqueio?",
+    question: "Ao desenhar a estrutura de Grupos de Gerenciamento (Management Groups) para uma organização corporativa de grande porte com centenas de assinaturas no Azure, você precisa garantir que a arquitetura respeite os limites técnicos da plataforma da Microsoft. Qual é a profundidade máxima permitida na hierarquia de Grupos de Gerenciamento do Azure (excluindo o Root Management Group)?",
     options: [
-      "Microsoft.Authorization/locks",
-      "Microsoft.Resources/resourceLocks",
-      "Microsoft.Security/complianceLocks",
-      "Microsoft.Compute/locks"
+      "Até 3 níveis de profundidade na árvore de hierarquia de Grupos de Gerenciamento.",
+      "Até 10 níveis de profundidade na árvore de hierarquia de Grupos de Gerenciamento.",
+      "Até 6 níveis de profundidade na árvore de hierarquia de Grupos de Gerenciamento.",
+      "Profundidade ilimitada, desde que o número total de assinaturas vinculadas não ultrapasse 500."
     ],
-    answer: 0,
-    explanation: "No Azure Resource Manager (ARM e Bicep), os bloqueios de recursos são gerenciados pelo provedor de autorização oficial 'Microsoft.Authorization/locks'. Ao declarar esse recurso no modelo, especifica-se o 'level' como 'ReadOnly' (ou 'CanNotDelete') e o escopo do recurso ou grupo de recursos a ser protegido."
+    answer: 2,
+    explanation: "O Azure impõe um limite máximo de 6 níveis de profundidade na árvore de Grupos de Gerenciamento (Management Groups), sem contar o nível do Root Management Group (Grupo de Gerenciamento Raiz) nem o nível final das assinaturas."
   },
-
   // =========================================================================
   // DOMÍNIO 2: IMPLEMENTAR E GERENCIAR ARMAZENAMENTO (15-20% -> 9 Qs)
   // =========================================================================
@@ -166,317 +165,315 @@ export const questionsSimulado3: Question[] = [
     id: 112,
     domain: 2,
     domainName: "Armazenamento",
-    question: "Você tem uma conta de armazenamento de uso geral v2 chamada 'stgprodbackup' configurada com redundância geográfica GRS na região Leste dos EUA (região primária) e Oeste dos EUA (região secundária). Ocorreu um incidente grave na região Leste dos EUA e a diretoria decide executar um failover manual da conta gerenciado pelo cliente (Customer-Managed Account Failover). O que acontece com a conta de armazenamento após o failover?",
+    question: "Você gerencia uma conta de armazenamento de missão crítica configurada com armazenamento com redundância geográfica (GRS) entre Leste dos EUA (primária) e Oeste dos EUA (secundária). Ocorre um desastre prolongado na região primária e a Microsoft ainda não declarou failover regional oficial. Você decide executar um Failover Gerenciado pelo Cliente (Customer-Managed Account Failover) via portal do Azure. Quais são as duas consequências imediatas desse failover?",
     options: [
-      "A região secundária (Oeste dos EUA) torna-se a nova região primária e o tipo de redundância da conta é convertido automaticamente para LRS (Locally-Redundant Storage).",
-      "A conta de armazenamento é excluída e recriada com novas chaves de acesso.",
-      "A redundância permanece GRS automaticamente sem necessidade de nenhuma ação futura.",
-      "Todos os dados da conta são arquivados na camada de arquivos frios."
+      "A conta de armazenamento mantém a configuração de redundância GRS ativa e replica os dados em sentido inverso instantaneamente para a região de origem.",
+      "Todos os contêineres de blobs são convertidos para o nível de acesso Archive e os pontos de extremidade de DNS são excluídos.",
+      "O endereço de DNS público da conta é alterado permanentemente com um novo sufixo regional exigindo reconfiguração dos clientes.",
+      "A região secundária (Oeste dos EUA) torna-se a nova região primária e o tipo de redundância da conta é automaticamente convertido para LRS."
     ],
-    answer: 0,
-    explanation: "Ao executar um failover de conta de armazenamento iniciado pelo cliente, os registros DNS são atualizados para que a região secundária passe a responder como a nova região primária. Como a região primária original está inacessível, a conta perde a capacidade de replicação geográfica e seu tipo de redundância é convertido automaticamente para LRS. Para restaurar a proteção geográfica, o administrador deve reconfigurar a conta para GRS/RA-GRS manualmente mais tarde."
+    answer: 3,
+    explanation: "Ao executar um failover manual iniciado pelo cliente em uma conta GRS/GZRS, a região secundária torna-se a nova região primária e a configuração de redundância da conta é convertida automaticamente para LRS (Locally-Redundant Storage). Para restabelecer a replicação geográfica, o administrador deve reconfigurar a conta para GRS posteriormente."
   },
   {
     id: 113,
     domain: 2,
     domainName: "Armazenamento",
-    question: "Uma instituição bancária precisa armazenar relatórios de transações financeiras em contêineres de Blob Storage no Azure para atender à norma regulatória SEC Rule 17a-4 (armazenamento WORM - Write Once, Read Many). Os arquivos gravados não podem ser alterados, substituídos ou excluídos por ninguém (nem mesmo pelo Administrador Global ou suporte da Microsoft) durante o período legal de retenção de 5 anos. Qual configuração atende a esse requisito?",
+    question: "Sua empresa armazena exames médicos em formato DICOM no Azure Blob Storage. De acordo com a legislação do setor de saúde, esses arquivos não podem ser modificados ou excluídos durante 10 anos após a criação, mas podem ser lidos livremente por clínicas autorizadas. Além disso, novos exames precisam ser gravados diariamente no mesmo contêiner. Qual recurso você deve configurar no contêiner de blobs?",
     options: [
-      "Configurar uma Política de Retenção Baseada em Tempo (Time-based retention policy) no contêiner de Blob e Bloquear a Política (Policy Lock / Legal Immutability).",
-      "Configurar um bloqueio de recursos CanNotDelete no grupo de recursos.",
-      "Definir a camada de acesso para Archive com criptografia SSE.",
-      "Atribuir permissão de Leitor nos contêineres para todos os usuários."
+      "Aplicar um Bloqueio de Recursos do tipo CanNotDelete no grupo de recursos onde a conta de armazenamento reside.",
+      "Habilitar o recurso de Exclusão Suave (Soft Delete) com período de retenção estendido para 3650 dias em discos magnéticos padrão com bloqueio de leitura.",
+      "Habilitar o recurso de Exclusão Suave (Soft Delete) com período de retenção estendido para 3650 dias em discos magnéticos.",
+      "Configurar uma Retenção Legal (Legal Hold) com uma tag imutável permanente associada a uma política de ciclo de vida para Archive."
     ],
-    answer: 0,
-    explanation: "O Armazenamento Imutável para Blobs do Azure suporta 'Políticas de Retenção Baseadas em Tempo'. Ao definir o tempo de retenção (ex: 5 anos) e bloquear formalmente a política ('Lock Policy'), o estado de conformidade regulatória rigorosa (WORM) é ativado. Uma vez bloqueada, a política é irreversível: nenhum usuário ou processo pode excluir ou substituir os blobs até que o período de retenção expire."
+    answer: 1,
+    explanation: "Uma 'Política de Retenção Baseada em Tempo' (Time-based retention policy) no armazenamento de blobs imutável permite que blobs existentes sejam preservados em formato WORM (Write Once, Read Many) pelo tempo estipulado (10 anos), impedindo alterações ou exclusões, enquanto novos blobs continuam sendo gravados normalmente no contêiner."
   },
   {
     id: 114,
     domain: 2,
     domainName: "Armazenamento",
-    question: "Sua empresa precisa permitir que parceiros externos transfiram arquivos volumosos para uma conta de armazenamento do Azure utilizando o protocolo SFTP (SSH File Transfer Protocol) de forma nativa, autenticando-se por meio de pares de chaves públicas SSH, sem necessidade de gerenciar máquinas virtuais de servidores SFTP de terceiros. Qual recurso nativo do Azure Storage deve ser habilitado na conta?",
+    question: "Você precisa permitir que clientes externos enviem arquivos diariamente para um contêiner de armazenamento do Azure Blob Storage utilizando o protocolo SFTP (SSH File Transfer Protocol), autenticando-se por chave pública SSH ou senha local, sem a necessidade de manter máquinas virtuais executando servidores SFTP de terceiros. Qual recurso e pré-requisito da conta de armazenamento você deve habilitar?",
     options: [
-      "Habilitar o suporte a SFTP na conta de armazenamento com Namespace Hierárquico (Azure Data Lake Storage Gen2).",
-      "Configurar o Azure Bastion com túnel de SSH.",
-      "Criar uma máquina virtual Linux com serviço OpenSSH conectado via NFS.",
-      "Ativar o protocolo WebDAV na sub-rede de armazenamento."
+      "Habilitar o suporte a SFTP na conta de armazenamento com Namespace Hierárquico (Hierarchical Namespace / Data Lake Storage Gen2) ativado.",
+      "Configurar o Azure Bastion com extensão de túnel SSH associada a um Ponto de Extremidade de Serviço do Storage na sub-rede dedicada de gerenciamento.",
+      "Configurar o Azure Bastion com extensão de túnel SSH associada a um Ponto de Extremidade de Serviço do Storage.",
+      "Habilitar o Proxy de Aplicativo do Microsoft Entra ID com mapeamento de porta TCP 22 pública estática."
     ],
     answer: 0,
-    explanation: "O Azure Blob Storage oferece suporte nativo ao protocolo SFTP (SSH File Transfer Protocol). Para ativá-lo, a conta de armazenamento deve possuir o Namespace Hierárquico (ADLS Gen2) habilitado. Uma vez ativado o SFTP, é possível criar usuários locais na própria conta de armazenamento associando chaves públicas SSH para autenticação segura e sem servidor (serverless)."
+    explanation: "O suporte a SFTP totalmente gerenciado no Azure Blob Storage requer que a conta de armazenamento tenha o 'Namespace Hierárquico' (Hierarchical Namespace - HNS, Azure Data Lake Storage Gen2) habilitado. Uma vez ativado, o SFTP pode ser habilitado com gerenciamento de usuários locais, chaves SSH e senhas."
   },
   {
     id: 115,
     domain: 2,
     domainName: "Armazenamento",
-    question: "Você gerencia um compartilhamento de arquivos do Azure Files em uma conta de armazenamento Standard General Purpose v2. O compartilhamento está próximo de atingir a cota máxima padrão de 5 TiB. Você precisa expandir a capacidade do compartilhamento de arquivos para até 100 TiB. Qual configuração você deve ativar na conta de armazenamento?",
+    question: "Você tem uma conta de armazenamento Standard de uso geral v2 chamada 'stfilesprod'. Você precisa criar um compartilhamento de arquivos no Azure Files para hospedar um repositório central de imagens CAD que atualmente possui 45 TiB de dados. Por padrão, os compartilhamentos de arquivos Standard são limitados a 5 TiB. O que você deve configurar na conta de armazenamento para suportar compartilhamentos de até 100 TiB?",
     options: [
-      "Habilitar o recurso 'Compartilhamentos de Arquivos Grandes' (Large File Shares) na conta de armazenamento.",
-      "Converter a conta de armazenamento para Premium Page Blobs.",
-      "Criar 20 compartilhamentos de arquivos menores e agrupá-los via DFS-N.",
-      "Habilitar a replicação RA-GZRS."
+      "Alterar a camada de desempenho da conta de armazenamento para Premium FileStorage e configurar discos Ultra SSD com provisionamento de 10.000 IOPS.",
+      "Configurar uma Política de Ciclo de Vida que desloque automaticamente os blocos excedentes para a camada Cold.",
+      "Habilitar o recurso 'Compartilhamentos de Arquivos Grandes' (Large File Shares) nas configurações da conta de armazenamento.",
+      "Criar 9 compartilhamentos de arquivos de 5 TiB e agrupá-los logicamente utilizando o Azure File Sync com DFS-N."
     ],
-    answer: 0,
-    explanation: "O recurso 'Compartilhamentos de Arquivos Grandes' (Large File Shares) permite que compartilhamentos padrão do Azure Files cresçam de 5 TiB até 100 TiB, aumentando também os limites de IOPS e taxa de transferência. Essa configuração está disponível para contas com redundância LRS e ZRS."
+    answer: 2,
+    explanation: "Por padrão histórico, compartilhamentos Standard do Azure Files tinham limite de 5 TiB. Ao habilitar o recurso 'Compartilhamentos de Arquivos Grandes' (Large File Shares - LFS) na conta de armazenamento, a capacidade máxima do compartilhamento é aumentada para 100 TiB e os limites de IOPS e throughput são elevados."
   },
   {
     id: 116,
     domain: 2,
     domainName: "Armazenamento",
-    question: "Uma aplicação parceira utiliza uma Assinatura de Acesso Compartilhado de Serviço (Service SAS) para enviar dados a um contêiner de Blob Storage. Você precisa garantir que, caso as credenciais da aplicação sejam comprometidas, o acesso fornecido pelo token SAS possa ser revogado IMEDIATAMENTE sem alterar a chave primária ou secundária da conta de armazenamento (o que interromperia outras aplicações). Como a SAS deveria ter sido gerada?",
+    question: "Sua organização precisa gerar uma Assinatura de Acesso Compartilhado de Serviço (Service SAS) para fornecer acesso de leitura temporário a um contêiner de blob para parceiros externos. A equipe de segurança exige que, caso ocorra qualquer suspeita de vazamento da URL da SAS, o acesso possa ser revogado imediatamente sem a necessidade de rotacionar as Chaves de Acesso da Conta (Account Keys), o que causaria impacto em outras aplicações. Como a SAS deve ser gerada?",
     options: [
-      "Vinculada a uma Política de Acesso Armazenada (Stored Access Policy) criada no contêiner de blob.",
-      "Com a flag de leitura anônima habilitada.",
-      "Assinada com um certificado X.509 autoassinado.",
-      "Gerada como uma SAS de Conta com permissões totais."
+      "Configurada com tempo de expiração inferior a 30 minutos e renovação automática via webhook no Azure Monitor.",
+      "Assinada exclusivamente com a chave secundária (Key2) da conta de armazenamento com bloqueio de leitura no IAM.",
+      "Gerada utilizando o protocolo Kerberos com autenticação de passagem por meio do Microsoft Entra Domain Services.",
+      "Vinculada a uma Política de Acesso Armazenada (Stored Access Policy) criada previamente no contêiner de blobs."
     ],
-    answer: 0,
-    explanation: "Uma Política de Acesso Armazenada (Stored Access Policy) definida em um contêiner de blob, fila ou tabela permite gerenciar os parâmetros de controle de assinaturas de acesso compartilhado (SAS) associadas. Caso seja necessário revogar o acesso fornecido por uma SAS vinculada a uma política armazenada, basta modificar a data de expiração da política para o passado ou simplesmente excluí-la, revogando o acesso imediatamente sem tocar nas chaves mestras da conta."
+    answer: 3,
+    explanation: "Uma 'Política de Acesso Armazenada' (Stored Access Policy) fornece um nível adicional de controle sobre uma SAS de serviço. Ao associar a SAS a uma política de acesso armazenada no contêiner, você pode revogar a SAS instantaneamente excluindo a política ou alterando sua data de expiração, sem precisar rotacionar as chaves de acesso da conta de armazenamento."
   },
   {
     id: 117,
     domain: 2,
     domainName: "Armazenamento",
-    question: "Você configurou um Ponto de Extremidade Privado (Private Endpoint) para uma conta de armazenamento chamada 'stgcorporativo' com IP privado 10.1.2.5. Clientes na rede virtual interna tentam acessar o endpoint através do FQDN público 'stgcorporativo.blob.core.windows.net'. Como o Azure resolve esse nome para o endereço IP privado do Private Endpoint de forma transparente?",
+    question: "Você configurou um Ponto de Extremidade Privado (Private Endpoint) para a conta de armazenamento 'stgcorporativo' com IP privado 10.1.4.15 em uma VNet do Azure, integrado à zona de DNS privado 'privatelink.blob.core.windows.net'. Como funciona o processo de resolução de DNS quando uma VM na VNet tenta acessar 'stgcorporativo.blob.core.windows.net'?",
     options: [
-      "O DNS público do Azure resolve 'stgcorporativo.blob.core.windows.net' como um CNAME apontando para 'stgcorporativo.privatelink.blob.core.windows.net', que é resolvido para 10.1.2.5 pela Zona de DNS Privado vinculada à VNet.",
-      "O arquivo hosts de todas as máquinas virtuais é atualizado automaticamente pelo Azure DHCP.",
-      "O Balanceador de Carga Standard altera os cabeçalhos IP de todas as consultas DNS.",
-      "O gateway NAT realiza a tradução de portas DNS em tempo real."
+      "A consulta de DNS bypassa totalmente o DNS público e consulta diretamente o arquivo hosts local da máquina virtual injetado pela extensão do agente de computação.",
+      "A consulta de DNS bypassa totalmente o DNS público e consulta diretamente o arquivo hosts local da máquina virtual.",
+      "O servidor DNS da VNet intercepta o pacote HTTP na camada 7 e redireciona o tráfego usando regras de NAT estático.",
+      "A máquina virtual recebe uma resposta de DNS com o IP público da Microsoft e estabelece um túnel VPN IPsec transparente."
     ],
     answer: 0,
-    explanation: "Quando um Ponto de Extremidade Privado é criado, o Azure atualiza o registro CNAME canônico da conta de armazenamento no DNS público para apontar para '<nome_da_conta>.privatelink.blob.core.windows.net'. Ao vincular a Zona de DNS Privado correspondente ('privatelink.blob.core.windows.net') à VNet com o registro A (10.1.2.5), os clientes internos continuam usando a URL padrão da conta e são redirecionados automaticamente para o IP privado."
+    explanation: "Ao configurar um Private Endpoint, o DNS público do Azure cria um registro CNAME apontando o FQDN padrão ('stgcorporativo.blob.core.windows.net') para o subdomínio privatelink ('stgcorporativo.privatelink.blob.core.windows.net'). A Zona de DNS Privado vinculada à VNet contém o registro A que mapeia esse FQDN privatelink para o IP privado (10.1.4.15)."
   },
   {
     id: 118,
     domain: 2,
     domainName: "Armazenamento",
-    question: "Você tem um arquivo de log de 20 GB armazenado na camada de Arquivamento (Archive) do Azure Blob Storage. A equipe de segurança precisa auditar urgentemente esse arquivo devido a um incidente em andamento. Eles solicitam que o processo de reidratação (Rehydration) para a camada Hot seja concluído no menor tempo possível (em menos de 1 hora). Qual prioridade de reidratação você deve selecionar?",
+    question: "Você está planejando a implementação do Azure File Sync para sincronizar servidores de arquivos Windows locais com um compartilhamento do Azure Files. Quais são os três componentes essenciais de topologia que você deve criar no Azure e nos servidores locais para estabelecer a sincronização?",
     options: [
-      "Prioridade Alta (High Priority Rehydration).",
-      "Prioridade Padrão (Standard Priority Rehydration).",
-      "Prioridade de Lote (Batch Priority).",
-      "Prioridade Ultrarrápida com ExpressRoute."
+      "Gateway de Rede Virtual, Conexão ExpressRoute com emparelhamento privado e Agente do Log Analytics instalado em cada servidor com regras DCR.",
+      "Serviço de Sincronização de Armazenamento, Grupo de Sincronização com Ponto de Extremidade de Nuvem e Servidor Registrado com Ponto de Extremidade de Servidor.",
+      "Cofre dos Serviços de Recuperação, Política de Backup com retenção diária e Extensão de Script Personalizado nos controladores.",
+      "Conta de Armazenamento Data Lake Gen2, Espaço de Trabalho do Azure Synapse Analytics e Pipeline do Data Factory agendado."
     ],
-    answer: 0,
-    explanation: "A reidratação de blobs da camada Archive para Hot ou Cool suporta dois níveis de prioridade: 'Padrão' (Standard), que processa a solicitação em ordem de chegada e pode levar até 15 horas, e 'Alta' (High Priority), que prioriza a solicitação com capacidade dedicada, recuperando blobs de até 10 GB normalmente em menos de 1 hora, sob uma tarifa ligeiramente superior."
-  },
-  {
-    id: 119,
-    domain: 2,
-    domainName: "Armazenamento",
-    question: "Você precisa criar uma regra de Gerenciamento de Ciclo de Vida que exclua automaticamente todos os blobs que estão localizados no contêiner 'telemetria' e cujo caminho de pasta inicie com 'logs/temporario/', quando esses arquivos completarem 14 dias de criação. Qual filtro você deve especificar na regra de ciclo de vida?",
-    options: [
-      "Definir o filtro de prefixo (prefixMatch) como 'telemetria/logs/temporario/' e a ação 'delete' para 14 dias após a criação.",
-      "Definir a tag de serviço 'VirtualNetwork' com limite de 14 horas.",
-      "Criar uma política de replicação assíncrona entre locatários.",
-      "Configurar um alerta de log no Azure Monitor que dispare um script de exclusão."
-    ],
-    answer: 0,
-    explanation: "As regras de Gerenciamento de Ciclo de Vida do Blob Storage permitem aplicar filtros de prefixo ('prefixMatch') no formato '<nome_do_conteiner>/<caminho_do_prefixo>'. Assim, especificando 'telemetria/logs/temporario/', a regra avalia exclusivamente os blobs desse diretório e executa a ação 'delete' após 14 dias da criação ou modificação."
+    answer: 1,
+    explanation: "A topologia do Azure File Sync é composta por: 1) Serviço de Sincronização de Armazenamento (Storage Sync Service); 2) Grupo de Sincronização (Sync Group); 3) Ponto de Extremidade de Nuvem (Cloud Endpoint - o compartilhamento do Azure Files); 4) Servidor Registrado (Registered Server - Windows Server com o agente instalado); 5) Ponto de Extremidade de Servidor (Server Endpoint - pasta local sincronizada)."
   },
   {
     id: 120,
     domain: 2,
     domainName: "Armazenamento",
-    question: "Você está instalando o agente do Azure File Sync em um servidor Windows Server 2022 local. Ao tentar registrar o servidor no Serviço de Sincronização de Armazenamento (Storage Sync Service), o assistente exibe uma mensagem informando que o servidor já está registrado em outro Serviço de Sincronização. O que você deve fazer para registrar o servidor no novo Serviço de Sincronização de Armazenamento?",
+    question: "Um servidor Windows local configurado como Ponto de Extremidade de Servidor (Server Endpoint) no Azure File Sync será descomissionado. Você precisa remover o servidor do Azure File Sync de forma limpa e segura, garantindo que os dados no compartilhamento do Azure Files (Cloud Endpoint) permaneçam intactos. Qual é a sequência correta de passos que deve ser executada?",
     options: [
-      "Cancelar o registro do servidor no Serviço de Sincronização de Armazenamento anterior antes de registrá-lo no novo serviço.",
-      "Reinstalar o sistema operacional Windows Server do zero.",
-      "Alterar o endereço IP estático do servidor de arquivos.",
-      "Renomear os compartilhamentos SMB no Azure Files."
+      "Excluir o Grupo de Sincronização no portal do Azure e formatar os discos do servidor de arquivos local imediatamente após a desconexão do agente.",
+      "Cancelar o registro do servidor diretamente no portal antes de remover o Ponto de Extremidade de Servidor associado.",
+      "Excluir o compartilhamento de arquivos no Azure Files e aguardar a sincronização reversa no servidor local por 24 horas.",
+      "Excluir o Ponto de Extremidade de Servidor no Grupo de Sincronização, cancelar o registro do servidor no Serviço de Sincronização de Armazenamento e desinstalar o agente."
     ],
-    answer: 0,
-    explanation: "Um servidor local com o agente do Azure File Sync só pode ser registrado em um único Serviço de Sincronização de Armazenamento (Storage Sync Service) por vez. Para movê-lo para outro serviço, deve-se remover todos os pontos de extremidade de servidor (Server Endpoints) associados e cancelar formalmente o registro do servidor no serviço antigo pelo portal ou PowerShell antes de registrá-lo no novo."
+    answer: 3,
+    explanation: "Para descomissionar um servidor no Azure File Sync de forma segura: 1) Exclua primeiro o Ponto de Extremidade de Servidor (Server Endpoint) dentro do Grupo de Sincronização; 2) Cancele o registro do servidor (Unregister server) no Serviço de Sincronização de Armazenamento; 3) Desinstale o agente do Azure File Sync no Windows Server."
   },
-
+  {
+    id: 119,
+    domain: 2,
+    domainName: "Armazenamento",
+    question: "Você está criando uma regra de Gerenciamento de Ciclo de Vida (Lifecycle Management) no Azure Blob Storage para mover blobs gerados por dispositivos IoT para a camada Archive após 60 dias. Você precisa garantir que a regra seja aplicada APENAS a blobs armazenados dentro do contêiner 'telemetria' no caminho virtual 'logs/antigos/'. Como você deve configurar o filtro de prefixo (prefixMatch) na regra?",
+    options: [
+      "Definir o filtro de prefixo como 'https://storageaccount.blob.core.windows.net/telemetria/logs/antigos/*.log'.",
+      "Definir o filtro de contêiner como 'telemetria' e usar uma expressão regular '*.log' no campo de metadados da regra.",
+      "Definir o filtro de prefixo (prefixMatch) como 'telemetria/logs/antigos/' na seção de filtros da regra de ciclo de vida.",
+      "Configurar uma marca de índice de blob (Blob Index Tag) estática com a chave 'folder' e o valor 'telemetria/logs/antigos'."
+    ],
+    answer: 2,
+    explanation: "No Gerenciamento de Ciclo de Vida do Blob Storage, o filtro de prefixo ('prefixMatch') deve iniciar com o nome do contêiner, seguido pelas pastas virtuais correspondentes (ex: 'telemetria/logs/antigos/'). O Azure não utiliza URLs completas nem caracteres curinga (*) no campo prefixMatch."
+  },
   // =========================================================================
-  // DOMÍNIO 3: IMPLANTAR E GERENCIAR RECURSOS DE COMPUTAÇÃO (20-25% -> 11 Qs)
+  // DOMÍNIO 3: IMPLANTAR E GERENCIAR RECURSOS DE COMPUTAÇÃO DO AZURE (20-25% -> 11 Qs)
   // =========================================================================
   {
     id: 121,
     domain: 3,
     domainName: "Computação",
-    question: "Sua equipe projeta uma arquitetura com nós de processamento stateless (sem estado) em máquinas virtuais Azure. Os nós gravam e leem dados temporários em alta velocidade no disco do sistema operacional, mas nenhuma alteração do disco precisa persistir caso a VM seja reiniciada ou realocada. Você precisa eliminar o custo de armazenamento de disco gerenciado remoto e reduzir a latência de I/O de disco para zero. Qual funcionalidade de disco de VM você deve selecionar durante a criação da máquina?",
+    question: "Você está projetando um cluster de processamento em lote (batch processing) no Azure que utiliza instâncias de máquinas virtuais sem estado (stateless). As VMs são criadas, processam dados temporários por 2 horas e são destruídas. Você deseja reduzir os custos de armazenamento de disco gerenciado para zero e atingir o menor tempo de latência de gravação de sistema operacional possível. Qual tipo de disco de SO você deve selecionar durante a criação das VMs?",
     options: [
-      "Disco de Sistema Operacional Efêmero (Ephemeral OS Disk).",
-      "Disco Gerenciado Ultra Disk com IOPS provisionado.",
-      "Disco Gerenciado Standard HDD com caching ReadOnly.",
-      "Disco VHD montado via protocolo iSCSI sobre a internet."
+      "Discos de Sistema Operacional Efêmeros (Ephemeral OS Disks hospedados no armazenamento em cache local da VM).",
+      "Discos Gerenciados Premium SSD v2 com provisionamento estático de 3000 IOPS e 125 MB/s de throughput dedicado por máquina virtual.",
+      "Discos Gerenciados Premium SSD v2 com provisionamento estático de 3000 IOPS e 125 MB/s de throughput.",
+      "Volumes de Armazenamento de Blobs montados via driver NFS v3 com camada de acesso Frequente (Hot)."
     ],
     answer: 0,
-    explanation: "Discos de SO Efêmeros (Ephemeral OS Disks) são criados diretamente no armazenamento local da VM (na memória cache ou no disco temporário local do host físico) em vez de no armazenamento remoto do Azure Storage. Eles oferecem latência ultrabaixa de leitura/gravação, reimplementação rápida de imagem e custo de armazenamento zero, sendo ideais para cargas de trabalho sem estado."
+    explanation: "Os Discos de SO Efêmeros (Ephemeral OS Disks) são criados no armazenamento local da máquina virtual (como o cache da VM ou o disco temporário local), em vez de serem provisionados no Azure Storage remoto. Eles oferecem latência ultrabaixa de leitura/gravação, reinicialização rápida e custo zero de armazenamento de disco."
   },
   {
     id: 122,
     domain: 3,
     domainName: "Computação",
-    question: "Você precisa provisionar uma máquina virtual para um servidor de desenvolvimento que opera a maior parte do tempo com menos de 10% de uso de CPU, mas ocasionalmente necessita disparar compilações de código de curta duração que utilizam 100% da CPU por alguns minutos. Qual série de tamanho de máquina virtual do Azure é especificamente otimizada para essa carga de trabalho com o menor custo?",
+    question: "Sua empresa precisa hospedar 10 servidores de desenvolvimento no Azure que ficam ociosos a maior parte do dia (consumo de CPU abaixo de 10%), mas exigem picos de 100% de capacidade de CPU durante alguns minutos quando os desenvolvedores executam rotinas de testes ou compilação de código. Qual série de tamanho de máquina virtual é a mais custo-eficiente para essa carga de trabalho intermitente?",
     options: [
-      "Série B com capacidade de intermitência (B-series burstable).",
-      "Série D (Computação de Propósito Geral).",
-      "Série F (Otimizada para Computação).",
-      "Série M (Otimizada para Memória)."
+      "Série D com computação de uso geral dedicada e balanceamento simétrico de memória RAM para execução contínua de rotinas pesadas.",
+      "Série F otimizada para computação intensiva com alta proporção de clock por vCPU.",
+      "Série B com capacidade de intermitência (B-series burstable baseada no acúmulo de créditos de CPU).",
+      "Série E otimizada para memória com isolamento de hardware físico exclusivo para o cliente."
     ],
-    answer: 0,
-    explanation: "As máquinas virtuais da série B (burstable) são ideais para cargas de trabalho que não precisam do desempenho total contínuo da CPU. Quando a VM opera abaixo da sua linha de base (baseline), ela acumula créditos de CPU. Quando ocorre um pico de processamento, a VM utiliza esses créditos acumulados para atingir até 100% da capacidade de CPU sem custo adicional."
+    answer: 2,
+    explanation: "A série B (B-series burstable) foi desenvolvida especialmente para cargas de trabalho que não utilizam a performance total da CPU continuamente, acumulando créditos durante períodos ociosos e utilizando esses créditos para dar saltos (burst) de até 100% da CPU quando necessário, com custo muito menor que instâncias regulares."
   },
   {
     id: 123,
     domain: 3,
     domainName: "Computação",
-    question: "Você precisa configurar atualizações automáticas de sistema operacional em um Conjunto de Dimensionamento de Máquinas Virtuais (VMSS) do Azure para que novas imagens de plataforma com patches de segurança sejam aplicadas periodicamente. A atualização deve atualizar as instâncias em lotes graduais, garantindo que o serviço web permaneça sempre online e que instâncias problemáticas não continuem a ser propagadas. Qual modo de atualização de imagem de SO do VMSS você deve configurar?",
+    question: "Você gerencia um Conjunto de Escala de Máquinas Virtuais (VMSS) com 20 instâncias que executam uma imagem de marketplace do Windows Server 2022 Datacenter. Você deseja habilitar atualizações automáticas de imagem do sistema operacional (Automatic OS Image Upgrades) para que a Microsoft aplique os patches mensais da imagem sem tempo de inatividade para a aplicação. Quais são os dois pré-requisitos obrigatórios para habilitar esse recurso no VMSS?",
     options: [
-      "Atualizações Automáticas de Imagem de SO (Automatic OS Image Upgrades) com Modo de Atualização Rolante (Rolling Upgrade).",
-      "Modo Manual com scripts agendados no Cron.",
-      "Substituição Imediata de Todas as Instâncias (Simultaneous Reimage).",
-      "Atualização Desativada permanente."
+      "O VMSS deve ter no mínimo 50 instâncias ativas e todas as VMs devem possuir endereços IP públicos Standard dedicados com sondas TCP.",
+      "O VMSS deve utilizar o modo de orquestração flexível ou uniforme com sondas de integridade (Health Probes) ou extensão Application Health.",
+      "O VMSS deve estar configurado em uma única Zona de Disponibilidade com discos do tipo Standard HDD exclusivos.",
+      "Todas as instâncias devem ter o serviço de Área de Trabalho Remota (RDP) habilitado com senha administrativa fixa."
     ],
-    answer: 0,
-    explanation: "O recurso 'Automatic OS Image Upgrades' com política de atualização contínua (Rolling Upgrades) monitora a publicação de novas imagens de SO pelo fabricante. Quando uma atualização é disponibilizada, o VMSS atualiza as instâncias em lotes controlados (rolantes), verificando a integridade das instâncias atualizadas por meio das sondas do balanceador de carga antes de avançar para o próximo lote."
+    answer: 1,
+    explanation: "Para habilitar 'Automatic OS Image Upgrades' em um VMSS, o conjunto deve ter monitoramento de integridade da aplicação configurado (por meio de uma sonda de integridade do Application Gateway/Load Balancer ou da extensão 'Application Health'), permitindo que o Azure atualize instâncias em lotes (rolling upgrades) verificando se a aplicação permanece saudável."
   },
   {
     id: 124,
     domain: 3,
     domainName: "Computação",
-    question: "Você tem um aplicativo Web hospedado no Azure App Service com o plano Standard. Você deseja vincular um domínio personalizado chamado 'app.contoso.com' ao aplicativo web. Antes de vincular o domínio no portal do Azure, você precisa validar a propriedade do domínio no seu provedor de DNS público. Qual registro DNS você deve criar para comprovar a propriedade com validação de ID de aplicativo?",
+    question: "Você precisa configurar um domínio personalizado chamado 'app.contoso.com' em um aplicativo web hospedado no Azure App Service. Antes de criar o registro CNAME apontando para 'meuapp.azurewebsites.net', você deseja verificar e pré-validar a propriedade do domínio para evitar tempo de inatividade. Qual registro de DNS e valor devem ser criados no provedor de hospedagem de DNS do contoso.com?",
     options: [
-      "Um registro TXT com o nome 'asuid.app.contoso.com' contendo o ID de Verificação de Domínio Personalizado (Custom Domain Verification ID) fornecido pelo App Service.",
-      "Um registro MX apontando para smtp.azure.com.",
-      "Um registro NS delegando o domínio inteiro para a AWS.",
-      "Um registro PTR apontando para o IP privado da sub-rede."
+      "Um registro CNAME com o nome 'validate.app.contoso.com' apontando para o IP público do portal do Azure com verificação SSL automática.",
+      "Um registro MX com prioridade 10 apontando para o servidor de e-mail do Microsoft Entra ID com chave SPF.",
+      "Um registro PTR apontando o endereço IP do gateway de aplicativo para o namespace raiz contoso.com.",
+      "Um registro TXT com o nome 'asuid.app.contoso.com' contendo o 'ID de Verificação de Domínio Personalizado' fornecido pelo App Service."
     ],
-    answer: 0,
-    explanation: "Para validar a propriedade de um domínio personalizado no Azure App Service sem tempo de inatividade, a Microsoft exige a criação de um registro TXT com o prefixo 'asuid.<subdominio>' contendo o identificador de verificação exclusivo da instância do App Service. Isso comprova que você controla o DNS do domínio antes de configurar o roteamento de tráfego via CNAME."
+    answer: 3,
+    explanation: "Para pré-validar a propriedade de um domínio personalizado no Azure App Service antes de apontar o tráfego de produção, a Microsoft exige a criação de um registro TXT com o prefixo 'asuid.<subdomínio>' contendo a cadeia de caracteres única de verificação (Custom Domain Verification ID) exibida nas configurações do App Service."
   },
   {
     id: 125,
     domain: 3,
     domainName: "Computação",
-    question: "Uma aplicação corporativa em Node.js no Azure App Service precisa se conectar a um banco de dados Azure SQL. As diretrizes de segurança da empresa proíbem expressamente armazenar nomes de usuário e senhas no código-fonte, em variáveis de ambiente ou em arquivos de configuração. Como a aplicação deve autenticar-se no Azure SQL?",
+    question: "Um desenvolvedor está criando um aplicativo web em Node.js no Azure App Service que precisa recuperar certificados e segredos de conexão armazenados em um cofre de chaves (Azure Key Vault). Por motivos de governança e segurança, as credenciais não podem ser codificadas no código-fonte nem armazenadas em variáveis de ambiente em texto não criptografado. Qual é a arquitetura de segurança recomendada pela Microsoft para permitir a comunicação segura entre o App Service e o Key Vault?",
     options: [
-      "Habilitar uma Identidade Gerenciada Atribuída pelo Sistema (System-assigned Managed Identity) no App Service e conceder permissões à identidade no banco de dados Azure SQL.",
-      "Armazenar a senha do banco de dados em um compartilhamento de arquivos aberto.",
-      "Configurar a autenticação básica no servidor web com credenciais de administrador local.",
-      "Conectar a aplicação ao banco de dados via chave pré-compartilhada WPA2."
+      "Criar uma Conta de Serviço local no Microsoft Entra ID e salvar a senha de acesso no arquivo web.config da pasta raiz com chave simétrica.",
+      "Configurar um Ponto de Extremidade de Serviço de Armazenamento com autorização anônima compartilhada entre os serviços.",
+      "Habilitar uma Identidade Gerenciada Atribuída pelo Sistema (System-assigned Managed Identity) no App Service e conceder a ela uma função RBAC no Key Vault.",
+      "Gerar uma chave de API simétrica de 256 bits no Key Vault e salvá-la nos logs de diagnóstico do Azure Monitor."
     ],
-    answer: 0,
-    explanation: "Identidades Gerenciadas (Managed Identities) para recursos do Azure fornecem ao aplicativo do App Service uma identidade gerenciada automaticamente no Microsoft Entra ID. A aplicação pode solicitar tokens do Entra ID diretamente pela infraestrutura da plataforma para se autenticar no Banco de Dados SQL do Azure sem precisar manipular ou armazenar credenciais no código."
+    answer: 2,
+    explanation: "A melhor prática do Azure para autenticação entre serviços é utilizar 'Identidades Gerenciadas' (Managed Identities). O Azure gerencia automaticamente o ciclo de vida e a rotação de certificados da identidade no Microsoft Entra ID. No Azure Key Vault, atribui-se uma função RBAC (como 'Usuário de Segredos do Key Vault') diretamente a essa identidade."
   },
   {
     id: 126,
     domain: 3,
     domainName: "Computação",
-    question: "Qual é a diferença fundamental no Azure App Service entre 'Scale Up' (Escalar Verticalmente) e 'Scale Out' (Escalar Horizontalmente)?",
+    question: "No contexto de dimensionamento do Plano do Serviço de Aplicativo do Azure (Azure App Service Plan), qual é a diferença fundamental entre as operações de 'Scale Up' (Escalar Verticalmente) e 'Scale Out' (Escalar Horizontalmente)?",
     options: [
-      "'Scale Up' altera o plano de serviço para um nível de preço superior com mais CPU, memória RAM e recursos dedicados; 'Scale Out' aumenta a quantidade de instâncias de máquinas virtuais idênticas que executam a aplicação.",
-      "'Scale Up' adiciona discos de dados; 'Scale Out' move a aplicação para outra região.",
-      "'Scale Up' reinicia o aplicativo; 'Scale Out' altera a versão do PHP.",
-      "'Scale Up' duplica o custo mensal obrigatoriamente; 'Scale Out' é totalmente gratuito."
+      "'Scale Up' adiciona discos de dados gerenciados às VMs; 'Scale Out' move a aplicação para outra região geográfica do Azure com replicação de dados.",
+      "'Scale Up' adiciona discos de dados gerenciados às VMs; 'Scale Out' move a aplicação para outra região geográfica do Azure.",
+      "'Scale Up' reinicia o aplicativo web em modo de isolamento; 'Scale Out' altera a versão do ambiente de runtime (ex: Node para .NET).",
+      "'Scale Up' duplica o custo mensal da assinatura de forma fixa; 'Scale Out' utiliza instâncias spot gratuitas da Microsoft."
     ],
     answer: 0,
-    explanation: "Na terminologia do Azure App Service, 'Scale Up' refere-se ao redimensionamento de hardware (escalabilidade vertical), mudando para um nível com mais vCPUs, RAM e recursos como slots de implantação. 'Scale Out' refere-se ao aumento do número de instâncias de computação (escalabilidade horizontal), distribuindo a carga de requisições por múltiplos nós de trabalho idênticos."
+    explanation: "'Scale Up' (escalabilidade vertical) significa mudar para uma camada de preço mais alta (ex: de Basic B1 para Premium P2v3), obtendo mais núcleos de CPU, mais RAM e recursos avançados. 'Scale Out' (escalabilidade horizontal) significa aumentar a contagem de instâncias virtuais idênticas que executam a aplicação para distribuir a carga."
   },
   {
     id: 127,
     domain: 3,
     domainName: "Computação",
-    question: "Sua empresa utiliza os Aplicativos de Contêiner do Azure (Azure Container Apps - ACA) para hospedar microsserviços. Você preparou uma nova versão de um contêiner e deseja testá-la em ambiente de produção enviando exatamente 20% do tráfego real de clientes para a nova revisão e mantendo 80% do tráfego na revisão anterior. Como você deve configurar o Azure Container Apps?",
+    question: "Você gerencia um aplicativo em contêiner implantado no Aplicativos de Contêiner do Azure (Azure Container Apps). Você precisa implantar uma nova versão da imagem de contêiner e realizar uma implantação canário (Canary Deployment), direcionando 20% do tráfego de entrada para a nova versão e mantendo 80% do tráfego na versão antiga estável. Como você deve configurar as revisões e o tráfego no Container Apps?",
     options: [
-      "Configurar o Modo de Múltiplas Revisões (Multiple Revisions Mode) e definir a divisão de tráfego de entrada (Traffic Splitting) como 80% para a revisão antiga e 20% para a nova revisão.",
-      "Criar dois balanceadores de carga com portas diferentes.",
-      "Instalar o NGINX em uma VM separada para controlar a distribuição.",
-      "Configurar uma política de Acesso Condicional com base em porcentagem de usuários."
+      "Criar dois balanceadores de carga Standard com portas TCP distintas e configurar um script de balanceamento manual no servidor de aplicação.",
+      "Configurar o Modo de Múltiplas Revisões (Multiple Revisions Mode) e definir a divisão de tráfego de entrada (Traffic Splitting) como 80% para a versão antiga e 20% para a nova revisão.",
+      "Instalar o NGINX em uma máquina virtual separada na VNet para controlar a distribuição de pacotes HTTP.",
+      "Configurar uma política de Acesso Condicional com base em porcentagem de endereços IP de usuários externos."
     ],
-    answer: 0,
-    explanation: "O Azure Container Apps suporta o 'Modo de Múltiplas Revisões' (Multiple Revisions Mode) com divisão de tráfego integrada (Traffic Splitting). Isso permite executar diferentes versões do contêiner simultaneamente e definir percentuais exatos de encaminhamento de tráfego HTTP para implantações do tipo Blue/Green ou Canary."
+    answer: 1,
+    explanation: "O Azure Container Apps suporta o 'Modo de Múltiplas Revisões' (Multiple Revisions Mode). Esse recurso permite que várias revisões do aplicativo estejam ativas simultaneamente com divisão de tráfego (Traffic Splitting) configurável em porcentagens, ideal para testes A/B, lançamentos canário e migrações suaves."
   },
   {
     id: 128,
     domain: 3,
     domainName: "Computação",
-    question: "Você precisa implantar uma aplicação nas Instâncias de Contêiner do Azure (ACI) que consiste em dois contêineres: um contêiner web principal e um contêiner auxiliar (sidecar) de coleta de logs. Os dois contêineres devem compartilhar a mesma interface de rede, ser acessíveis entre si através do endereço 'localhost' e compartilhar o mesmo ciclo de vida. O que você deve implantar?",
+    question: "Você precisa implantar dois contêineres nas Instâncias de Contêiner do Azure (Azure Container Instances - ACI): um contêiner web principal e um contêiner auxiliar do tipo 'sidecar' que coleta logs do contêiner web. Os dois contêineres devem compartilhar o mesmo ciclo de vida, o mesmo endereço IP público e comunicar-se entre si via localhost na porta 8080. Como você deve estruturar a implantação no ACI?",
     options: [
-      "Um único Grupo de Contêineres (Container Group) contendo a definição dos dois contêineres.",
-      "Duas instâncias de contêiner em grupos de recursos separados conectadas via VNet Peering.",
-      "Um cluster do Kubernetes (AKS) com 10 nós.",
-      "Um Conjunto de Disponibilidade com duas VMs Linux."
+      "Duas instâncias de contêiner em grupos de recursos separados conectadas via emparelhamento de redes virtuais com IP público dedicado.",
+      "Um cluster do Serviço de Kubernetes do Azure (AKS) com no mínimo 10 nós físicos em zonas distintas.",
+      "Um Conjunto de Disponibilidade com duas máquinas virtuais Linux executando o daemon do Docker local.",
+      "Um único Grupo de Contêineres (Container Group) contendo a definição dos dois contêineres compartilhando o mesmo contexto de rede."
     ],
-    answer: 0,
-    explanation: "Nas Instâncias de Contêiner do Azure (ACI), um 'Grupo de Contêineres' (Container Group) é uma coleção de contêineres programados no mesmo computador host. Eles compartilham um ciclo de vida comum, o mesmo namespace de rede e porta de loopback (localhost) e volumes de armazenamento compartilhados, sendo a implementação nativa do padrão sidecar no ACI."
+    answer: 3,
+    explanation: "No Azure Container Instances (ACI), um 'Grupo de Contêineres' (Container Group) é uma coleção de contêineres agendados no mesmo computador host. Os contêineres em um grupo compartilham o ciclo de vida, recursos de rede (mesmo IP e namespace de portas, comunicando-se via localhost) e volumes de armazenamento montados."
   },
   {
     id: 129,
     domain: 3,
     domainName: "Computação",
-    question: "Você tem um modelo de implantação automatizada que provisiona 10 máquinas virtuais Windows Server. Após a inicialização das VMs, você precisa que um script PowerShell customizado seja baixado e executado automaticamente para instalar funções de servidor e softwares proprietários. Qual extensão de máquina virtual do Azure deve ser adicionada à configuração?",
+    question: "Você precisa garantir que, imediatamente após o provisionamento de uma nova máquina virtual Linux no Azure via modelo ARM, um script shell customizado ('setup.sh') seja baixado de uma conta de armazenamento privada e executado com privilégios de root para instalar pacotes de segurança e configurar o firewall local iptables. Qual extensão de máquina virtual você deve utilizar?",
     options: [
-      "Extensão de Script Personalizado (Custom Script Extension).",
-      "Agente de Diagnóstico do Windows.",
-      "Extensão de Proteção de Ponto de Extremidade da Microsoft.",
-      "Extensão de Backup de Banco de Dados."
+      "Agente de Diagnóstico do Windows (WAD) configurado para execução de tarefas agendadas em lote.",
+      "Extensão de Script Personalizado (Custom Script Extension para Linux integrada ao agente da VM).",
+      "Extensão de Proteção de Ponto de Extremidade da Microsoft com verificação em tempo real de malware.",
+      "Extensão de Backup de Banco de Dados com backup de recuperação instantânea em cofre de chaves."
     ],
-    answer: 0,
-    explanation: "A 'Extensão de Script Personalizado' (Custom Script Extension) baixa e executa scripts em máquinas virtuais do Azure. Ela é amplamente utilizada para configuração pós-inicialização, instalação de softwares, personalização do sistema operacional e qualquer tarefa de configuração de gerenciamento de carga de trabalho."
+    answer: 1,
+    explanation: "A 'Extensão de Script Personalizado' (Custom Script Extension) baixa e executa scripts em máquinas virtuais do Azure. Ela é amplamente utilizada para configuração pós-implantação, instalação de software e tarefas de gerenciamento de configuração automática durante o provisionamento da VM."
   },
   {
     id: 130,
     domain: 3,
     domainName: "Computação",
-    question: "Ao criar instantâneos (snapshots) de discos gerenciados de máquinas virtuais do Azure para fins de contingência e backup, qual é a principal vantagem de escolher um 'Instantâneo Incremental' (Incremental Snapshot) em comparação com um 'Instantâneo Completo' (Full Snapshot)?",
+    question: "Ao criar instantâneos (snapshots) de discos gerenciados do Azure para rotinas de backup antes de manutenções críticas de software, qual é a principal vantagem técnica e financeira de utilizar instantâneos incrementais (Incremental Snapshots) em comparação com instantâneos completos (Full Snapshots)?",
     options: [
+      "Instantâneos incrementais não exigem que a máquina virtual seja desligada ou sofra qualquer tipo de freeze de gravação no sistema de arquivos.",
+      "Instantâneos incrementais são salvos obrigatoriamente em servidores locais com redundância física em fitas magnéticas.",
       "Instantâneos incrementais gravam apenas os blocos que foram alterados desde o último snapshot, consumindo menos espaço em disco e com custo de armazenamento significativamente menor.",
-      "Instantâneos incrementais não exigem que a VM seja desligada nunca.",
-      "Instantâneos incrementais são salvos obrigatoriamente em servidores locais.",
-      "Instantâneos incrementais aumentam o IOPS da máquina virtual em 50%."
+      "Instantâneos incrementais aumentam o limite de IOPS da máquina virtual em 50% durante a execução da cópia."
     ],
-    answer: 0,
-    explanation: "Instantâneos incrementais de discos gerenciados do Azure copiam apenas os blocos de dados delta que foram modificados desde o instantâneo mais recente. Por serem diferenciais, ocupam muito menos espaço no armazenamento de backup e são cobrados por uma taxa de armazenamento de blocos inferior à de snapshots completos independentes."
+    answer: 2,
+    explanation: "Instantâneos incrementais (Incremental Snapshots) de discos gerenciados copiam apenas os blocos de dados delta que foram modificados desde o snapshot anterior. Eles são armazenados em armazenamento Standard mais barato, reduzindo drasticamente o consumo de gigabytes e acelerando o tempo de criação."
   },
   {
     id: 131,
     domain: 3,
     domainName: "Computação",
-    question: "Você gerencia um aplicativo crítico no Azure App Service. Você precisa garantir que, durante um evento de alta demanda, quando a carga de CPU ultrapassar 80%, a plataforma aumente automaticamente o número de instâncias de 2 para até 10, e que, quando a carga de CPU diminuir para menos de 30%, a plataforma reduza gradualmente para 2 instâncias. Qual recurso você deve configurar no plano do App Service?",
+    question: "Você administra um Plano do Serviço de Aplicativo do Azure (Azure App Service Plan) na camada Premium P1v3. A aplicação sofre picos sazonais de acesso todos os dias úteis entre 08:00 e 10:00 da manhã. Você deseja que o número de instâncias aumente automaticamente para 5 instâncias durante essa janela de horário e retorne para 2 instâncias no restante do dia. Onde você deve configurar essa programação no portal do Azure?",
     options: [
-      "Regras de Dimensionamento Automático (Autoscale Rules) no painel Escalar Horizontalmente (Scale Out).",
-      "Slots de Implantação com troca automática.",
-      "Redimensionamento Manual no painel Escalar Verticalmente (Scale Up).",
-      "Ponto de Extremidade de Serviço com controle de fluxo."
+      "Slots de Implantação com troca programada automática através de gatilhos do Azure Logic Apps baseados em consumo de memória RAM.",
+      "Slots de Implantação com troca programada automática através de gatilhos do Azure Logic Apps.",
+      "Redimensionamento Manual no painel Escalar Verticalmente (Scale Up) alterando o tamanho do hardware da instância.",
+      "Ponto de Extremidade de Serviço com controle de fluxo configurado no gateway de roteamento de borda."
     ],
     answer: 0,
-    explanation: "As regras de Dimensionamento Automático (Autoscale) do Azure Monitor integradas ao App Service permitem configurar condições de escala métrica (scale-out e scale-in). Define-se o número mínimo (2) e máximo (10) de instâncias e as regras métricas baseadas no uso médio de CPU para reagir automaticamente à flutuação de tráfego."
+    explanation: "No painel 'Escalar Horizontalmente' (Scale Out) do App Service Plan, é possível habilitar o Dimensionamento Automático (Autoscale) e configurar condições baseadas em agendamento ('Scale to a specific instance count' repetido em dias específicos da semana e horários determinados)."
   },
-
   // =========================================================================
-  // DOMÍNIO 4: CONFIGURAR E GERENCIAR REDE VIRTUAL (15-20% -> 10 Qs)
+  // DOMÍNIO 4: CONFIGURAR E GERENCIAR REDES VIRTUAIS (15-20% -> 10 Qs)
   // =========================================================================
   {
     id: 132,
     domain: 4,
     domainName: "Redes Virtuais",
-    question: "Você tem uma rede virtual chamada VNet1. Você precisa criar uma sub-rede para hospedar serviços do Azure Container Instances (ACI) ou Azure App Service VNet Integration. Ao criar a sub-rede, você configura a propriedade 'Delegação de Sub-rede' (Subnet Delegation) para 'Microsoft.ContainerInstance/containerGroups'. O que essa configuração de delegação causa na sub-rede?",
+    question: "Ao configurar uma sub-rede em uma Rede Virtual (VNet) do Azure, você encontra a opção 'Delegação de Sub-rede' (Subnet Delegation). Qual é o objetivo técnico e o efeito de delegar uma sub-rede a um serviço gerenciado do Azure (como Microsoft.Web/serverFarms ou Microsoft.ContainerInstance/containerGroups)?",
     options: [
-      "Concede ao serviço especificado permissões dedicadas para gerenciar a sub-rede e restringe a sub-rede para que apenas recursos daquele tipo de serviço possam ser implantados nela.",
-      "Desativa o firewall de rede e permite conexões sem autenticação.",
-      "Transforma a sub-rede em uma rede pública exposta diretamente à internet.",
-      "Bloqueia qualquer tipo de tráfego de saída das VMs da rede."
+      "Desativa o firewall de rede e permite conexões sem autenticação de qualquer endereço IP externo na Internet através de portas dinâmicas.",
+      "Transforma a sub-rede em uma rede pública exposta diretamente à internet com IPs estáticos não roteáveis.",
+      "Bloqueia qualquer tipo de tráfego de saída das máquinas virtuais e desabilita o DNS interno da VNet.",
+      "Concede ao serviço especificado permissões dedicadas para gerenciar a sub-rede e restringe a sub-rede para que apenas recursos daquele tipo de serviço possam ser implantados nela."
     ],
-    answer: 0,
-    explanation: "A 'Delegação de Sub-rede' (Subnet Delegation) atribui permissões explícitas a um serviço PaaS gerenciado do Azure para provisionar interfaces de rede e gerenciar o endereçamento daquela sub-rede. Como consequência, somente instâncias daquele serviço delegado podem ser provisionadas nessa sub-rede, impedindo a criação concomitante de máquinas virtuais convencionais."
+    answer: 3,
+    explanation: "A 'Delegação de Sub-rede' (Subnet Delegation) concede permissões explícitas a um serviço gerenciado do Azure para criar recursos de rede na sub-rede durante a implantação do serviço. Uma vez delegada, nenhum outro tipo de recurso (como VMs comuns) pode ser implantado nessa sub-rede."
   },
   {
     id: 133,
     domain: 4,
     domainName: "Redes Virtuais",
-    question: "Duas redes virtuais, VNet1 e VNet2, estão conectadas com sucesso via VNet Peering. Devido à expansão da empresa, você adiciona um novo espaço de endereçamento IP (novo prefixo CIDR) à VNet1. Os administradores percebem que as VMs na VNet2 não conseguem se comunicar com os novos endereços da VNet1. O que deve ser feito para propagar o novo espaço de endereçamento entre as redes?",
+    question: "Você configurou o emparelhamento de redes virtuais (VNet Peering) entre a VNet1 e a VNet2. Mais tarde, você adiciona um novo espaço de endereço IP (10.2.0.0/16) à VNet2. Os administradores relatam que as máquinas virtuais na VNet1 não conseguem alcançar as novas máquinas virtuais provisionadas no novo espaço de endereço da VNet2, e o status do emparelhamento exibe 'Requer Sincronização' (Requires Sync). Como você deve resolver essa pendência de conectividade?",
     options: [
-      "Executar a operação de Sincronização (Sync) no emparelhamento de redes virtuais da VNet1 e da VNet2.",
-      "Excluir e recriar as duas redes virtuais.",
-      "Reiniciar todas as máquinas virtuais em ambas as VNets.",
-      "Instalar o protocolo RIPv2 nos adaptadores de rede."
+      "Excluir e recriar as duas redes virtuais do zero reconfigurando os adaptadores de rede de todas as instâncias e rotas estáticas.",
+      "Excluir e recriar as duas redes virtuais do zero reconfigurando os adaptadores de rede de todas as instâncias.",
+      "Reiniciar todas as máquinas virtuais em ambas as VNets para recarregar as tabelas de roteamento do kernel.",
+      "Instalar o protocolo de roteamento RIPv2 nos adaptadores de rede virtuais de cada sistema operacional guest."
     ],
     answer: 0,
-    explanation: "Quando um novo espaço de endereço IP é adicionado a uma rede virtual que já possui VNet Peering ativo, o emparelhamento entra no estado que requer sincronização. Para que o novo espaço de endereçamento passe a ser roteado, é necessário acionar a operação de sincronização ('Sync') no emparelhamento da rede virtual para atualizar as rotas de sistema de forma transparente e sem interrupção."
+    explanation: "Quando o espaço de endereço de uma VNet emparelhada é modificado após a criação do emparelhamento, o status do peering muda para 'Requires Sync'. O administrador deve clicar em 'Sincronizar' (Sync) no emparelhamento para propagar os novos prefixos de endereço sem interrupção de serviço."
   },
   {
     id: 134,
@@ -484,113 +481,112 @@ export const questionsSimulado3: Question[] = [
     domainName: "Redes Virtuais",
     question: "Você tem um Grupo de Segurança de Rede (NSG) com as seguintes regras de entrada (Inbound):\n- Regra 100: Prioridade 100 | Porta 80 | Ação: Deny\n- Regra 200: Prioridade 200 | Porta 80 | Ação: Allow\n- Regra Padrão 65000: Prioridade 65000 | AllowVNetInBound | Ação: Allow\nQuando uma solicitação HTTP na porta 80 chega a uma máquina virtual associada a este NSG, o que acontece?",
     options: [
-      "A conexão é bloqueada (Deny) porque a Regra 100 tem prioridade numérica mais baixa e é avaliada primeiro.",
-      "A conexão é permitida (Allow) porque a Regra 200 substitui a Regra 100.",
-      "A conexão é permitida pela regra 65000.",
-      "A solicitação entra em loop de roteamento indefinido."
+      "A conexão é permitida (Allow) porque a Regra 200 substitui a Regra 100 por ter uma ação afirmativa de permissão explícita no NSG.",
+      "A conexão é bloqueada (Deny) porque a Regra 100 tem prioridade numérica mais baixa e é avaliada primeiro pelo processador de fluxo.",
+      "A conexão é permitida pela regra padrão 65000 porque regras padrão têm precedência sobre regras personalizadas.",
+      "A solicitação entra em loop de roteamento indefinido porque regras conflitantes anulam o processamento do NSG."
     ],
-    answer: 0,
-    explanation: "No Azure NSG, as regras são processadas em ordem rigorosa de prioridade, onde números menores têm maior precedência (são avaliados primeiro). Assim que uma regra corresponde aos critérios do tráfego (Regra 100 com prioridade 100 e ação Deny), o processamento é interrompido e a ação é aplicada imediatamente, ignorando regras com números de prioridade maiores."
+    answer: 1,
+    explanation: "No Azure NSG, as regras são avaliadas em ordem crescente de prioridade numérica (de 100 a 4096). Números mais baixos têm maior prioridade. Assim que um fluxo de rede corresponde aos critérios de uma regra (neste caso, porta 80 na Regra 100), a ação dessa regra (Deny) é aplicada imediatamente e o processamento é interrompido."
   },
   {
     id: 135,
     domain: 4,
     domainName: "Redes Virtuais",
-    question: "Você tem um Balanceador de Carga Standard do Azure distribuindo tráfego para um pool de servidores de backend. Você precisa adicionar novas instâncias de servidores que residem em sub-redes e redes virtuais diferentes (emparelhadas) na mesma região. Qual configuração do Pool de Backend do Balanceador de Carga Standard deve ser utilizada?",
+    question: "Você está implantando um Azure Standard Load Balancer para distribuir conexões entre máquinas virtuais localizadas na VNet local e servidores locais conectados via ExpressRoute. Para conseguir balancear tráfego para servidores locais sem interfaces de rede virtuais provisionadas no Azure, qual tipo de configuração do pool de backend (Backend Pool) deve ser utilizado no balanceador de carga?",
     options: [
-      "Configuração de pool de backend baseada em Endereço IP (IP-based backend pool).",
-      "Configuração de pool de backend baseada em Interface de Rede (NIC-based).",
-      "Balanceador de Carga Básico legado.",
-      "Sonda de integridade UDP simples."
+      "Configuração de pool de backend baseada em Interface de Rede (NIC-based compatível exclusivamente com VMs locais da mesma VNet).",
+      "Balanceador de Carga Básico legado com sondas de integridade em portas UDP de broadcast aberto.",
+      "Configuração de pool de backend baseada em Endereço IP (IP-based backend pool suportada no Standard Load Balancer).",
+      "Ponto de Extremidade de Serviço com mapeamento de endereços MAC virtuais através de switch local."
     ],
-    answer: 0,
-    explanation: "O Azure Standard Load Balancer suporta pools de back-end configurados com base em 'Endereço IP' (IP-based). Esse modo permite adicionar membros de back-end com base em seus endereços IPv4 privados em qualquer rede virtual conectada (via VNet Peering) na mesma região, superando a limitação antiga que exigia que todas as NICs estivessem na mesma VNet."
+    answer: 2,
+    explanation: "O Azure Standard Load Balancer suporta pools de backend baseados em Endereço IP ('IP-based'). Isso permite incluir como alvos de backend endereços IP privados que residem em outras redes virtuais emparelhadas ou em ambientes locais conectados via ExpressRoute ou VPN Gateway."
   },
   {
     id: 136,
     domain: 4,
     domainName: "Redes Virtuais",
-    question: "Sua organização utiliza o Firewall de Aplicativo Web (WAF) no Gateway de Aplicativo do Azure (Application Gateway). Você precisa configurar o WAF para que ele monitore o tráfego em tempo real, registre ameaças como injeção de SQL e Cross-Site Scripting (XSS) nos logs do Log Analytics, mas NÃO bloqueie as solicitações dos clientes enquanto a equipe ajusta possíveis falsos positivos. Qual modo de operação do WAF deve ser selecionado?",
+    question: "Você gerencia um Firewall de Aplicativo Web (WAF) no Azure Application Gateway. Antes de bloquear ativamente qualquer tráfego potencialmente malicioso que possa gerar falsos positivos na aplicação de produção, você deseja monitorar o tráfego e registrar os alertas de regras de segurança disparados no Log Analytics sem interromper as solicitações dos clientes. Qual modo de operação do WAF deve ser selecionado?",
     options: [
-      "Modo de Detecção (Detection Mode).",
-      "Modo de Prevenção (Prevention Mode).",
-      "Modo Desativado (Disabled).",
-      "Modo Estrito de Quarentena."
+      "Modo de Prevenção (Prevention Mode, que descarta ativamente pacotes que violem regras de integridade OWASP 3.2 em tempo real).",
+      "Modo Desativado (Disabled Mode, que suspende totalmente o motor de inspeção de regras de camada de aplicativo).",
+      "Modo Estrito de Quarentena (Strict Quarantine Mode, que isola endereços IP suspeitos em sub-redes temporárias).",
+      "Modo de Detecção (Detection Mode, que apenas inspeciona e registra alertas de segurança sem bloquear solicitações)."
     ],
-    answer: 0,
-    explanation: "O Azure WAF oferece dois modos de operação: 'Detecção' (Detection), no qual o WAF avalia e registra todas as ameaças detectadas nos logs de diagnóstico sem interferir no tráfego dos clientes (ideal para testes e homologação), e 'Prevenção' (Prevention), no qual as solicitações que violam as regras do OWASP são bloqueadas imediatamente com código HTTP 403."
+    answer: 3,
+    explanation: "O Azure Web Application Firewall (WAF) opera em dois modos: 'Detecção' (Detection) e 'Prevenção' (Prevention). No modo Detecção, o WAF monitora e analisa o tráfego, registrando correspondências de regras nos logs de diagnóstico sem bloquear nenhuma solicitação."
   },
   {
     id: 137,
     domain: 4,
     domainName: "Redes Virtuais",
-    question: "Uma empresa parceira (fornecedora de software) hospeda uma aplicação em sua própria assinatura do Azure. Sua empresa precisa consumir esse serviço de backend diretamente de dentro da sua rede virtual corporativa através de um IP privado interno, sem expor os dados à internet pública e sem precisar criar um emparelhamento de VNets (VNet Peering) abrangente entre os dois locatários. Qual tecnologia do Azure atende a esse cenário?",
+    question: "Sua empresa desenvolveu um serviço SaaS no Azure hospedado atrás de um Standard Load Balancer em uma rede virtual própria. Vários clientes corporativos desejam consumir essa API de forma privada a partir de suas próprias VNets no Azure, sem que as redes sejam emparelhadas (para evitar sobreposição de endereços IP / overlapping) e sem expor o serviço à Internet pública. Qual tecnologia da Microsoft permite essa exposição de serviço privada entre locatários?",
     options: [
-      "Serviço Azure Private Link (Private Link Service com Private Endpoint).",
-      "Gateway de VPN Site-to-Site com chave IPsec aberta.",
-      "Balanceador de Carga Público com portas flutuantes.",
-      "Roteamento de BGP dinâmico."
+      "Gateway de VPN Site-to-Site com chave IPsec pré-compartilhada aberta configurada em todas as sub-redes corporativas conectadas.",
+      "Serviço Azure Private Link (Private Link Service no provedor consumido via Private Endpoint no cliente).",
+      "Balanceador de Carga Público com portas flutuantes habilitadas e NAT de entrada dinâmico via DNS.",
+      "Servidor de Rota do Azure (Route Server) com sessões de BGP estabelecidas diretamente sobre a Internet."
     ],
-    answer: 0,
-    explanation: "O Azure Private Link permite que provedores de serviços publiquem seus serviços (hospedados atrás de um Standard Load Balancer interno) como um 'Private Link Service'. O consumidor cria um 'Ponto de Extremidade Privado' (Private Endpoint) em sua própria VNet, permitindo comunicação unidirecional segura sobre o backbone privado da Microsoft sem expor redes completas como ocorre no VNet Peering."
+    answer: 1,
+    explanation: "O 'Azure Private Link Service' é o serviço que você mesmo referencia atrás de um Standard Load Balancer. Ele permite que consumidores em outras VNets (mesmo em assinaturas ou locatários diferentes do Entra ID) criem um 'Private Endpoint' para acessar seu serviço privadamente, sem necessidade de VNet Peering nem riscos de sobreposição de IPs."
   },
   {
     id: 138,
     domain: 4,
     domainName: "Redes Virtuais",
-    question: "Você precisa configurar uma conexão VPN Ponto a Site (Point-to-Site - P2S) no Gateway de VPN do Azure para permitir que 500 colaboradores móveis conectem seus computadores Windows à rede corporativa na nuvem. A política da empresa exige que a autenticação dos usuários seja feita com suas credenciais corporativas do Microsoft Entra ID com suporte a MFA e Acesso Condicional. Qual tipo de túnel e método de autenticação devem ser selecionados?",
+    question: "Você precisa configurar uma conexão VPN Ponto a Site (Point-to-Site - P2S) em um Gateway de VPN do Azure para permitir que colaboradores remotos se conectem à rede corporativa na nuvem. A política de segurança exige que a autenticação dos usuários seja realizada exclusivamente pelo Microsoft Entra ID com suporte a MFA e Acesso Condicional. Qual tipo de túnel VPN e tipo de autenticação devem ser configurados no Gateway de VPN?",
     options: [
       "Tipo de túnel: OpenVPN | Tipo de autenticação: Autenticação do Microsoft Entra ID (Azure Active Directory).",
-      "Tipo de túnel: SSTP | Tipo de autenticação: Autenticação por Certificado Autoassinado.",
-      "Tipo de túnel: IKEv2 | Tipo de autenticação: Chave Pré-Compartilhada (PSK).",
-      "Tipo de túnel: PPTP | Tipo de autenticação: Senha de texto sem formatação."
+      "Tipo de túnel: SSTP | Tipo de autenticação: Autenticação por Certificado Autoassinado emitido localmente.",
+      "Tipo de túnel: IKEv2 | Tipo de autenticação: Chave Pré-Compartilhada (PSK) compartilhada por todos os usuários.",
+      "Tipo de túnel: PPTP | Tipo de autenticação: Senha de texto sem formatação gerenciada no Active Directory local."
     ],
     answer: 0,
-    explanation: "O suporte à autenticação baseada no Microsoft Entra ID para VPN Ponto a Site (P2S) no Azure exige o uso do protocolo de túnel OpenVPN e do cliente oficial 'Azure VPN Client'. Esse modelo permite integrar a autenticação com MFA do Entra ID, políticas de Acesso Condicional e gerenciamento centralizado de identidades corporativas."
+    explanation: "A autenticação pelo Microsoft Entra ID para VPN Ponto a Site (P2S) do Azure exige que o tipo de túnel VPN seja configurado como 'OpenVPN (SSL)'. Isso permite utilizar o cliente Microsoft Azure VPN para autenticação com MFA e políticas de Acesso Condicional."
   },
   {
     id: 139,
     domain: 4,
     domainName: "Redes Virtuais",
-    question: "Você gerencia uma zona de DNS pública no Azure para o domínio 'contoso.com'. Você precisa criar um registro DNS para o ápice da zona (domínio raiz '@' ou contoso.com) que aponte diretamente para o endereço IP público padrão de um Balanceador de Carga do Azure. O IP público pode ser recriado no futuro. Qual tipo de registro DNS deve ser criado no Azure DNS?",
+    question: "Você gerencia uma Zona de DNS Público do Azure para o domínio 'contoso.com'. Você precisa criar um registro de DNS para o ápice do domínio (zone apex / raiz '@') que aponte diretamente para o endereço IP público com SKU Standard associado a um Gateway de Aplicativo do Azure. O registro deve atualizar-se automaticamente caso o endereço IP do recurso mude no futuro. Qual tipo de registro você deve criar?",
     options: [
-      "Um Conjunto de Registros do tipo Alias (Alias Record Set) do tipo A apontando para o recurso do Endereço IP Público do Azure.",
-      "Um registro CNAME para a raiz do domínio '@'.",
-      "Um registro TXT com o ID do recurso ARM.",
-      "Um registro PTR apontando para o gateway de aplicativo."
+      "Um registro CNAME comum para a raiz do domínio '@' apontando para o FQDN público gerado no portal com resolução direta de nomes.",
+      "Um registro TXT com o ID do recurso ARM contendo parâmetros de verificação de cabeçalho HTTP.",
+      "Um registro PTR apontando o endereço reverso para a sub-rede do gateway de aplicativo associado.",
+      "Um Conjunto de Registros do tipo Alias (Alias Record Set) do tipo A apontando diretamente para o recurso do IP Público."
     ],
-    answer: 0,
-    explanation: "O padrão DNS da internet (RFC 1034) proíbe a criação de registros CNAME no ápice da zona (raiz de domínio como 'contoso.com'). O Azure DNS resolve essa limitação por meio de 'Registros de Alias' (Alias Records), permitindo que um registro do tipo A no ápice aponte diretamente para um recurso do Azure (como um Endereço IP Público ou perfil do Front Door), atualizando automaticamente o IP caso o recurso mude."
+    answer: 3,
+    explanation: "Os padrões de DNS (RFC) não permitem registros CNAME no ápice de uma zona (raiz / '@'). O Azure DNS resolve isso oferecendo 'Conjuntos de Registros de Alias' (Alias Records). Um registro de alias do tipo A pode apontar diretamente para recursos do Azure (como IPs Públicos ou Traffic Manager), atualizando dinamicamente seu IP se houver alterações."
   },
   {
     id: 140,
     domain: 4,
     domainName: "Redes Virtuais",
-    question: "Você precisa auditar e visualizar fluxos de tráfego de rede permitidos e negados nos Grupos de Segurança de Rede (NSGs) de todas as redes virtuais da empresa. Você deseja obter relatórios gráficos no portal exibindo os principais IPs de origem com tráfego malicioso e portas mais utilizadas. Quais DOIS recursos você deve configurar?",
+    question: "Você é o engenheiro de segurança de rede e precisa analisar o tráfego de rede que atravessa todos os Grupos de Segurança de Rede (NSGs) das suas sub-redes corporativas. Você precisa visualizar não apenas endereços IP e portas, mas também obter mapas de tráfego interativos, detecção de tráfego malicioso conhecido, portas abertas vulneráveis e países de origem das conexões. Quais dois recursos do Azure Network Watcher você deve habilitar e integrar ao Log Analytics?",
     options: [
-      "Logs de Fluxo de NSG (NSG Flow Logs) e Análise de Tráfego (Traffic Analytics) no Network Watcher com envio para o Log Analytics.",
-      "Captura de Pacotes local e Wireshark.",
-      "Tabela de Rotas Definidas pelo Usuário com rota para 0.0.0.0/0.",
-      "Agente de Diagnóstico Clássico do Windows."
+      "Captura de Pacotes local contínua e exportação diária de arquivos .pcap para análise detalhada no software Wireshark de terceiros.",
+      "Tabelas de Rotas Definidas pelo Usuário com rota padrão 0.0.0.0/0 direcionada a um servidor proxy Linux.",
+      "Logs de Fluxo de NSG (NSG Flow Logs) e Análise de Tráfego (Traffic Analytics) com envio para o Log Analytics.",
+      "Extensão clássica de Diagnóstico do Azure configurada para registrar contadores de pacotes TCP por segundo."
     ],
-    answer: 0,
-    explanation: "Os 'Logs de Fluxo de NSG' (NSG Flow Logs) do Network Watcher registram informações de 5 tuplas sobre o tráfego IP que atravessa os NSGs. Ao habilitar o recurso 'Análise de Tráfego' (Traffic Analytics), esses logs são processados e enriquecidos com inteligência de ameaças no Azure Log Analytics, gerando painéis visuais interativos sobre consumo, fluxos e segurança de rede."
+    answer: 2,
+    explanation: "Os 'Logs de Fluxo de NSG' (NSG Flow Logs) registram informações sobre tráfego IP de entrada e saída nos NSGs. A 'Análise de Tráfego' (Traffic Analytics) processa esses logs brutos no Log Analytics e fornece visualizações avançadas, inteligência de ameaças e mapas de calor de tráfego na rede."
   },
   {
     id: 141,
     domain: 4,
     domainName: "Redes Virtuais",
-    question: "Sua empresa possui dois firewalls virtuais de alta disponibilidade (NVAs) em uma rede virtual que utilizam o protocolo BGP para trocar tabelas de rotas dinâmicas com outros roteadores. Você deseja eliminar a necessidade de criar e atualizar manualmente tabelas de rotas definidas pelo usuário (UDR) na sub-rede sempre que novas rotas forem aprendidas pelos firewalls. Qual serviço gerenciado do Azure você deve implantar?",
+    question: "Sua empresa implantou dois Dispositivos Virtuais de Rede (NVAs) em modo ativo-ativo em uma VNet do Azure para rotear tráfego corporativo usando o protocolo de roteamento dinâmico BGP. Você precisa permitir que os NVAs troquem rotas de rede dinamicamente diretamente com o controlador de rede definida por software (SDN) da VNet do Azure, sem a necessidade de configurar e atualizar tabelas de rotas definidas pelo usuário (UDRs) manualmente a cada alteração de sub-rede. Qual serviço do Azure atende a esse cenário?",
     options: [
-      "Servidor de Rota do Azure (Azure Route Server).",
-      "Gateway NAT do Azure.",
-      "Balanceador de Carga Básico.",
-      "Azure Bastion Standard."
+      "Gateway NAT do Azure associado a um pool de endereços IP públicos estáticos dedicados de alta velocidade.",
+      "Balanceador de Carga Básico público configurado com portas flutuantes e regras de NAT de entrada bidirecionais.",
+      "Servidor de Rota do Azure (Azure Route Server integrado à rede virtual via emparelhamento BGP).",
+      "Azure Bastion Standard configurado com recursos de conexão IP e túnel de porta de gerenciamento seguro."
     ],
-    answer: 0,
-    explanation: "O Azure Route Server simplifica o roteamento dinâmico entre seus dispositivos virtuais de rede (NVAs) e a rede virtual do Azure. Ele estabelece uma sessão de emparelhamento BGP diretamente com os NVAs e programa automaticamente as rotas aprendidas no roteador de malha da rede virtual do Azure, eliminando a sobrecarga de gerenciar UDRs estáticas."
+    answer: 2,
+    explanation: "O 'Azure Route Server' permite a troca de rotas dinâmicas entre Dispositivos Virtuais de Rede (NVAs) e a rede virtual do Azure através do protocolo BGP (Border Gateway Protocol). Isso elimina a necessidade de gerenciar rotas estáticas (UDRs) manualmente sempre que novas sub-redes são adicionadas."
   },
-
   // =========================================================================
   // DOMÍNIO 5: MONITORAR E MANTER RECURSOS DO AZURE (10-15% -> 9 Qs)
   // =========================================================================
@@ -598,126 +594,129 @@ export const questionsSimulado3: Question[] = [
     id: 142,
     domain: 5,
     domainName: "Monitoramento & Backup",
-    question: "Você gerencia o monitoramento de uma API de comércio eletrônico no Azure Monitor. O volume de requisições varia drasticamente dependendo do dia da semana e do horário comercial. Você precisa configurar um alerta que detecte anomalias repentinas de tráfego (quedas bruscas ou picos inesperados) sem precisar fixar limites estáticos numéricos de limite de requisições. Qual tipo de limite você deve selecionar na regra de alerta métrico?",
+    question: "Você gerencia alertas de métricas no Azure Monitor para um pool de máquinas virtuais. As aplicações sofrem variações periódicas de tráfego esperadas (alta carga durante o horário comercial e carga mínima durante fins de semana). Você deseja que os alertas de uso de CPU sejam disparados apenas quando o comportamento for anormal em relação ao padrão histórico daquela hora do dia, sem gerar falsos positivos nos horários de pico. Qual tipo de critério de alerta você deve configurar?",
     options: [
-      "Limites Dinâmicos (Dynamic Thresholds) baseados em algoritmos de Machine Learning.",
-      "Limites Estáticos Simples (Static Thresholds).",
-      "Filtro de contagem de logs estáticos.",
-      "Alerta de auditoria do Service Health."
+      "Limites Estáticos Simples (Static Thresholds) com valor fixo de alerta configurado permanentemente em 80% de CPU.",
+      "Limites Dinâmicos (Dynamic Thresholds) baseados em algoritmos avançados de Machine Learning do Azure Monitor.",
+      "Filtro de contagem de logs estáticos baseado em consultas periódicas agendadas a cada 60 minutos.",
+      "Alerta de auditoria do Service Health configurado para monitorar avisos de descontinuação de hardware físico."
     ],
-    answer: 0,
-    explanation: "Os 'Limites Dinâmicos' (Dynamic Thresholds) do Azure Monitor utilizam algoritmos avançados de aprendizado de máquina para analisar séries temporais de dados históricos de métricas. O sistema calcula automaticamente padrões de sazonalidade (horária, diária e semanal) e ajusta a faixa aceitável de comportamento normal, alertando quando os valores desviam significativamente do padrão sem limites estáticos fixos."
+    answer: 1,
+    explanation: "Os 'Limites Dinâmicos' (Dynamic Thresholds) do Azure Monitor utilizam algoritmos de machine learning para aprender o comportamento histórico de uma métrica ao longo do tempo. O sistema identifica padrões sazonais (diários ou semanais) e ajusta automaticamente os limites de desvio aceitável, reduzindo falsos positivos."
   },
   {
     id: 143,
     domain: 5,
     domainName: "Monitoramento & Backup",
-    question: "Você tem 100 máquinas virtuais monitoradas pelo Agente do Azure Monitor conectadas a um espaço de trabalho do Log Analytics. Você precisa criar uma regra de alerta que envie um e-mail de emergência caso qualquer uma das máquinas virtuais pare de enviar o sinal de heartbeat para o Log Analytics por mais de 15 minutos (indicando parada do SO ou falha no agente). Qual consulta em KQL deve ser a base desse alerta?",
+    question: "Você precisa criar um alerta no Azure Monitor baseado em consulta de log KQL para detectar rapidamente quando qualquer máquina virtual corporativa parar de responder e deixar de enviar sinais de vida para o espaço de trabalho do Log Analytics por mais de 15 minutos. Qual consulta KQL é a mais adequada para identificar os computadores ausentes?",
     options: [
       "Heartbeat | summarize LastCall = max(TimeGenerated) by Computer | where LastCall < ago(15m)",
-      "AzureActivity | where OperationName == 'Stop VM'",
-      "Perf | where CounterName == 'Available MBytes'",
-      "Event | take 1"
+      "AzureActivity | where OperationName == 'Stop Virtual Machine' and ActivityStatusValue == 'Success'",
+      "Perf | where CounterName == '% Processor Time' and TimeGenerated > ago(15m) | take 10",
+      "Event | where EventLevelName == 'Error' and TimeGenerated > ago(15m) | summarize count() by Source"
     ],
     answer: 0,
-    explanation: "A tabela 'Heartbeat' armazena sinais periódicos de presença enviados pelos agentes das VMs. Ao calcular a hora da última ocorrência de cada computador ('| summarize LastCall = max(TimeGenerated) by Computer') e filtrar aqueles cujo último sinal foi anterior a 15 minutos atrás ('| where LastCall < ago(15m)'), a consulta identifica com precisão as VMs que deixaram de se comunicar."
+    explanation: "O agente do Azure Monitor envia um registro de sinal de vida para a tabela 'Heartbeat' a cada minuto. A consulta KQL resume a data do último sinal por computador com 'summarize LastCall = max(TimeGenerated) by Computer' e filtra aqueles cujo último sinal foi anterior a 15 minutos atrás ('where LastCall < ago(15m)')."
   },
   {
     id: 144,
     domain: 5,
     domainName: "Monitoramento & Backup",
-    question: "Sua organização precisa transmitir logs de eventos e métricas de desempenho coletados no Log Analytics continuamente para uma ferramenta externa de gerenciamento de eventos de segurança (SIEM) localizada em um data center local. A solução deve exportar os dados em tempo real conforme são ingeridos. Qual funcionalidade do Log Analytics você deve configurar?",
+    question: "Sua organização precisa transmitir em tempo real grandes volumes de logs de segurança e diagnóstico coletados em um Espaço de Trabalho do Log Analytics para uma ferramenta externa de Gerenciamento de Informações e Eventos de Segurança (SIEM de terceiros) hospedada em outro provedor de nuvem. Qual recurso nativo do Log Analytics fornece a exportação contínua de fluxo de dados de tabelas específicas sem a necessidade de criar pipelines manuais no Logic Apps?",
     options: [
-      "Exportação de Dados do Espaço de Trabalho do Log Analytics (Log Analytics Workspace Data Export) para Hubs de Eventos do Azure (Azure Event Hubs).",
-      "Executar o comando 'azcopy copy' manualmente a cada 60 minutos.",
-      "Imprimir os relatórios em PDF semanalmente.",
-      "Criar uma pasta compartilhada no Azure Files com sincronização DFS."
+      "Executar o comando 'azcopy copy' manualmente a cada 60 minutos através de uma tarefa agendada no Windows para uma conta de armazenamento.",
+      "Exportar os relatórios de consulta KQL em formato PDF semanalmente e enviá-los por e-mail para o administrador do SIEM.",
+      "Criar uma pasta compartilhada no Azure Files com sincronização DFS entre os provedores de computação em nuvem.",
+      "Exportação de Dados do Espaço de Trabalho do Log Analytics (Log Analytics Workspace Data Export) para Hubs de Eventos do Azure (Azure Event Hubs)."
     ],
-    answer: 0,
-    explanation: "A funcionalidade de 'Exportação de Dados do Espaço de Trabalho' (Data Export) do Azure Log Analytics permite transmitir dados de tabelas selecionadas de forma contínua e em tempo real para Hubs de Eventos do Azure (Event Hubs) ou Contas de Armazenamento, permitindo a ingestão automatizada por sistemas SIEM/SOAR de terceiros sem sobrecarga de consultas manuais."
+    answer: 3,
+    explanation: "A 'Exportação de Dados do Espaço de Trabalho do Log Analytics' (Log Analytics Workspace Data Export) permite exportar continuamente dados de tabelas selecionadas para uma Conta de Armazenamento do Azure ou para Hubs de Eventos do Azure (Azure Event Hubs). Do Event Hubs, ferramentas SIEM externas podem consumir os dados em tempo real."
   },
   {
     id: 145,
     domain: 5,
     domainName: "Monitoramento & Backup",
-    question: "No ecossistema do Azure Backup, você precisa distinguir quando utilizar um 'Cofre dos Serviços de Recuperação' (Recovery Services Vault) versus um 'Cofre de Backup' (Backup Vault). Qual das seguintes cargas de trabalho é suportada exclusivamente pelo Cofre dos Serviços de Recuperação?",
+    question: "O Azure Backup disponibiliza dois tipos principais de cofres para gerenciamento de proteção de dados: o Cofre dos Serviços de Recuperação (Recovery Services Vault) e o Cofre de Backup (Backup Vault). Quais das seguintes cargas de trabalho corporativas são protegidas pelo Cofre dos Serviços de Recuperação (Recovery Services Vault)?",
     options: [
-      "Máquinas Virtuais do Azure (Azure VMs IaaS), Arquivos do Azure (Azure Files) e SQL Server em VMs do Azure.",
-      "Armazenamento de Blobs do Azure (Blob Operational Backup).",
-      "Discos Gerenciados do Azure (Azure Disks Backup).",
-      "Servidores Flexíveis do Banco de Dados do Azure para PostgreSQL."
+      "Máquinas Virtuais do Azure (Azure VMs IaaS), Compartilhamentos do Azure Files e SQL Server em VMs do Azure.",
+      "Armazenamento de Blobs do Azure (Blob Operational Backup) e Servidores de Banco de Dados PostgreSQL Flexíveis.",
+      "Discos Gerenciados do Azure (Azure Disks Backup) e clusters do Serviço de Kubernetes do Azure (AKS).",
+      "Tabelas de Rotas Definidas pelo Usuário, Zonas de DNS Privado e Grupos de Segurança de Aplicativo (ASG)."
     ],
     answer: 0,
-    explanation: "O 'Cofre dos Serviços de Recuperação' (Recovery Services Vault) é o modelo tradicional e consolidado que dá suporte a Máquinas Virtuais do Azure, Azure Files, SQL Server em VMs e cargas de trabalho locais via agente MARS/MABS. O 'Cofre de Backup' (Backup Vault) é a arquitetura mais recente destinada a cargas específicas, como backup operacional de Blobs, Discos Gerenciados isolados e Banco de Dados PostgreSQL."
+    explanation: "O 'Cofre dos Serviços de Recuperação' (Recovery Services Vault - RSV) é a solução tradicional e robusta para: Máquinas Virtuais do Azure (Windows/Linux), Azure Files, SQL Server em VMs do Azure, SAP HANA em VMs do Azure e servidores locais (System Center DPM/MABS). Por outro lado, cargas como Blobs operacionais, Discos Gerenciados isolados e Servidores Flexíveis de PostgreSQL utilizam o 'Backup Vault'."
   },
   {
     id: 146,
     domain: 5,
     domainName: "Monitoramento & Backup",
-    question: "Para se proteger contra ameaças internas (como administradores desonestos) e ataques de ransomware, sua diretoria exige que operações críticas de backup — como desativar a Exclusão Suave (Soft Delete) ou excluir políticas de backup do cofre — exijam aprovação formal obrigatória de um oficial de segurança independente. Qual recurso do Azure Backup implementa essa autorização em duas etapas?",
+    question: "Para se proteger contra ameaças internas e ransomware, a diretoria exige que nenhuma operação crítica destrutiva no Azure Backup (como desabilitar a exclusão suave, excluir um item de backup protegido ou desativar a política de segurança) possa ser executada por um único administrador sem a aprovação explícita e independente de um segundo administrador de segurança autorizado. Qual recurso do Azure Backup deve ser implementado?",
     options: [
-      "Autorização de Vários Usuários (Multi-User Authorization - MUA) com o Azure Resource Guard.",
-      "Bloqueio de recursos CanNotDelete no grupo de recursos.",
-      "PIN gerado pelo suporte da Microsoft por chamada telefônica.",
-      "Autenticação de passagem via Kerberos."
+      "Bloqueio de Recursos do tipo CanNotDelete aplicado no grupo de recursos do Cofre dos Serviços de Recuperação.",
+      "Autenticação de passagem via protocolo Kerberos integrada ao Microsoft Entra Domain Services local.",
+      "Autorização de Vários Usuários (Multi-User Authorization - MUA) protegida pelo Azure Resource Guard.",
+      "PIN gerado exclusivamente pelo suporte técnico da Microsoft após abertura de chamado de severidade A."
     ],
-    answer: 0,
-    explanation: "A Autorização de Vários Usuários (Multi-User Authorization - MUA) para o Azure Backup utiliza o recurso 'Resource Guard'. O Resource Guard pode ser provisionado em uma assinatura diferente ou até em um locatário diferente administrado pelo oficial de segurança. Sempre que uma operação destrutiva no cofre é solicitada, o Azure exige uma autorização explícita no Resource Guard para liberar a ação."
+    answer: 2,
+    explanation: "A 'Autorização de Vários Usuários' (Multi-User Authorization - MUA) para o Azure Backup utiliza o 'Azure Resource Guard' para impor autorização dupla em operações críticas. O administrador do cofre não consegue executar ações destrutivas a menos que tenha permissões aprovadas no cofre do Resource Guard (gerenciado por um administrador de segurança distinto)."
   },
   {
     id: 147,
     domain: 5,
     domainName: "Monitoramento & Backup",
-    question: "Uma aplicação Web no Azure App Service apresenta lentidão intermitente. Os desenvolvedores precisam inspecionar o rastreamento distribuído (Distributed Tracing), visualizar o mapa de dependências de aplicativos para identificar gargalos em consultas de banco de dados e observar exceções de código em tempo real. Qual ferramenta do Azure Monitor deve ser vinculada à aplicação?",
+    question: "Sua equipe de engenharia de software desenvolve uma aplicação web ASP.NET Core hospedada no Azure App Service. Os desenvolvedores precisam rastrear exceções em tempo real no código, identificar gargalos de lentidão em chamadas de banco de dados SQL e serviços externos, além de visualizar o mapa de dependências de ponta a ponta (Application Map) da aplicação. Qual ferramenta de Gerenciamento de Desempenho de Aplicativos (APM) do Azure deve ser integrada?",
     options: [
-      "Application Insights.",
-      "Observador de Rede (Network Watcher).",
-      "Azure Cost Management.",
-      "Cofre dos Serviços de Recuperação."
+      "Observador de Rede (Network Watcher com diagnóstico de regras de segurança e roteamento salto a salto em todas as interfaces de rede).",
+      "Application Insights (recurso do Azure Monitor voltado para telemetria de aplicações e diagnóstico de código).",
+      "Azure Cost Management (com histórico detalhado de orçamentos e custos departamentais de computação).",
+      "Cofre dos Serviços de Recuperação (com políticas de retenção diária e recuperação instantânea de dados)."
     ],
-    answer: 0,
-    explanation: "O Application Insights é o recurso de Gerenciamento de Desempenho de Aplicativos (APM) do Azure Monitor. Ele coleta telemetria detalhada de código, tempos de resposta HTTP, mapa de aplicativo (Application Map), métricas em tempo real (Live Metrics) e rastreamento de chamadas e dependências de bancos de dados para identificar gargalos de software."
+    answer: 1,
+    explanation: "O 'Application Insights' é um recurso do Azure Monitor voltado para desenvolvedores e equipes de DevOps. Ele atua como uma solução completa de APM (Application Performance Management), rastreando requisições, taxas de falha, tempos de resposta, exceções no código e dependências externas."
   },
   {
     id: 148,
     domain: 5,
     domainName: "Monitoramento & Backup",
-    question: "Você gerencia operações de TI em uma empresa de varejo. Você precisa garantir que a equipe de infraestrutura seja alertada imediatamente por um canal do Microsoft Teams ou Webhook sempre que a Microsoft publicar um aviso de incidente de plataforma que afete o serviço de 'Máquinas Virtuais' especificamente na região 'Sul do Brasil'. Qual ferramenta deve ser configurada para emitir esse alerta?",
+    question: "Você é o arquiteto de operações e precisa garantir que a equipe de suporte seja notificada imediatamente por e-mail e SMS sempre que um incidente de indisponibilidade oficial na plataforma Azure (Service Incident) afetar os serviços de Máquinas Virtuais ou Rede Virtual na região Sul do Brasil, onde suas cargas de trabalho críticas residem. O que você deve configurar?",
     options: [
-      "Alertas do Azure Service Health vinculados a um Grupo de Ações (Action Group).",
-      "Regra de alerta de métrica de CPU no Azure Monitor.",
-      "Relatório de Conformidade do Azure Policy.",
-      "Aviso de segurança no Microsoft Defender for Endpoint."
+      "Regra de alerta de métrica de uso de CPU no Azure Monitor disparada quando a média exceder 80% continuamente durante 15 minutos.",
+      "Relatório de Conformidade do Azure Policy gerado semanalmente pelo painel de governança corporativa.",
+      "Aviso de segurança e recomendação de postura de segurança no Microsoft Defender for Cloud.",
+      "Alertas do Azure Service Health vinculados a um Grupo de Ações (Action Group) filtrados pela região e serviços utilizados."
     ],
-    answer: 0,
-    explanation: "O Azure Service Health permite criar regras de alerta de integridade do serviço ('Service Health Alerts'). Essas regras podem ser filtradas por assinaturas, regiões específicas (ex: Sul do Brasil) e serviços afetados (ex: Máquinas Virtuais), acionando automaticamente um Grupo de Ações (Action Group) com Webhook, Teams, e-mail ou SMS quando incidentes de infraestrutura do Azure ocorrem."
+    answer: 3,
+    explanation: "No painel do 'Azure Service Health', é possível criar alertas de integridade de serviço ('Service Health Alerts'). Esses alertas notificam os administradores por meio de Grupos de Ações (Action Groups) quando incidentes de serviço, manutenções planejadas ou avisos de integridade emitidos pela Microsoft impactam recursos específicos nas regiões utilizadas."
   },
   {
     id: 149,
     domain: 5,
     domainName: "Monitoramento & Backup",
-    question: "O Assistente do Azure (Azure Advisor) exibe recomendações sob a categoria de 'Confiabilidade' (Reliability, anteriormente Alta Disponibilidade). Qual das seguintes alternativas representa uma recomendação de Confiabilidade gerada pelo Azure Advisor?",
+    question: "Ao analisar a folha de Excelência Operacional (Operational Excellence) do Assistente do Azure (Azure Advisor) para sua infraestrutura em nuvem, quais são duas das principais recomendações voltadas para resiliência e integridade operacional que o Azure Advisor normalmente destaca?",
     options: [
-      "Habilitar a proteção de exclusão suave (Soft Delete) em contas de armazenamento para evitar perda acidental de dados.",
-      "Excluir interfaces de rede não conectadas para economizar dinheiro.",
-      "Bloquear a porta 22 em todos os grupos de segurança.",
-      "Comprar instâncias reservadas de 3 anos."
+      "Excluir interfaces de rede não conectadas para economizar dinheiro e cancelar assinaturas de desenvolvimento inativas no painel.",
+      "Bloquear a porta 22 em todos os grupos de segurança e remover chaves SSH públicas antigas dos desenvolvedores.",
+      "Habilitar a proteção de exclusão suave (Soft Delete) em contas de armazenamento e reparar agentes do Azure Monitor com falha de comunicação.",
+      "Comprar instâncias reservadas de 3 anos para servidores temporários de homologação com desconto de volume."
     ],
-    answer: 0,
-    explanation: "A categoria de Confiabilidade (Reliability) do Azure Advisor avalia a resiliência e a continuidade dos seus negócios. Recomendações típicas incluem a ativação de Soft Delete em contas de armazenamento e Key Vaults, migração de recursos para Zonas de Disponibilidade e configuração de políticas de backup para máquinas virtuais desprotegidas."
+    answer: 2,
+    explanation: "Na categoria de Excelência Operacional (Operational Excellence), o Azure Advisor foca em integridade, facilidade de manutenção e resiliência: habilitar exclusão suave para evitar perda acidental de dados, criar políticas de backup, reparar agentes de monitoramento com falha e seguir práticas recomendadas de implantação."
   },
+  // =========================================================================
+  // DOMÍNIO 4: CONFIGURAR E GERENCIAR REDES VIRTUAIS (15-20% -> 10 Qs)
+  // =========================================================================
   {
     id: 150,
-    domain: 5,
-    domainName: "Monitoramento & Backup",
-    question: "Você precisa solucionar um problema complexo de comunicação de rede em uma máquina virtual Linux que hospeda um servidor web. Você precisa capturar pacotes de rede brutos que entram e saem da interface de rede (NIC) da máquina virtual e salvar a captura em formato '.cap' em uma conta de armazenamento para análise detalhada no Wireshark. Qual ferramenta do Azure Network Watcher você deve utilizar?",
+    domain: 4,
+    domainName: "Redes Virtuais",
+    question: "Você suspeita que uma máquina virtual Linux chamada 'vm-proxy' está enviando tráfego malicioso para a Internet. Para investigar a suspeita, você precisa capturar o tráfego de rede bruto que entra e sai da interface de rede da VM durante 15 minutos e salvar o arquivo em formato '.cap' em uma conta de armazenamento para análise posterior detalhada no software Wireshark. Qual ferramenta do Azure Network Watcher atende diretamente a essa necessidade?",
     options: [
-      "Captura de Pacotes (Packet Capture).",
-      "Próximo Salto (Next Hop).",
-      "Verificação de Fluxo de IP (IP Flow Verify).",
-      "Diagnóstico de Segurança de NSG."
+      "Captura de Pacotes (Packet Capture do Azure Network Watcher direcionada à interface de rede da VM).",
+      "Próximo Salto (Next Hop com diagnóstico de roteamento estático da tabela de rotas do Azure).",
+      "Verificação de Fluxo de IP (IP Flow Verify com validação rápida de regras de NSG permitidas ou negadas).",
+      "Diagnóstico de Segurança de NSG (com análise de regras de segurança efetivas herdadas por sub-rede)."
     ],
     answer: 0,
-    explanation: "A ferramenta 'Captura de Pacotes' (Packet Capture) do Azure Network Watcher permite gravar pacotes de rede brutos diretamente na interface de rede de uma máquina virtual. A captura é armazenada como um arquivo com extensão padrão '.cap' ou '.pcap' em uma conta de armazenamento do Azure ou no disco local da VM, permitindo inspeção profunda em ferramentas como o Wireshark."
-  }
+    explanation: "A 'Captura de Pacotes' (Packet Capture) do Network Watcher permite gravar o tráfego de rede de e para uma máquina virtual sem precisar instalar softwares de captura locais manualmente. O arquivo de captura (.cap/.pcap) pode ser salvo diretamente no Azure Blob Storage ou no disco local da VM."
+  },
 ];
