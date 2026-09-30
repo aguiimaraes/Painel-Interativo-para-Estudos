@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Cloud, Sparkles, Play, Pause, RotateCcw, Timer, Award } from 'lucide-react';
+import { Cloud, Sparkles, Play, Pause, RotateCcw, Timer, Award, Flame, Download, Printer } from 'lucide-react';
+import { StudyStreak } from '../types';
 
 interface HeaderProps {
   globalReadinessPercent: number;
+  streak?: StudyStreak;
+  onOpenAchievements?: () => void;
+  onOpenProgressReport?: () => void;
+  onOpenBackup?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ globalReadinessPercent }) => {
+export const Header: React.FC<HeaderProps> = ({
+  globalReadinessPercent,
+  streak,
+  onOpenAchievements,
+  onOpenProgressReport,
+  onOpenBackup,
+}) => {
   // Pomodoro Timer: default 25 minutes = 1500 seconds
   const [pomodoroSeconds, setPomodoroSeconds] = useState<number>(1500);
   const [isRunning, setIsRunning] = useState<boolean>(false);
@@ -62,39 +73,76 @@ export const Header: React.FC<HeaderProps> = ({ globalReadinessPercent }) => {
           </div>
         </div>
 
-        {/* Right side: Readiness Gauge & Pomodoro */}
-        <div className="flex items-center space-x-4">
+        {/* Right side: Readiness Gauge, Streak, Actions & Pomodoro */}
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+          {/* Streak Badge */}
+          {streak && (
+            <button
+              onClick={onOpenAchievements}
+              className="flex items-center space-x-1.5 bg-amber-950/50 hover:bg-amber-900/60 border border-amber-600/50 px-3 py-1.5 rounded-xl transition cursor-pointer text-xs"
+              title="Clique para ver Conquistas e Sequência"
+            >
+              <span className="text-sm">🔥</span>
+              <span className="font-black text-amber-300">{streak.currentStreak}d</span>
+              <span className="text-[0.625rem] text-amber-400/80 hidden sm:inline">Streak</span>
+            </button>
+          )}
+
+          {/* Report Button */}
+          {onOpenProgressReport && (
+            <button
+              onClick={onOpenProgressReport}
+              className="flex items-center space-x-1 bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700/80 px-2.5 py-1.5 rounded-xl transition cursor-pointer text-xs text-slate-300 hover:text-white"
+              title="Exportar Relatório em PDF"
+            >
+              <Printer className="w-3.5 h-3.5 text-sky-400" />
+              <span className="hidden md:inline font-semibold">Relatório</span>
+            </button>
+          )}
+
+          {/* Backup Button */}
+          {onOpenBackup && (
+            <button
+              onClick={onOpenBackup}
+              className="flex items-center space-x-1 bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700/80 px-2.5 py-1.5 rounded-xl transition cursor-pointer text-xs text-slate-300 hover:text-white"
+              title="Exportar / Restaurar Backup e Sincronização"
+            >
+              <Download className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="hidden md:inline font-semibold">Backup</span>
+            </button>
+          )}
+
           {/* Readiness Gauge */}
-          <div className="flex items-center space-x-3 bg-slate-800/80 px-4 py-1.5 rounded-xl border border-slate-700/80">
+          <div className="flex items-center space-x-2.5 bg-slate-800/80 px-3 py-1.5 rounded-xl border border-slate-700/80">
             <div className="text-right">
-              <span className="text-[0.6875rem] text-slate-400 block font-medium">Prontidão Geral</span>
-              <span className="text-lg font-black text-sky-400">{globalReadinessPercent}%</span>
+              <span className="text-[0.625rem] text-slate-400 block font-medium">Prontidão</span>
+              <span className="text-base font-black text-sky-400">{globalReadinessPercent}%</span>
             </div>
-            <div className="w-11 h-11 relative flex items-center justify-center">
-              <svg className="w-11 h-11 transform -rotate-90">
+            <div className="w-9 h-9 relative flex items-center justify-center">
+              <svg className="w-9 h-9 transform -rotate-90">
                 <circle
-                  cx="22"
-                  cy="22"
-                  r={radius}
+                  cx="18"
+                  cy="18"
+                  r={15}
                   stroke="currentColor"
-                  strokeWidth="3.5"
+                  strokeWidth="3"
                   className="text-slate-700"
                   fill="transparent"
                 />
                 <circle
-                  cx="22"
-                  cy="22"
-                  r={radius}
+                  cx="18"
+                  cy="18"
+                  r={15}
                   stroke="currentColor"
-                  strokeWidth="3.5"
+                  strokeWidth="3"
                   className="text-sky-400 transition-all duration-700 ease-out"
                   fill="transparent"
-                  strokeDasharray={circumference}
-                  strokeDashoffset={strokeDashoffset}
+                  strokeDasharray={2 * Math.PI * 15}
+                  strokeDashoffset={2 * Math.PI * 15 - (2 * Math.PI * 15 * globalReadinessPercent) / 100}
                   strokeLinecap="round"
                 />
               </svg>
-              <Award className="w-4 h-4 text-sky-400 absolute" />
+              <Award className="w-3.5 h-3.5 text-sky-400 absolute" />
             </div>
           </div>
 

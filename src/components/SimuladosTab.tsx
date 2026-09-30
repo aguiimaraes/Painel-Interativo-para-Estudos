@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Question, SimuladoId, QuizMode, CustomSimulado } from '../types';
+import { Question, SimuladoId, QuizMode, CustomSimulado, ExamAttempt } from '../types';
 import {
   FileSignature, BookOpen, Clock, Lightbulb,
   ArrowLeft, ArrowRight, Check, Trophy, RotateCcw, Sparkles,
-  PlusCircle, AlertCircle, CheckCircle2, XCircle, Trash2, Filter
+  PlusCircle, AlertCircle, CheckCircle2, XCircle, Trash2, Filter,
+  TrendingUp, Edit3
 } from 'lucide-react';
+import { ManageQuestionsModal } from './ManageQuestionsModal';
+import { ExamHistoryView } from './ExamHistoryView';
 
 interface SimuladosTabProps {
   allQuestions: Question[];
@@ -16,6 +19,10 @@ interface SimuladosTabProps {
   customSimulados: CustomSimulado[];
   onCreateCustomSimulado: (simulado: CustomSimulado) => void;
   onDeleteCustomSimulado: (id: string) => void;
+  onUpdateCustomSimulado?: (simulado: CustomSimulado) => void;
+  examAttempts?: ExamAttempt[];
+  onSaveExamAttempt?: (attempt: ExamAttempt) => void;
+  onClearExamHistory?: () => void;
 }
 
 export const SimuladosTab: React.FC<SimuladosTabProps> = ({
@@ -28,9 +35,15 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
   customSimulados,
   onCreateCustomSimulado,
   onDeleteCustomSimulado,
+  onUpdateCustomSimulado,
+  examAttempts = [],
+  onSaveExamAttempt,
+  onClearExamHistory,
 }) => {
   const [selectedSimulado, setSelectedSimulado] = useState<SimuladoId>('1');
   const [quizMode, setQuizMode] = useState<QuizMode>('study');
+  const [activeView, setActiveView] = useState<'simulado' | 'history'>('simulado');
+  const [showManageModal, setShowManageModal] = useState<boolean>(false);
   const [currentQIndex, setCurrentQIndex] = useState<number>(0);
   const [examTimeRemaining, setExamTimeRemaining] = useState<number>(6000); // 100 min
   const [isExamRunning, setIsExamRunning] = useState<boolean>(false);
@@ -109,6 +122,52 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
   const finishExam = () => {
     setIsExamRunning(false);
     setShowExamScoreModal(true);
+
+    if (onSaveExamAttempt && simuladoQuestions.length > 0) {
+      let correct = 0;
+      simuladoQuestions.forEach((q) => {
+        if (userAnswers[q.id] === q.answer) correct++;
+      });
+      const score = Math.round((correct / simuladoQuestions.length) * 1000);
+      const passed = score >= 700;
+
+      const domainNames: Record<number, string> = {
+        1: 'Identidade & Governança',
+        2: 'Armazenamento (Storage)',
+        3: 'Recursos de Computação',
+        4: 'Redes Virtuais (VNets)',
+        5: 'Monitoramento & Backup',
+      };
+
+      const domainBreakdown = [1, 2, 3, 4, 5].map((domId) => {
+        const domQs = simuladoQuestions.filter((q) => q.domain === domId);
+        const domCorrect = domQs.filter((q) => userAnswers[q.id] === q.answer).length;
+        return {
+          domainId: domId,
+          domainName: domainNames[domId],
+          total: domQs.length,
+          correct: domCorrect,
+          percentage: domQs.length > 0 ? Math.round((domCorrect / domQs.length) * 100) : 0,
+        };
+      });
+
+      const totalAllowedSecs = Math.max(600, simuladoQuestions.length * 120);
+      const timeSpent = Math.max(10, totalAllowedSecs - examTimeRemaining);
+
+      onSaveExamAttempt({
+        id: `attempt-${Date.now()}`,
+        simuladoId: selectedSimulado,
+        simuladoTitle: currentSimuladoTitle,
+        timestamp: new Date().toISOString(),
+        score,
+        passed,
+        percentage: Math.round((correct / simuladoQuestions.length) * 100),
+        totalQuestions: simuladoQuestions.length,
+        correctCount: correct,
+        timeSpentSeconds: timeSpent,
+        domainBreakdown,
+      });
+    }
   };
 
   // Score and error calculations
@@ -321,20 +380,62 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
     return simuladoQuestions;
   }, [reviewFilter, examStats, simuladoQuestions]);
 
+  const selectedCustomSimulado = customSimulados.find((s) => s.id === selectedSimulado);
+
   return (
     <div className="space-y-6">
       {/* Top Header Card */}
       <div className="bg-slate-900/90 border border-amber-500/30 p-5 rounded-2xl space-y-4">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-800 pb-4">
-          <div>
-            <h2 className="text-lg font-bold text-white flex items-center gap-2">
-              <FileSignature className="w-5 h-5 text-amber-400" />
-              Simulados Práticos AZ-104
-            </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Escolha entre o Modo Estudo (gabarito imediato) ou Modo Prova Oficial (100 min)
-            </p>
+        {/* Navigation Switch between Simulado and Exam History */}
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setActiveView('simulado')}
+              className={`px-3 py-1.5 rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer ${
+                activeView === 'simulado'
+                  ? 'bg-amber-500 text-slate-950 shadow'
+                  : 'bg-slate-800 text-slate-400 hover:text-white'
+              }`}
+            >
+              <FileSignature className="w-3.5 h-3.5" />
+              <span>Simulado Atual</span>
+            </button>
+            <button
+              onClick={() => setActiveView('history')}
+              className={`px-3 py-1.5 rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer ${
+                activeView === 'history'
+                  ? 'bg-amber-500 text-slate-950 shadow'
+                  : 'bg-slate-800 text-slate-400 hover:text-white'
+              }`}
+            >
+              <TrendingUp className="w-3.5 h-3.5" />
+              <span>Histórico de Tentativas ({examAttempts.length})</span>
+            </button>
           </div>
+
+          {selectedCustomSimulado && onUpdateCustomSimulado && (
+            <button
+              onClick={() => setShowManageModal(true)}
+              className="text-xs bg-purple-950/80 hover:bg-purple-900 border border-purple-700/80 text-purple-300 font-bold px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 cursor-pointer"
+            >
+              <Edit3 className="w-3.5 h-3.5" />
+              <span>Gerenciar / Editar Questões ({selectedCustomSimulado.questions.length})</span>
+            </button>
+          )}
+        </div>
+
+        {activeView === 'simulado' && (
+          <>
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+              <div>
+                <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                  <FileSignature className="w-5 h-5 text-amber-400" />
+                  Simulados Práticos AZ-104
+                </h2>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Escolha entre o Modo Estudo (gabarito imediato) ou Modo Prova Oficial (100 min)
+                </p>
+              </div>
 
           <div className="flex flex-wrap items-center gap-3">
             {/* Button to Generate New Simulado */}
@@ -474,9 +575,18 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
             })}
           </div>
         </div>
+        </>
+        )}
       </div>
 
-      {/* Main Question Card or Score & Errors View */}
+      {activeView === 'history' ? (
+        <ExamHistoryView
+          attempts={examAttempts}
+          onClearHistory={onClearExamHistory}
+        />
+      ) : (
+        <>
+          {/* Main Question Card or Score & Errors View */}
       {!showExamScoreModal ? (
         <div className="bg-slate-900/90 border border-slate-800 p-6 rounded-2xl space-y-6 shadow-xl">
           {/* Question Meta Header */}
@@ -885,6 +995,22 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
             )}
           </div>
         </div>
+      )}
+      </>
+      )}
+
+      {/* ========================================================================= */}
+      {/* MODAL: GERENCIAR E EDITAR QUESTÕES DE SIMULADO CUSTOMIZADO/IA             */}
+      {/* ========================================================================= */}
+      {showManageModal && selectedCustomSimulado && onUpdateCustomSimulado && (
+        <ManageQuestionsModal
+          isOpen={showManageModal}
+          onClose={() => setShowManageModal(false)}
+          simulado={selectedCustomSimulado}
+          onUpdateSimulado={(updated) => {
+            onUpdateCustomSimulado(updated);
+          }}
+        />
       )}
 
       {/* ========================================================================= */}

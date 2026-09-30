@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 import { GoogleGenAI, Type } from "@google/genai";
 import dotenv from "dotenv";
@@ -230,6 +231,87 @@ async function generateContentWithRetry(
 const SYSTEM_INSTRUCTION = `Você é o Instrutor Especialista e Mentor no Exame Microsoft Azure Administrator Associate (AZ-104).
 Sua missão é explicar conceitos técnicos com precisão arquitetural, apontar armadilhas e pegadinhas comuns da prova da Microsoft, sugerir comandos corretos em Azure CLI e PowerShell/Bicep, e fornecer justificativas claras em Português do Brasil.
 Responda de forma didática, direta e estruturada com títulos em negrito, tópicos e blocos de código quando apropriado.`;
+
+// Rate limiter para proteger a cota do Gemini no backend
+const ipRateLimits = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minuto
+const MAX_REQUESTS_PER_MINUTE = 40;
+
+function aiRateLimiter(req: express.Request, res: express.Response, next: express.NextFunction) {
+  const ip = (req.headers["x-forwarded-for"] as string) || req.socket.remoteAddress || "anonymous";
+  const now = Date.now();
+  const record = ipRateLimits.get(ip);
+
+  if (!record || now > record.resetTime) {
+    ipRateLimits.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW_MS });
+    return next();
+  }
+
+  if (record.count >= MAX_REQUESTS_PER_MINUTE) {
+    const secondsRemaining = Math.ceil((record.resetTime - now) / 1000);
+    return res.status(429).json({
+      error: `Limite de requisições excedido (${MAX_REQUESTS_PER_MINUTE} req/min). Por favor, aguarde ${secondsRemaining} segundos antes de tentar novamente.`,
+      retryAfterSeconds: secondsRemaining,
+    });
+  }
+
+  record.count += 1;
+  return next();
+}
+
+app.use("/api/ai", aiRateLimiter);
+
+// Persistência em disco no servidor (sobrevive a limpeza de cache do navegador)
+const DATA_DIR = path.join(__dirname, ".data");
+const STORAGE_FILE_PATH = path.join(DATA_DIR, "user_storage.json");
+const LEGACY_STORAGE_FILE_PATH = path.join(__dirname, "data", "user_storage.json");
+
+try {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+} catch (e) {
+  console.warn("Aviso ao criar diretório de dados:", e);
+}
+
+// Salvar backup completo no servidor
+app.post("/api/storage/sync", async (req, res) => {
+  try {
+    const payload = req.body;
+    if (!payload || typeof payload !== "object") {
+      return res.status(400).json({ error: "Payload inválido para sincronização." });
+    }
+    const dataToWrite = {
+      ...payload,
+      lastServerSync: new Date().toISOString(),
+    };
+    await fs.promises.writeFile(STORAGE_FILE_PATH, JSON.stringify(dataToWrite, null, 2), "utf-8");
+    return res.json({ success: true, savedAt: dataToWrite.lastServerSync });
+  } catch (err: any) {
+    console.error("Erro ao salvar sincronização no servidor:", err);
+    return res.status(500).json({ error: `Falha ao persistir no servidor: ${err.message}` });
+  }
+});
+
+// Carregar backup do servidor
+app.get("/api/storage/load", async (_req, res) => {
+  try {
+    let filePathToRead = STORAGE_FILE_PATH;
+    if (!fs.existsSync(filePathToRead)) {
+      if (fs.existsSync(LEGACY_STORAGE_FILE_PATH)) {
+        filePathToRead = LEGACY_STORAGE_FILE_PATH;
+      } else {
+        return res.json({ empty: true });
+      }
+    }
+    const raw = await fs.promises.readFile(filePathToRead, "utf-8");
+    const parsed = JSON.parse(raw);
+    return res.json({ empty: false, data: parsed });
+  } catch (err: any) {
+    console.error("Erro ao carregar dados do servidor:", err);
+    return res.status(500).json({ error: `Falha ao carregar do servidor: ${err.message}` });
+  }
+});
 
 // Health check
 app.get("/api/health", (_req, res) => {
@@ -748,7 +830,12 @@ Cada questão deve conter:
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
-      server: { middlewareMode: true },
+      server: {
+        middlewareMode: true,
+        watch: {
+          ignored: ["**/.data/**", "**/data/**", "**/user_storage.json", "**/*.json"],
+        },
+      },
       appType: "spa",
     });
     app.use(vite.middlewares);

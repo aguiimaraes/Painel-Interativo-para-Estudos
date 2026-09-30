@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import {
   Brain, Globe, Send, Sparkles, BookOpen, Microchip,
-  RotateCw, CheckCircle2, MessageSquare, HelpCircle
+  RotateCw, CheckCircle2, MessageSquare, HelpCircle, Flame
 } from 'lucide-react';
-import { ChatMessage, GeneratedQuestion, Flashcard } from '../types';
-import { defaultFlashcards } from '../data/flashcards';
+import { ChatMessage, GeneratedQuestion, Flashcard, SpacedFlashcard } from '../types';
+import { defaultFlashcards, defaultSpacedFlashcards } from '../data/flashcards';
 import { notebookTranscript } from '../data/transcript';
+import { SpacedFlashcardsTab } from './SpacedFlashcardsTab';
 
 // Markdown formatter for bold (**text** or __text__), bold-italic (***text***), italics (*text* or _text_), inline code (`code`), lists and headers
 function parseInlineMarkdown(text: string): React.ReactNode[] {
@@ -181,10 +182,18 @@ function FormattedMessage({ content }: { content: string }) {
 
 interface AiTutorTabProps {
   initialPrompt?: string;
+  spacedCards?: SpacedFlashcard[];
+  onUpdateSpacedCards?: (cards: SpacedFlashcard[]) => void;
+  onCardReviewed?: () => void;
 }
 
-export const AiTutorTab: React.FC<AiTutorTabProps> = ({ initialPrompt = '' }) => {
-  const [activeSubTab, setActiveSubTab] = useState<'chat' | 'notebook' | 'generator' | 'diagram'>('chat');
+export const AiTutorTab: React.FC<AiTutorTabProps> = ({
+  initialPrompt = '',
+  spacedCards = defaultSpacedFlashcards,
+  onUpdateSpacedCards = () => {},
+  onCardReviewed = () => {},
+}) => {
+  const [activeSubTab, setActiveSubTab] = useState<'chat' | 'notebook' | 'generator' | 'diagram' | 'flashcards'>('chat');
 
   // Chat State
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
@@ -449,6 +458,15 @@ export const AiTutorTab: React.FC<AiTutorTabProps> = ({ initialPrompt = '' }) =>
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>Especificador de Diagramas</span>
+          </button>
+          <button
+            onClick={() => setActiveSubTab('flashcards')}
+            className={`px-3.5 py-2 rounded-xl font-bold transition flex items-center space-x-2 cursor-pointer ${
+              activeSubTab === 'flashcards' ? 'bg-amber-600 text-white shadow' : 'bg-slate-800 text-slate-400 hover:text-white'
+            }`}
+          >
+            <Flame className="w-3.5 h-3.5 text-amber-300" />
+            <span>Repetição Espaçada SM-2 (Anki)</span>
           </button>
         </div>
 
@@ -833,6 +851,15 @@ export const AiTutorTab: React.FC<AiTutorTabProps> = ({ initialPrompt = '' }) =>
               </div>
             )}
           </div>
+        )}
+
+        {/* SUBTAB 5: SPACED FLASHCARDS (SM-2 ANKI ENGINE) */}
+        {activeSubTab === 'flashcards' && (
+          <SpacedFlashcardsTab
+            cards={spacedCards}
+            onUpdateCards={onUpdateSpacedCards}
+            onCardReviewed={onCardReviewed}
+          />
         )}
       </div>
     </div>

@@ -23,6 +23,68 @@ export interface Flashcard {
   back: string;
 }
 
+export interface SpacedFlashcard extends Flashcard {
+  id: string;
+  domainNumber: number;
+  interval: number; // Interval in days
+  repetitions: number; // Successful recall repetitions
+  easeFactor: number; // SM-2 ease factor, default 2.5
+  dueDate: string; // ISO date string YYYY-MM-DD
+  lastReviewed?: string;
+  history?: {
+    date: string;
+    grade: number; // 0: Errei, 1: Difícil, 2: Bom, 3: Fácil
+  }[];
+}
+
+export interface ExamAttempt {
+  id: string;
+  simuladoId: string;
+  simuladoTitle: string;
+  timestamp: string; // ISO string
+  score: number; // 0 to 1000 Microsoft scale
+  passed: boolean; // score >= 700
+  percentage: number;
+  totalQuestions: number;
+  correctCount: number;
+  timeSpentSeconds: number;
+  domainBreakdown: {
+    domainId: number;
+    domainName: string;
+    total: number;
+    correct: number;
+    percentage: number;
+  }[];
+}
+
+export interface StudyStreak {
+  currentStreak: number;
+  bestStreak: number;
+  lastActiveDate: string; // YYYY-MM-DD
+  studyDays: string[]; // List of YYYY-MM-DD dates
+}
+
+export interface Achievement {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  category: 'simulados' | 'dominios' | 'streak' | 'ia';
+  unlockedAt?: string;
+  progress: number; // 0 to 100
+  isUnlocked: boolean;
+}
+
+export interface AppDataBackup {
+  version: number;
+  exportedAt: string;
+  userAnswers: Record<number, number>;
+  customSimulados: CustomSimulado[];
+  examAttempts: ExamAttempt[];
+  streak: StudyStreak;
+  flashcardProgress?: Record<string, SpacedFlashcard>;
+}
+
 export interface SummaryTopic {
   id: string;
   title: string;
