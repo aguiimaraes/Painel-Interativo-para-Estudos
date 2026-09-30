@@ -200,12 +200,50 @@ export default function App() {
     setActiveTab('ai');
   };
 
+  // Esconder Header e Navigation ao descer a barra de rolagem para não atrapalhar a visualização
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+          const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+
+          // Se estiver no topo da página (menos de 20px), sempre exibe
+          if (currentScrollY <= 20) {
+            setIsHeaderVisible(true);
+          } else if (currentScrollY > 20 && currentScrollY < maxScroll) {
+            // Se rolar para baixo, esconde; se rolar para cima, reexibe
+            if (currentScrollY > lastScrollY + 5) {
+              setIsHeaderVisible(false);
+            } else if (currentScrollY < lastScrollY - 5) {
+              setIsHeaderVisible(true);
+            }
+          }
+
+          setLastScrollY(currentScrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
-      {/* Header + Navigation ficam juntos num único wrapper "sticky", assim
-          a barra de navegação sempre gruda exatamente sob o cabeçalho,
-          mesmo quando a altura dele muda (ex.: modo de fonte "Grande"). */}
-      <div className="sticky top-0 z-50">
+      {/* Header + Navigation com ocultamento automático ao descer a barra de rolagem */}
+      <div
+        className={`sticky top-0 z-50 transition-transform duration-300 ease-in-out ${
+          isHeaderVisible ? 'translate-y-0' : '-translate-y-full pointer-events-none'
+        }`}
+      >
         <Header globalReadinessPercent={globalReadinessPercent} />
         <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>

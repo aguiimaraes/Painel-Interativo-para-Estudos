@@ -1,25 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Cloud, Sparkles, Play, Pause, RotateCcw, Timer, Award, Type } from 'lucide-react';
+import { Cloud, Sparkles, Play, Pause, RotateCcw, Timer, Award } from 'lucide-react';
 
 interface HeaderProps {
   globalReadinessPercent: number;
 }
 
 export const Header: React.FC<HeaderProps> = ({ globalReadinessPercent }) => {
-  // Font Size Control: 'small' (12px, default reduzido), 'normal' (13.5px), 'large' (15px)
-  const [fontSize, setFontSize] = useState<'small' | 'normal' | 'large'>(() => {
-    return (localStorage.getItem('az104_font_size') as any) || 'small';
-  });
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-font-size', fontSize);
-    try {
-      localStorage.setItem('az104_font_size', fontSize);
-    } catch (e) {
-      // ignore
-    }
-  }, [fontSize]);
-
   // Pomodoro Timer: default 25 minutes = 1500 seconds
   const [pomodoroSeconds, setPomodoroSeconds] = useState<number>(1500);
   const [isRunning, setIsRunning] = useState<boolean>(false);
@@ -110,39 +96,6 @@ export const Header: React.FC<HeaderProps> = ({ globalReadinessPercent }) => {
               </svg>
               <Award className="w-4 h-4 text-sky-400 absolute" />
             </div>
-          </div>
-
-          {/* Font Size Selector */}
-          <div className="flex items-center space-x-1 bg-slate-800/80 border border-slate-700/80 px-2.5 py-1.5 rounded-xl text-xs">
-            <Type className="w-3.5 h-3.5 text-slate-400 mr-1" />
-            <span className="text-[0.625rem] text-slate-400 mr-1 hidden lg:inline font-medium">Fonte:</span>
-            <button
-              onClick={() => setFontSize('small')}
-              title="Fonte Pequena (Compacta)"
-              className={`px-2 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
-                fontSize === 'small' ? 'bg-sky-600 text-white shadow' : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              A-
-            </button>
-            <button
-              onClick={() => setFontSize('normal')}
-              title="Fonte Média (Padrão)"
-              className={`px-2 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
-                fontSize === 'normal' ? 'bg-sky-600 text-white shadow' : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              A
-            </button>
-            <button
-              onClick={() => setFontSize('large')}
-              title="Fonte Grande"
-              className={`px-2 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
-                fontSize === 'large' ? 'bg-sky-600 text-white shadow' : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              A+
-            </button>
           </div>
 
           {/* Pomodoro Timer */}

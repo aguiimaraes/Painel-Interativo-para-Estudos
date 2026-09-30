@@ -1,22 +1,11 @@
 @import "tailwindcss";
 
-/* Valor inicial igual ao padrão definido em Header.tsx ('small' = 12px),
-   para não haver um "pulo" de tamanho quando o React aplica o atributo
-   data-font-size logo após a primeira renderização. */
+/* Tamanho de fonte fixo (o seletor A-/A/A+ foi removido). 17px como base —
+   maior que o antigo nível "grande" (15px), porque mesmo esse estava
+   pequeno demais. Como o Tailwind usa rem para fontes e espaçamentos,
+   aumentar esse valor aumenta a interface inteira de forma proporcional. */
 html {
-  font-size: 12px;
-}
-
-html[data-font-size="small"] {
-  font-size: 12px;
-}
-
-html[data-font-size="normal"] {
-  font-size: 13.5px;
-}
-
-html[data-font-size="large"] {
-  font-size: 15px;
+  font-size: 17px;
 }
 
 b, strong {
