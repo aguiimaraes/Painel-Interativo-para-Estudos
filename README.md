@@ -62,6 +62,23 @@ Acesse no navegador: **[http://localhost:3000](http://localhost:3000)**
 
 ---
 
+## 🌐 Publicação no GitHub Pages (Deploy Estático)
+
+Caso queira hospedar o simulado gratuitamente no **GitHub Pages**:
+
+1. **Configuração de Caminho Relativo (`base: './'`)**:
+   - Já configurado em `vite.config.ts` (`base: './'`), garantindo que os arquivos compilados (`.js`, `.css`, `manifest.json`) sejam carregados com caminhos relativos ao invés de buscar na raiz do domínio (evitando o erro `Failed to load resource: 404`).
+
+2. **Como publicar**:
+   - **Opção A (GitHub Actions - Recomendada)**:
+     No seu repositório no GitHub, vá em **Settings > Pages > Build and deployment > Source** e selecione **GitHub Actions**. O GitHub detectará automaticamente o Vite/Static HTML ou você pode usar o workflow padrão do Vite.
+   - **Opção B (Pasta `dist` ou `docs`)**:
+     Execute `npm run build` localmente. O frontend estático completo será gerado dentro da pasta `dist/`. Basta publicar o conteúdo dessa pasta na branch `gh-pages` (ou renomear a pasta para `docs/` e configurar o GitHub Pages para ler a pasta `/docs`).
+
+> **Nota sobre o GitHub Pages:** O GitHub Pages é uma hospedagem estática. Todos os 150 simulados, flashcards SM-2, matrizes de decisão, resumos, histórico de exames e backups em JSON funcionam perfeitamente no GitHub Pages. Recursos que exigem backend com chave de API (Tutor IA Gemini online e Debugger interativo) requerem a execução do servidor local com `npm run dev` ou hospedagem em servidor Node.js (Render, Railway, Vercel, VPS ou Azure App Service).
+
+---
+
 ## 🏗️ Estrutura Detalhada do Projeto
 
 Abaixo está o mapa completo da arquitetura e organização dos arquivos:

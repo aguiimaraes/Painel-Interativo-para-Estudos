@@ -170,7 +170,11 @@ export default function App() {
     const hasLocalData = Object.keys(userAnswers).length > 0 || examAttempts.length > 0;
     if (!hasLocalData) {
       fetch('/api/storage/load')
-        .then((res) => res.json())
+        .then((res) => {
+          if (!res.ok) return null;
+          const ct = res.headers.get('content-type');
+          return ct && ct.includes('application/json') ? res.json() : null;
+        })
         .then((data) => {
           if (data && !data.empty && data.data) {
             const serverData = data.data;
@@ -204,8 +208,9 @@ export default function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
+      if (!res.ok) return false;
       const data = await res.json();
-      if (res.ok && data.savedAt) {
+      if (data && data.savedAt) {
         setLastServerSync(new Date(data.savedAt).toLocaleTimeString('pt-BR'));
         return true;
       }
