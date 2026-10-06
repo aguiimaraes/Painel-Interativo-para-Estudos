@@ -1,0 +1,6 @@
+{
+  "name": "AZ-104 Command Center",
+  "description": "Painel completo de estudos para a certificação Microsoft AZ-104 com 150 questões de simulados, tutor IA com Gemini, resumos e flashcards.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "AZ-104 Command Center & Simulados",
+  "short_name": "AZ-104 Center",
+  "description": "Plataforma completa de preparação para o exame Microsoft Azure Administrator Associate (AZ-104)",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#0284c7",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}

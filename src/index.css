@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+/* Tamanho de fonte fixo (o seletor A-/A/A+ foi removido). 17px como base —
+   maior que o antigo nível "grande" (15px), porque mesmo esse estava
+   pequeno demais. Como o Tailwind usa rem para fontes e espaçamentos,
+   aumentar esse valor aumenta a interface inteira de forma proporcional. */
+html {
+  font-size: 17px;
+}
+
+:root {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+b, strong {
+  font-weight: 700;
+}
+
+@layer utilities {
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .transform-style-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+}
+
+/* Focus visible - WCAG 2.4.7 */
+*:focus-visible {
+  outline: 2px solid #1f6feb;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0d1117;
+}
+::-webkit-scrollbar-thumb {
+  background: #21262d;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #0284c7;
+}
