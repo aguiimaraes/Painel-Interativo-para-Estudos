@@ -103,7 +103,11 @@ export const WeakSpotDetector: React.FC<WeakSpotDetectorProps> = ({
           </div>
           <div>
             <div className="flex items-center gap-2">
+<<<<<<< HEAD
               <span className="text-xs uppercase tracking-wider font-bold bg-amber-950 text-amber-300 border border-amber-600/50 px-2 py-0.5 rounded-full">
+=======
+              <span className="text-[0.625rem] uppercase tracking-wider font-extrabold bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-full">
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                 Detector de Pontos Fracos
               </span>
               <span className="text-xs text-rose-400 font-bold">
@@ -143,25 +147,41 @@ export const WeakSpotDetector: React.FC<WeakSpotDetectorProps> = ({
               </div>
             ))}
           </div>
+<<<<<<< HEAD
           <p className="text-xs text-amber-200 bg-amber-950 border border-amber-800/60 p-2.5 rounded-xl font-mono leading-relaxed">
+=======
+          <p className="text-[0.6875rem] text-amber-200/80 bg-amber-950/30 border border-amber-900/40 p-2.5 rounded-xl font-mono">
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
             <strong>Dica do Instrutor:</strong> {details.tip}
           </p>
         </div>
 
         <div className="flex flex-col justify-center space-y-2.5 bg-slate-950/50 border border-slate-800 p-3.5 rounded-xl">
+<<<<<<< HEAD
           <span className="text-xs text-slate-300 font-bold uppercase tracking-wider">
+=======
+          <span className="text-[0.6875rem] text-slate-400 font-bold uppercase tracking-wider">
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
             Ações Rápidas de Correção
           </span>
           <button
             onClick={() => onOpenSummary(primaryWeak.id)}
+<<<<<<< HEAD
             className="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-2.5 px-3 rounded-xl transition shadow flex items-center justify-center gap-2 cursor-pointer min-h-[40px]"
+=======
+            className="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-2 px-3 rounded-xl transition shadow flex items-center justify-center gap-2 cursor-pointer"
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
           >
             <BookOpen className="w-3.5 h-3.5" />
             <span>Ler Resumo do Domínio {primaryWeak.id}</span>
           </button>
           <button
             onClick={() => onPracticeDomain(primaryWeak.id)}
+<<<<<<< HEAD
             className="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-2.5 px-3 rounded-xl border border-slate-700 transition flex items-center justify-center gap-2 cursor-pointer min-h-[40px]"
+=======
+            className="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-2 px-3 rounded-xl border border-slate-700 transition flex items-center justify-center gap-2 cursor-pointer"
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
           >
             <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
             <span>Fazer Simulado deste Domínio</span>

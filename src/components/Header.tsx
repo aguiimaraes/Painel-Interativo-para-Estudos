@@ -51,7 +51,11 @@ export const Header: React.FC<HeaderProps> = ({
   const strokeDashoffset = circumference - (circumference * globalReadinessPercent) / 100;
 
   return (
+<<<<<<< HEAD
     <header className="bg-[#0d1117] border-b border-[#21262d] px-4 lg:px-8 py-3">
+=======
+    <header className="bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 lg:px-8 py-3">
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
         {/* Logo and App Title */}
         <div className="flex items-center space-x-3">
@@ -60,10 +64,17 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
           <div>
             <div className="flex items-center gap-2">
+<<<<<<< HEAD
               <h1 className="text-xl font-bold text-sky-300">
                 AZ-104 Command Center
               </h1>
               <span className="text-xs uppercase tracking-wider font-bold bg-purple-700 text-white px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow">
+=======
+              <h1 className="text-xl font-bold bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-200 bg-clip-text text-transparent">
+                AZ-104 Command Center
+              </h1>
+              <span className="text-[0.625rem] uppercase tracking-wider font-extrabold bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow">
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                 <Sparkles className="w-3 h-3 text-amber-300" /> Powered by Gemini AI
               </span>
             </div>
@@ -79,12 +90,20 @@ export const Header: React.FC<HeaderProps> = ({
           {streak && (
             <button
               onClick={onOpenAchievements}
+<<<<<<< HEAD
               className="flex items-center space-x-1.5 bg-amber-950 hover:bg-amber-900 border border-amber-600/70 px-3 py-2 rounded-xl transition cursor-pointer text-xs min-h-[36px]"
+=======
+              className="flex items-center space-x-1.5 bg-amber-950/50 hover:bg-amber-900/60 border border-amber-600/50 px-3 py-1.5 rounded-xl transition cursor-pointer text-xs"
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
               title="Clique para ver Conquistas e Sequência"
             >
               <span className="text-sm">🔥</span>
               <span className="font-black text-amber-300">{streak.currentStreak}d</span>
+<<<<<<< HEAD
               <span className="text-xs text-amber-300 hidden sm:inline">Streak</span>
+=======
+              <span className="text-[0.625rem] text-amber-400/80 hidden sm:inline">Streak</span>
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
             </button>
           )}
 
@@ -115,12 +134,20 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Readiness Gauge */}
           <div className="flex items-center space-x-2.5 bg-slate-800/80 px-3 py-1.5 rounded-xl border border-slate-700/80">
             <div className="text-right">
+<<<<<<< HEAD
               <span className="text-xs text-slate-300 block font-medium">Prontidão</span>
               <span className="text-base font-black text-sky-400">{globalReadinessPercent}%</span>
             </div>
             <div className="w-9 h-9 relative flex items-center justify-center">
               <svg className="w-9 h-9 transform -rotate-90" role="img" aria-label={`Prontidão: ${globalReadinessPercent}%`}>
                 <title>Prontidão: {globalReadinessPercent}%</title>
+=======
+              <span className="text-[0.625rem] text-slate-400 block font-medium">Prontidão</span>
+              <span className="text-base font-black text-sky-400">{globalReadinessPercent}%</span>
+            </div>
+            <div className="w-9 h-9 relative flex items-center justify-center">
+              <svg className="w-9 h-9 transform -rotate-90">
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                 <circle
                   cx="18"
                   cy="18"
@@ -151,8 +178,13 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="hidden sm:flex items-center space-x-2.5 text-xs bg-slate-800/80 border border-slate-700/80 px-3.5 py-2 rounded-xl">
             <Timer className="w-4 h-4 text-amber-400" />
             <div>
+<<<<<<< HEAD
               <span className="text-xs text-slate-300 block font-medium">Foco Pomodoro:</span>
               <span className="font-mono text-amber-300 font-bold text-sm" aria-live="polite" aria-label={`Timer: ${formattedTime}`}>{formattedTime}</span>
+=======
+              <span className="text-slate-400 text-[0.625rem] block font-medium">Foco Pomodoro:</span>
+              <span className="font-mono text-amber-300 font-bold text-sm">{formattedTime}</span>
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
             </div>
             <div className="flex items-center space-x-1 ml-2">
               <button

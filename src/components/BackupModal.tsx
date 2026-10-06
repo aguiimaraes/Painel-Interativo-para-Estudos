@@ -131,13 +131,21 @@ export const BackupModal: React.FC<BackupModalProps> = ({
               <span className="font-bold text-white flex items-center gap-1.5">
                 <Download className="w-4 h-4 text-sky-400" /> Exportar Backup JSON
               </span>
+<<<<<<< HEAD
               <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+=======
+              <p className="text-[0.6875rem] text-slate-400 mt-1">
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                 Baixa um arquivo .json completo contendo todas as respostas marcadas, simulados customizados, flashcards e histórico.
               </p>
             </div>
             <button
               onClick={handleDownloadBackup}
+<<<<<<< HEAD
               className="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-2.5 px-3 rounded-xl transition shadow flex items-center justify-center gap-1.5 cursor-pointer min-h-[38px]"
+=======
+              className="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-2 px-3 rounded-xl transition shadow flex items-center justify-center gap-1.5 cursor-pointer"
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
             >
               <Download className="w-3.5 h-3.5" />
               <span>Baixar az104_backup.json</span>
@@ -150,7 +158,11 @@ export const BackupModal: React.FC<BackupModalProps> = ({
               <span className="font-bold text-white flex items-center gap-1.5">
                 <Upload className="w-4 h-4 text-emerald-400" /> Restaurar Backup JSON
               </span>
+<<<<<<< HEAD
               <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+=======
+              <p className="text-[0.6875rem] text-slate-400 mt-1">
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                 Carrega um arquivo .json salvo anteriormente e restaura imediatamente todo o seu histórico no navegador.
               </p>
             </div>
@@ -164,7 +176,11 @@ export const BackupModal: React.FC<BackupModalProps> = ({
               />
               <button
                 onClick={() => fileInputRef.current?.click()}
+<<<<<<< HEAD
                 className="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer min-h-[38px]"
+=======
+                className="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold py-2 px-3 rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer"
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
               >
                 <Upload className="w-3.5 h-3.5" />
                 <span>Selecionar Arquivo</span>
@@ -181,7 +197,11 @@ export const BackupModal: React.FC<BackupModalProps> = ({
             </div>
             <div>
               <span className="font-bold text-slate-200 block">Persistência no Servidor</span>
+<<<<<<< HEAD
               <span className="text-xs text-slate-300">
+=======
+              <span className="text-[0.6875rem] text-slate-400">
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                 {lastSyncTime ? `Última sincronização: ${lastSyncTime}` : 'Sincronização automática ativa'}
               </span>
             </div>

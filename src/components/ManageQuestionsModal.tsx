@@ -73,6 +73,7 @@ export const ManageQuestionsModal: React.FC<ManageQuestionsModalProps> = ({
             >
               <div className="space-y-1.5 flex-1">
                 <div className="flex items-center gap-2">
+<<<<<<< HEAD
                   <span className="w-5 h-5 rounded bg-purple-900 text-purple-200 font-bold flex items-center justify-center text-xs">
                     {idx + 1}
                   </span>
@@ -80,13 +81,26 @@ export const ManageQuestionsModal: React.FC<ManageQuestionsModalProps> = ({
                     {q.domainName}
                   </span>
                   <span className="text-xs text-emerald-400 font-semibold">
+=======
+                  <span className="w-5 h-5 rounded bg-purple-900/60 text-purple-300 font-bold flex items-center justify-center text-[0.625rem]">
+                    {idx + 1}
+                  </span>
+                  <span className="text-[0.6875rem] font-bold text-slate-400 uppercase tracking-wider">
+                    {q.domainName}
+                  </span>
+                  <span className="text-[0.6875rem] text-emerald-400 font-semibold">
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                     (Gabarito: Opção {String.fromCharCode(65 + q.answer)})
                   </span>
                 </div>
                 <p className="text-slate-200 font-medium leading-relaxed">
                   {q.question}
                 </p>
+<<<<<<< HEAD
                 <div className="text-xs text-slate-300 italic line-clamp-1">
+=======
+                <div className="text-[0.6875rem] text-slate-400 italic line-clamp-1">
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                   Opção correta: {q.options[q.answer]}
                 </div>
               </div>
@@ -180,7 +194,11 @@ export const ManageQuestionsModal: React.FC<ManageQuestionsModalProps> = ({
                     }`}
                   />
                   {editingQuestion.answer === idx && (
+<<<<<<< HEAD
                     <span className="text-xs text-emerald-400 font-bold uppercase whitespace-nowrap">
+=======
+                    <span className="text-[0.625rem] text-emerald-400 font-bold uppercase whitespace-nowrap">
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                       Correta ✓
                     </span>
                   )}

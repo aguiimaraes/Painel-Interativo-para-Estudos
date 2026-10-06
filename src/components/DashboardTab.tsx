@@ -46,11 +46,19 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               <span className="text-sm font-bold text-white">
                 Sequência de Estudos: {streak.currentStreak} {streak.currentStreak === 1 ? 'dia ativo' : 'dias ativos'}
               </span>
+<<<<<<< HEAD
               <span className="text-xs bg-amber-950 text-amber-300 border border-amber-600 px-2 py-0.5 rounded-full font-bold">
                 {unlockedBadges} / {achievements.length} Medalhas
               </span>
             </div>
             <p className="text-xs text-slate-300 mt-0.5">
+=======
+              <span className="text-[0.625rem] bg-amber-950 text-amber-300 border border-amber-700/60 px-2 py-0.5 rounded-full font-bold">
+                {unlockedBadges} / {achievements.length} Medalhas
+              </span>
+            </div>
+            <p className="text-xs text-slate-400 mt-0.5">
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
               Estude diariamente e complete simulados para desbloquear todas as conquistas do AZ-104.
             </p>
           </div>
@@ -59,14 +67,22 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
         <div className="flex items-center gap-2 self-end sm:self-center">
           <button
             onClick={onOpenAchievements}
+<<<<<<< HEAD
             className="text-xs bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold px-3.5 py-2.5 rounded-xl transition flex items-center gap-1.5 cursor-pointer min-h-[36px]"
+=======
+            className="text-xs bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 cursor-pointer"
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
           >
             <Award className="w-3.5 h-3.5" />
             <span>Ver Conquistas</span>
           </button>
           <button
             onClick={onOpenReport}
+<<<<<<< HEAD
             className="text-xs bg-sky-600 hover:bg-sky-500 text-white font-bold px-3.5 py-2.5 rounded-xl transition shadow flex items-center gap-1.5 cursor-pointer min-h-[36px]"
+=======
+            className="text-xs bg-sky-600 hover:bg-sky-500 text-white font-bold px-3.5 py-2 rounded-xl transition shadow flex items-center gap-1.5 cursor-pointer"
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
           >
             <Printer className="w-3.5 h-3.5" />
             <span>Exportar Relatório PDF</span>
@@ -88,10 +104,17 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               }`}
             >
               <div className="flex justify-between items-start">
+<<<<<<< HEAD
                 <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">
                   Domínio {dom.id}
                 </span>
                 <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${dom.color}`}>
+=======
+                <span className="text-[0.6875rem] font-bold text-slate-400 uppercase tracking-wider">
+                  Domínio {dom.id}
+                </span>
+                <span className={`text-[0.625rem] font-bold px-2 py-0.5 rounded-full ${dom.color}`}>
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                   {dom.weightRange}
                 </span>
               </div>
@@ -118,7 +141,11 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
       </div>
 
       {/* 4. AI Tutor Hero Banner */}
+<<<<<<< HEAD
       <div className="bg-gradient-to-r from-purple-950 via-slate-900 to-indigo-950 border border-purple-800/60 p-6 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+=======
+      <div className="bg-gradient-to-r from-purple-950/50 via-slate-900 to-indigo-950/50 border border-purple-800/40 p-6 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
         <div className="flex items-center space-x-4">
           <div className="w-13 h-13 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center text-white text-2xl shadow-lg shadow-purple-600/30 flex-shrink-0">
             <Sparkles className="w-7 h-7 text-amber-300" />
@@ -127,7 +154,11 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <h2 className="text-lg font-bold text-white flex items-center gap-2">
               Aprenda com o Tutor Gemini AI Multimodal & Flashcards SM-2
             </h2>
+<<<<<<< HEAD
             <p className="text-xs text-slate-200 mt-1 max-w-2xl leading-relaxed">
+=======
+            <p className="text-xs text-slate-300 mt-1 max-w-2xl leading-relaxed">
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
               Consulte dúvidas sobre os tópicos da aula e do notebook oficial, pratique com baralhos inteligentes de repetição espaçada (Anki), gere questões inéditas em JSON estruturado e solucione comandos de Azure CLI/PowerShell.
             </p>
           </div>
@@ -155,7 +186,11 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                 Total de 150 Questões únicas e sem repetição distribuídas em 3 simulados oficiais
               </p>
             </div>
+<<<<<<< HEAD
             <span className="text-xs font-bold bg-sky-950 text-sky-300 border border-sky-700 px-3 py-1.5 rounded-full flex items-center gap-1.5 self-start sm:self-auto">
+=======
+            <span className="text-xs font-bold bg-sky-950 text-sky-300 border border-sky-800 px-3 py-1 rounded-full flex items-center gap-1.5 self-start sm:self-auto">
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
               <Award className="w-3.5 h-3.5 text-sky-400" /> Aprovação: 700 / 1000 Pts
             </span>
           </div>
@@ -205,7 +240,11 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               <span>Iniciar Simulado Agora</span>
               <ArrowRight className="w-4 h-4" />
             </button>
+<<<<<<< HEAD
             <p className="text-xs text-slate-400 text-center">
+=======
+            <p className="text-[0.6875rem] text-slate-500 text-center">
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
               Suas respostas são salvas automaticamente
             </p>
           </div>

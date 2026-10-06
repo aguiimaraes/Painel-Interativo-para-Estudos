@@ -51,7 +51,11 @@ export const SummariesTab: React.FC<SummariesTabProps> = ({ onAskAi }) => {
               <BookOpen className="w-5 h-5 text-emerald-400" />
               Guias Teóricos Aprofundados AZ-104 & Pegadinhas Oficiais
             </h2>
+<<<<<<< HEAD
             <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+=======
+            <p className="text-xs text-slate-400 mt-1">
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
               Material técnico completo, regras arquiteturais, limites oficiais e armadilhas comuns cobradas nas provas da Microsoft
             </p>
           </div>
@@ -123,7 +127,11 @@ export const SummariesTab: React.FC<SummariesTabProps> = ({ onAskAi }) => {
                   </div>
                   <div>
                     <div className="flex flex-wrap items-center gap-2 mb-1">
+<<<<<<< HEAD
                       <span className="text-xs uppercase tracking-wider font-bold px-2.5 py-0.5 rounded-md bg-slate-800 text-sky-400 border border-slate-700">
+=======
+                      <span className="text-[0.625rem] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded-md bg-slate-800 text-sky-400 border border-slate-700">
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                         Domínio {topic.domainNumber} &bull; {topic.category}
                       </span>
                     </div>
@@ -200,9 +208,15 @@ export const SummariesTab: React.FC<SummariesTabProps> = ({ onAskAi }) => {
                       <div className="space-y-2">
                         {topic.commands.map((cmdItem, cIdx) => (
                           <div key={cIdx} className="bg-slate-900 p-3 rounded-xl border border-slate-800 space-y-1">
+<<<<<<< HEAD
                             <div className="flex items-center justify-between text-xs">
                               <span className="font-semibold text-purple-300">{cmdItem.description}</span>
                               <span className="text-xs font-mono bg-slate-800 text-slate-300 px-2 py-0.5 rounded">
+=======
+                            <div className="flex items-center justify-between text-[0.6875rem]">
+                              <span className="font-semibold text-purple-300">{cmdItem.description}</span>
+                              <span className="text-[0.625rem] font-mono bg-slate-800 text-slate-400 px-2 py-0.5 rounded">
+>>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                                 {cmdItem.tool}
                               </span>
                             </div>
