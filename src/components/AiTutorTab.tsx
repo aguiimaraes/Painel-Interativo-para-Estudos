@@ -416,7 +416,7 @@ export const AiTutorTab: React.FC<AiTutorTabProps> = ({
             </label>
             <span className="text-xs bg-emerald-950 text-emerald-300 border border-emerald-800 px-3 py-1.5 rounded-xl font-bold flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              Gemini 3 Flash Online
+              Gemini 3.1 Flash Lite Online
             </span>
           </div>
         </div>
@@ -495,7 +495,7 @@ export const AiTutorTab: React.FC<AiTutorTabProps> = ({
                 {isChatLoading && (
                   <div className="bg-slate-900/80 p-3.5 rounded-xl border border-purple-500/30 text-purple-300 mr-6 flex items-center space-x-2 text-xs">
                     <span className="w-2 h-2 rounded-full bg-purple-400 animate-ping" />
-                    <span>Gemini 3 Flash analisando cenário Azure...</span>
+                    <span>Gemini 3.1 Flash Lite analisando cenário Azure...</span>
                   </div>
                 )}
               </div>
@@ -689,7 +689,7 @@ export const AiTutorTab: React.FC<AiTutorTabProps> = ({
                     {generatedQuestion.domainName}
                   </span>
                   <span className="text-xs text-amber-400 font-semibold flex items-center gap-1">
-                    <Sparkles className="w-3 h-3" /> Resposta Estruturada JSON por Gemini 3 Flash
+                    <Sparkles className="w-3 h-3" /> Resposta Estruturada JSON por Gemini 3.1 Flash Lite
                   </span>
                 </div>
 

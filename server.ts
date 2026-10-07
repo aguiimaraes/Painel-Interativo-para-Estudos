@@ -145,7 +145,7 @@ function getGeminiClient(): GoogleGenAI | null {
   });
 }
 
-const PRIMARY_MODEL = "gemini-3.8-flash";
+const PRIMARY_MODEL = process.env.GEMINI_MODEL || "gemini-3.1-flash-lite";
 const FALLBACK_MODEL = "gemini-3.1-flash-lite";
 
 function isTransientError(error: any): boolean {
