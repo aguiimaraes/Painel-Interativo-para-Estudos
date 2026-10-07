@@ -19,13 +19,8 @@ export const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab 
   ];
 
   return (
-<<<<<<< HEAD
-    <nav className="bg-[#0d1117] border-b border-[#21262d] px-4 lg:px-8" aria-label="Navegação principal">
+    <nav className="bg-slate-900 border-b border-slate-800 px-4 lg:px-8" aria-label="Navegação principal">
       <div className="max-w-7xl mx-auto flex space-x-1.5 overflow-x-auto py-2.5 text-xs font-semibold scrollbar-thin" role="list">
-=======
-    <nav className="bg-slate-900 border-b border-slate-800 px-4 lg:px-8">
-      <div className="max-w-7xl mx-auto flex space-x-1.5 overflow-x-auto py-2.5 text-xs font-semibold scrollbar-thin">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
@@ -40,11 +35,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab 
           } else if (item.highlight === 'sky') {
             btnClass += "text-sky-300 hover:text-white hover:bg-slate-800 bg-sky-950/20 border border-sky-800/30";
           } else {
-<<<<<<< HEAD
             btnClass += "text-slate-300 hover:text-white hover:bg-slate-800";
-=======
-            btnClass += "text-slate-400 hover:text-white hover:bg-slate-800";
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
           }
 
           return (
@@ -52,14 +43,9 @@ export const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab 
               key={item.id}
               onClick={() => setActiveTab(item.id as ActiveTab)}
               className={btnClass}
-<<<<<<< HEAD
               aria-current={isActive ? 'page' : undefined}
             >
               <Icon className={`w-4 h-4 ${isActive ? 'text-white' : item.highlight === 'purple' ? 'text-purple-400' : item.highlight === 'amber' ? 'text-amber-400' : item.highlight === 'sky' ? 'text-sky-400' : 'text-slate-300'}`} />
-=======
-            >
-              <Icon className={`w-4 h-4 ${isActive ? 'text-white' : item.highlight === 'purple' ? 'text-purple-400' : item.highlight === 'amber' ? 'text-amber-400' : item.highlight === 'sky' ? 'text-sky-400' : 'text-slate-400'}`} />
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
               <span>{item.label}</span>
             </button>
           );

@@ -532,21 +532,12 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
                       setCurrentQIndex(0);
                     }
                   }}
-<<<<<<< HEAD
                   className="text-rose-400 hover:text-rose-300 text-xs flex items-center gap-1 cursor-pointer mr-2 py-1"
                 >
                   <Trash2 className="w-3.5 h-3.5" /> Excluir Simulado
                 </button>
               )}
               <span className="text-sky-400 font-bold bg-sky-950 border border-sky-800 px-2.5 py-0.5 rounded-full text-xs">
-=======
-                  className="text-rose-400 hover:text-rose-300 text-[0.6875rem] flex items-center gap-1 cursor-pointer mr-2"
-                >
-                  <Trash2 className="w-3 h-3" /> Excluir Simulado
-                </button>
-              )}
-              <span className="text-sky-400 font-bold bg-sky-950 border border-sky-800 px-2.5 py-0.5 rounded-full">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                 {answeredCount} / {simuladoQuestions.length} respondidas
               </span>
             </div>
@@ -644,11 +635,7 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
                   className={`w-full text-left p-3.5 rounded-xl border text-xs transition flex items-center justify-between cursor-pointer ${cardStyle}`}
                 >
                   <div className="flex items-center space-x-3">
-<<<<<<< HEAD
                     <span className="w-6 h-6 rounded-lg bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-200">
-=======
-                    <span className="w-6 h-6 rounded-lg bg-slate-800 flex items-center justify-center text-[0.625rem] font-bold text-slate-300">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                       {String.fromCharCode(65 + optIdx)}
                     </span>
                     <span>{optText}</span>
@@ -668,15 +655,9 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
                 <Lightbulb className="w-4 h-4" />
                 <span>Gabarito e Justificativa Oficial:</span>
               </div>
-<<<<<<< HEAD
               <p className="text-slate-200 leading-relaxed">{currentQ.explanation}</p>
               <div className="pt-2 flex items-center justify-between border-t border-slate-800/80 text-xs">
                 <span className="text-slate-300">
-=======
-              <p className="text-slate-300 leading-relaxed">{currentQ.explanation}</p>
-              <div className="pt-2 flex items-center justify-between border-t border-slate-800/80 text-[0.6875rem]">
-                <span className="text-slate-400">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                   Resposta Correta: <b className="text-emerald-400 font-bold">Opção {String.fromCharCode(65 + currentQ.answer)}</b>
                 </span>
                 <button
@@ -737,7 +718,6 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
               <div className="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
-<<<<<<< HEAD
                 <span className="text-xs text-slate-300 block font-medium">Pontuação Oficial</span>
                 <span className="text-xl font-black text-amber-400">{examStats.scorePoints} / 1000</span>
               </div>
@@ -751,21 +731,6 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
               </div>
               <div className="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
                 <span className="text-xs text-slate-300 block font-medium">Status</span>
-=======
-                <span className="text-[0.6875rem] text-slate-400 block font-medium">Pontuação Oficial</span>
-                <span className="text-xl font-black text-amber-400">{examStats.scorePoints} / 1000</span>
-              </div>
-              <div className="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
-                <span className="text-[0.6875rem] text-slate-400 block font-medium">Aproveitamento</span>
-                <span className="text-xl font-black text-emerald-400">{examStats.percent}%</span>
-              </div>
-              <div className="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
-                <span className="text-[0.6875rem] text-slate-400 block font-medium">Questões Erradas</span>
-                <span className="text-xl font-black text-rose-400">{examStats.wrongCount}</span>
-              </div>
-              <div className="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
-                <span className="text-[0.6875rem] text-slate-400 block font-medium">Status</span>
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                 <span
                   className={`text-sm font-black mt-1 block ${
                     examStats.isApproved ? 'text-emerald-400' : 'text-rose-400'
@@ -926,11 +891,7 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
                           <span className="text-xs font-bold text-white">
                             Questão #{originalIndex >= 0 ? originalIndex + 1 : q.id}
                           </span>
-<<<<<<< HEAD
                           <span className="text-xs font-semibold bg-slate-900 text-slate-300 px-2 py-0.5 rounded border border-slate-800">
-=======
-                          <span className="text-[0.625rem] font-semibold bg-slate-900 text-slate-300 px-2 py-0.5 rounded border border-slate-800">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                             {q.domainName}
                           </span>
                         </div>
@@ -952,11 +913,7 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
                               setCurrentQIndex(originalIndex >= 0 ? originalIndex : 0);
                               setShowExamScoreModal(false);
                             }}
-<<<<<<< HEAD
                             className="text-sky-400 hover:text-white text-xs font-semibold cursor-pointer py-1"
-=======
-                            className="text-sky-400 hover:text-white text-[0.6875rem] font-semibold cursor-pointer"
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                           >
                             Ir para questão &rarr;
                           </button>
@@ -974,7 +931,6 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
                         <div
                           className={`p-3 rounded-xl border ${
                             isCorrect
-<<<<<<< HEAD
                               ? 'bg-emerald-950 border-emerald-600/50 text-emerald-200'
                               : isUnanswered
                               ? 'bg-amber-950 border-amber-600/50 text-amber-200'
@@ -982,15 +938,6 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
                           }`}
                         >
                           <span className="block font-bold text-xs uppercase tracking-wider mb-1">
-=======
-                              ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-200'
-                              : isUnanswered
-                              ? 'bg-amber-950/40 border-amber-500/40 text-amber-200'
-                              : 'bg-rose-950/50 border-rose-500/50 text-rose-200'
-                          }`}
-                        >
-                          <span className="block font-bold text-[0.625rem] uppercase tracking-wider mb-1">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                             {isCorrect ? '✅ Sua Resposta (Correta):' : isUnanswered ? '⚠️ Você Não Respondeu:' : '❌ Sua Resposta (Incorreta):'}
                           </span>
                           <span className="font-semibold">
@@ -1005,13 +952,8 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
                         </div>
 
                         {/* Official Correct Answer */}
-<<<<<<< HEAD
                         <div className="p-3 rounded-xl border bg-emerald-950 border-emerald-600/50 text-emerald-200">
                           <span className="block font-bold text-xs uppercase tracking-wider mb-1 text-emerald-400">
-=======
-                        <div className="p-3 rounded-xl border bg-emerald-950/40 border-emerald-500/40 text-emerald-200">
-                          <span className="block font-bold text-[0.625rem] uppercase tracking-wider mb-1 text-emerald-400">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                             ⭐ Resposta Oficial Correta da Microsoft:
                           </span>
                           <span className="font-semibold">
@@ -1022,17 +964,10 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
 
                       {/* Explanation Box */}
                       <div className="bg-slate-900/90 p-3.5 rounded-xl border border-slate-800 text-xs space-y-1.5">
-<<<<<<< HEAD
                         <span className="font-bold text-amber-400 block text-xs">
                           Explicação Técnica da Prova:
                         </span>
                         <p className="text-slate-200 leading-relaxed">{q.explanation}</p>
-=======
-                        <span className="font-bold text-amber-400 block text-[0.6875rem]">
-                          Explicação Técnica da Prova:
-                        </span>
-                        <p className="text-slate-300 leading-relaxed">{q.explanation}</p>
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                       </div>
 
                       {/* Action: Ask Gemini AI */}
@@ -1091,23 +1026,15 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
                 </div>
                 <div>
                   <h3 className="font-bold text-white text-base">Gerar Novo Simulado AZ-104</h3>
-<<<<<<< HEAD
                   <p className="text-xs text-slate-300">
-=======
-                  <p className="text-[0.6875rem] text-slate-400">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                     Crie novos testes práticos com questões inéditas para testar seu conhecimento
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => setShowGenerateModal(false)}
-<<<<<<< HEAD
                 className="text-slate-400 hover:text-white text-lg font-bold cursor-pointer p-1"
                 aria-label="Fechar modal"
-=======
-                className="text-slate-400 hover:text-white text-lg font-bold cursor-pointer"
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
               >
                 &times;
               </button>
@@ -1134,11 +1061,7 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
                   <CheckCircle2 className="w-4 h-4 text-purple-400" />
                   Quantidade de Questões:
                 </label>
-<<<<<<< HEAD
                 <span className="text-xs font-bold text-purple-200 bg-purple-950 border border-purple-700 px-2.5 py-0.5 rounded-full shadow-sm">
-=======
-                <span className="text-[0.6875rem] font-bold text-purple-300 bg-purple-950/90 border border-purple-800/80 px-2.5 py-0.5 rounded-full shadow-sm">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                   {generateCount} questões (~{Math.round(generateCount * 2)} min)
                 </span>
               </div>
@@ -1153,19 +1076,11 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
                     className={`py-2 px-1 rounded-xl text-xs font-bold transition cursor-pointer border text-center ${
                       generateCount === preset
                         ? 'bg-purple-600 border-purple-400 text-white shadow-md shadow-purple-600/30'
-<<<<<<< HEAD
                         : 'bg-slate-900 border-slate-800 text-slate-300 hover:text-white hover:border-slate-700'
                     }`}
                   >
                     <span>{preset} Qs</span>
                     <span className="block text-xs font-normal opacity-90">
-=======
-                        : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-700'
-                    }`}
-                  >
-                    <span>{preset} Qs</span>
-                    <span className="block text-[0.5625rem] font-normal opacity-75">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                       {preset === 5 ? 'Express' : preset === 10 ? 'Revisão' : preset === 20 ? 'Médio' : preset === 30 ? 'Padrão' : 'Oficial'}
                     </span>
                   </button>
@@ -1183,11 +1098,7 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
                   onChange={(e) => setGenerateCount(Number(e.target.value))}
                   className="w-full accent-purple-500 cursor-pointer h-1.5 bg-slate-800 rounded-lg appearance-none"
                 />
-<<<<<<< HEAD
                 <span className="text-xs text-purple-200 font-mono font-bold w-14 text-right">
-=======
-                <span className="text-[0.6875rem] text-purple-300 font-mono font-bold w-14 text-right">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                   {generateCount} Qs
                 </span>
               </div>
@@ -1204,13 +1115,8 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
                   onClick={() => setGenerateType('balanced')}
                   className={`p-3 rounded-xl border text-left transition cursor-pointer flex items-start space-x-3 ${
                     generateType === 'balanced'
-<<<<<<< HEAD
                       ? 'bg-purple-950 border-purple-500 text-white'
                       : 'bg-slate-950 border-slate-800 text-slate-300 hover:text-white'
-=======
-                      ? 'bg-purple-950/60 border-purple-500 text-white'
-                      : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-slate-200'
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                   }`}
                 >
                   <BookOpen className="w-4 h-4 text-sky-400 flex-shrink-0 mt-0.5" />
@@ -1218,11 +1124,7 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
                     <span className="font-bold block text-slate-200">
                       Simulado Equilibrado ({generateCount} Questões)
                     </span>
-<<<<<<< HEAD
                     <span className="text-xs text-slate-300">
-=======
-                    <span className="text-[0.6875rem] text-slate-400">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                       Distribuição balanceada entre os 5 domínios da prova oficial em ordem aleatória.
                     </span>
                   </div>
@@ -1233,13 +1135,8 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
                   onClick={() => setGenerateType('domain')}
                   className={`p-3 rounded-xl border text-left transition cursor-pointer flex items-start space-x-3 ${
                     generateType === 'domain'
-<<<<<<< HEAD
                       ? 'bg-purple-950 border-purple-500 text-white'
                       : 'bg-slate-950 border-slate-800 text-slate-300 hover:text-white'
-=======
-                      ? 'bg-purple-950/60 border-purple-500 text-white'
-                      : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-slate-200'
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                   }`}
                 >
                   <Filter className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
@@ -1247,11 +1144,7 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
                     <span className="font-bold block text-slate-200">
                       Foco em Domínio Específico ({generateCount} Questões)
                     </span>
-<<<<<<< HEAD
                     <span className="text-xs text-slate-300">
-=======
-                    <span className="text-[0.6875rem] text-slate-400">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                       Treino direcionado de {generateCount} questões focadas no domínio de sua preferência.
                     </span>
                   </div>
@@ -1262,13 +1155,8 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
                   onClick={() => setGenerateType('ai')}
                   className={`p-3 rounded-xl border text-left transition cursor-pointer flex items-start space-x-3 ${
                     generateType === 'ai'
-<<<<<<< HEAD
                       ? 'bg-purple-950 border-purple-500 text-white'
                       : 'bg-slate-950 border-slate-800 text-slate-300 hover:text-white'
-=======
-                      ? 'bg-purple-950/60 border-purple-500 text-white'
-                      : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-slate-200'
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                   }`}
                 >
                   <Sparkles className="w-4 h-4 text-amber-300 flex-shrink-0 mt-0.5" />
@@ -1276,11 +1164,7 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
                     <span className="font-bold block text-slate-200">
                       Gerar Inédito com IA Gemini ({generateCount} Questões)
                     </span>
-<<<<<<< HEAD
                     <span className="text-xs text-slate-300">
-=======
-                    <span className="text-[0.6875rem] text-slate-400">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                       Gera cenários novos com IA baseados nos Guias Teóricos Aprofundados e preenche com o banco oficial.
                     </span>
                   </div>

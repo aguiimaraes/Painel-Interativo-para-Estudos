@@ -81,7 +81,6 @@ export const ProgressReportModal: React.FC<ProgressReportModalProps> = ({
           {/* Score Summary Box */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-center print:border-slate-300 print:bg-slate-50">
-<<<<<<< HEAD
               <span className="text-xs font-bold text-slate-300 print:text-slate-600 uppercase">Nota Estimada Microsoft</span>
               <div className={`text-3xl font-black mt-1 ${isPassing ? 'text-emerald-400 print:text-emerald-700' : 'text-amber-400 print:text-amber-700'}`}>
                 {estimatedScore} <span className="text-sm font-normal text-slate-400">/ 1000</span>
@@ -103,29 +102,6 @@ export const ProgressReportModal: React.FC<ProgressReportModalProps> = ({
                 {isPassing ? 'Pronto para o Exame ✅' : 'Reforçar Pontos Fracos ⚠️'}
               </div>
               <span className="text-xs text-slate-400">
-=======
-              <span className="text-[0.6875rem] font-bold text-slate-400 print:text-slate-600 uppercase">Nota Estimada Microsoft</span>
-              <div className={`text-3xl font-black mt-1 ${isPassing ? 'text-emerald-400 print:text-emerald-700' : 'text-amber-400 print:text-amber-700'}`}>
-                {estimatedScore} <span className="text-sm font-normal text-slate-500">/ 1000</span>
-              </div>
-              <span className="text-[0.625rem] text-slate-500">Nota de corte: 700 pts</span>
-            </div>
-
-            <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-center print:border-slate-300 print:bg-slate-50">
-              <span className="text-[0.6875rem] font-bold text-slate-400 print:text-slate-600 uppercase">Prontidão Geral</span>
-              <div className="text-3xl font-black text-sky-400 print:text-sky-700 mt-1">
-                {globalReadinessPercent}%
-              </div>
-              <span className="text-[0.625rem] text-slate-500">Aproveitamento médio</span>
-            </div>
-
-            <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-center print:border-slate-300 print:bg-slate-50">
-              <span className="text-[0.6875rem] font-bold text-slate-400 print:text-slate-600 uppercase">Parecer do Instrutor</span>
-              <div className={`text-base font-black mt-2 uppercase ${isPassing ? 'text-emerald-400 print:text-emerald-700' : 'text-amber-400 print:text-amber-700'}`}>
-                {isPassing ? 'Pronto para o Exame ✅' : 'Reforçar Pontos Fracos ⚠️'}
-              </div>
-              <span className="text-[0.625rem] text-slate-500">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                 {isPassing ? 'Desempenho compatível com aprovação' : 'Abaixo da margem de segurança de 70%'}
               </span>
             </div>
@@ -147,11 +123,7 @@ export const ProgressReportModal: React.FC<ProgressReportModalProps> = ({
                         <span className="font-bold text-slate-200 print:text-slate-900">
                           Domínio {dom.id}: {dom.name}
                         </span>
-<<<<<<< HEAD
                         <span className="text-xs text-slate-300 print:text-slate-600 font-mono">
-=======
-                        <span className="text-[0.6875rem] text-slate-400 print:text-slate-600 font-mono">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                           {dom.correctAnswers}/{dom.totalQuestions} acertos &bull; Peso: {dom.weightRange}
                         </span>
                       </div>
@@ -166,11 +138,7 @@ export const ProgressReportModal: React.FC<ProgressReportModalProps> = ({
                       <span className={`font-bold ${ok ? 'text-emerald-400 print:text-emerald-700' : 'text-amber-400 print:text-amber-700'}`}>
                         {percent}%
                       </span>
-<<<<<<< HEAD
                       <span className="text-xs block text-slate-400">
-=======
-                      <span className="text-[0.625rem] block text-slate-500">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                         {ok ? 'Aprovado' : 'Atenção'}
                       </span>
                     </div>
@@ -191,11 +159,7 @@ export const ProgressReportModal: React.FC<ProgressReportModalProps> = ({
                   <div key={att.id} className="bg-slate-950 p-2.5 rounded-xl border border-slate-800 print:border-slate-300 print:bg-slate-50 flex justify-between items-center">
                     <div>
                       <span className="font-bold text-slate-200 print:text-slate-900">{att.simuladoTitle}</span>
-<<<<<<< HEAD
                       <span className="text-xs text-slate-400 block">
-=======
-                      <span className="text-[0.625rem] text-slate-500 block">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                         {new Date(att.timestamp).toLocaleDateString('pt-BR')} &bull; {Math.round(att.timeSpentSeconds / 60)} min
                       </span>
                     </div>
@@ -203,11 +167,7 @@ export const ProgressReportModal: React.FC<ProgressReportModalProps> = ({
                       <span className={`font-black text-sm ${att.passed ? 'text-emerald-400 print:text-emerald-700' : 'text-rose-400 print:text-rose-700'}`}>
                         {att.score} pts
                       </span>
-<<<<<<< HEAD
                       <span className="text-xs block uppercase font-bold text-slate-300">
-=======
-                      <span className="text-[0.625rem] block uppercase font-bold text-slate-400">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                         {att.passed ? 'Aprovado' : 'Reprovado'}
                       </span>
                     </div>
@@ -222,22 +182,14 @@ export const ProgressReportModal: React.FC<ProgressReportModalProps> = ({
             <span className="font-bold text-sky-300 print:text-sky-900 block">
               Orientações Estratégicas para o Dia do Exame:
             </span>
-<<<<<<< HEAD
             <ul className="list-disc list-inside space-y-1 text-slate-200 print:text-slate-700 text-xs leading-relaxed">
-=======
-            <ul className="list-disc list-inside space-y-1 text-slate-300 print:text-slate-700 text-[0.6875rem]">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
               <li>Mantenha o foco em dominar os domínios de maior peso (Computação 20-25% e Redes 15-20%).</li>
               <li>Revise as pegadinhas teóricas no guia de resumos (VNet Peering transitivo, limites de NSG e Lifecycle Management).</li>
               <li>Simule condições reais de prova usando o Modo Exame com cronômetro sem pausas.</li>
             </ul>
           </div>
 
-<<<<<<< HEAD
           <div className="text-center text-xs text-slate-400 pt-2 border-t border-slate-800 print:border-slate-300">
-=======
-          <div className="text-center text-[0.625rem] text-slate-500 pt-2 border-t border-slate-800 print:border-slate-300">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
             Documento gerado automaticamente pelo AZ-104 Command Center &bull; Plataforma Especialista em Certificações Azure
           </div>
         </div>
