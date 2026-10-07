@@ -210,7 +210,7 @@ export const questionsSimulado3: Question[] = [
     question: "Você tem uma conta de armazenamento Standard de uso geral v2 chamada 'stfilesprod'. Você precisa criar um compartilhamento de arquivos no Azure Files para hospedar um repositório central de imagens CAD que atualmente possui 45 TiB de dados. Por padrão, os compartilhamentos de arquivos Standard são limitados a 5 TiB. O que você deve configurar na conta de armazenamento para suportar compartilhamentos de até 100 TiB?",
     options: [
       "Alterar a camada de desempenho da conta de armazenamento para Premium FileStorage e configurar discos Ultra SSD com provisionamento de 10.000 IOPS.",
-      "Configurar uma Política de Ciclo de Vida que desloque automaticamente os blocos excedentes para a camada Cold.",
+      "Configurar uma Política de Ciclo de Vida que desloque automaticamente os blocos excedentes para a camada Cool.",
       "Habilitar o recurso 'Compartilhamentos de Arquivos Grandes' (Large File Shares) nas configurações da conta de armazenamento.",
       "Criar 9 compartilhamentos de arquivos de 5 TiB e agrupá-los logicamente utilizando o Azure File Sync com DFS-N."
     ],

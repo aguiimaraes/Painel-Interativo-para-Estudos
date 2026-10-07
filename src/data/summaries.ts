@@ -349,50 +349,52 @@ Permite copiar blobs de bloco de forma assíncrona entre contêineres de contas 
   },
   {
     id: 'storage-lifecycle-tiers',
-    title: 'Camadas de Blobs (Hot, Cool, Cold, Archive) & Ciclo de Vida',
+    title: 'Camadas de Blobs (Hot, Cool e Archive) & Ciclo de Vida',
     category: 'Storage',
     domainNumber: 2,
     icon: 'Layers',
     color: 'text-amber-300',
-    summary: 'Camadas de acesso Hot, Cool, Cold e Archive, períodos mínimos de retenção, reidratação de dados arquivados e políticas de Lifecycle Management.',
-    deepExplanation: `O Azure Blob Storage oferece quatro camadas de acesso para balancear custo de armazenamento por GB e custo de transações de leitura/escrita:
+    summary: 'Camadas de acesso oficiais Hot, Cool e Archive, períodos mínimos de retenção, reidratação de dados arquivados e políticas de Lifecycle Management.',
+    deepExplanation: `O Azure Blob Storage oferece três camadas de acesso principais avaliadas no exame oficial AZ-104 para balancear custo de armazenamento por GB e custo de transações de leitura/escrita:
 
 1. Hot (Frequente):
 - Ideal para dados ativamente utilizados, lidos e modificados com alta frequência (ex: imagens de perfil em apps ativos).
 - Maior custo de armazenamento por GB, mas menor custo por transação de acesso. Retenção mínima: 0 dias.
 
-2. Cool (Esporádico):
+2. Cool (Esporádico / Pouco Frequente):
 - Otimizada para dados lidos esporadicamente que permanecem armazenados por pelo menos 30 dias (ex: relatórios mensais, backups recentes).
 - Custo de armazenamento menor que a Hot, custo de transação moderado. Período mínimo de cobrança: 30 dias.
 
-3. Cold (Frio):
-- Camada intermediária para dados pouco acessados que permanecem por pelo menos 90 dias.
-- Menor custo de armazenamento que a Cool, mas maior custo de transação. Dados permanecem online com disponibilidade imediata. Retenção mínima: 90 dias.
-
-4. Archive (Arquivo):
+3. Archive (Arquivo de Longo Prazo):
 - Otimizada para dados históricos, conformidade regulatória e retenção de longo prazo de pelo menos 180 dias.
-- Menor custo de armazenamento por GB no Azure, custo de transação elevado.
-- O blob fica OFFLINE e não pode ser lido diretamente!
+- Menor custo de armazenamento por GB no Azure, custo de transação e recuperação elevado.
+- O blob fica OFFLINE e não pode ser lido diretamente por nenhuma aplicação!
 
 Reidratação de Blobs Arquivados:
-Para ler um blob no Archive, é obrigatório reidratá-lo para Hot, Cool ou Cold.
+Para ler um blob no Archive, é obrigatório reidratá-lo para Hot ou Cool.
 Prioridades de Reidratação:
 - Padrão (Standard Priority): Demora até 15 horas.
 - Alta Prioridade (High Priority): Concluída em menos de 1 hora para blobs com menos de 10 GB.
-Alternativa de Cópia: É possível usar a API "Copy Blob" para copiar o blob do Archive diretamente para um destino Hot sem alterar a camada do blob original.
+Alternativa de Cópia: É possível usar a API "Copy Blob" para copiar o blob do Archive diretamente para um destino Hot ou Cool sem alterar a camada do blob original.
 
 Gerenciamento de Ciclo de Vida (Lifecycle Management):
 Regras automatizadas executadas diariamente pelo Azure que movem ou excluem blobs com base em:
 - "daysAfterModificationGreaterThan"
 - "daysAfterCreationGreaterThan"
-- "daysAfterLastAccessTimeGreaterThan" (exige habilitar o rastreamento de tempo de acesso).`,
+- "daysAfterLastAccessTimeGreaterThan" (exige habilitar o rastreamento de tempo de acesso).
+
+Nota Técnica sobre a Nomenclatura no Exame AZ-104:
+- Na prova oficial AZ-104, as três camadas canônicas cobradas são Hot, Cool e Archive. Em contas de armazenamento Standard GPv2, o padrão configurável da conta é apenas Hot ou Cool.
+- A camada Archive só pode ser definida em nível de blob individual (Block Blobs), nunca como padrão da conta de armazenamento inteira.`,
     keySpecifications: [
-      'Penalidade de Exclusão Antecipada: Excluir ou mover um blob de Archive aos 20 dias acarreta cobrança residual proporcional aos 160 dias restantes!',
+      'Camadas Padrão da Conta: Uma conta de armazenamento de uso geral v2 (GPv2) suporta apenas Hot e Cool como camada de acesso padrão. Archive não pode ser definido como padrão da conta.',
+      'Penalidade de Exclusão Antecipada: Excluir ou mover um blob de Cool antes de 30 dias ou de Archive antes de 180 dias acarreta cobrança residual proporcional!',
       'Tipos de Blobs: Blobs de Bloco (até 4,77 TB para arquivos e vídeos), Blobs de Acréscimo (Append Blobs até 195 GB otimizados para logs) e Blobs de Página (Page Blobs até 8 TB otimizados para VHDs de VMs).',
       'Camada Archive disponível apenas para Blobs de Bloco em contas GPv2 ou Blob Storage.'
     ],
     examTraps: [
-      'Leitura direta no Archive: Questão clássica. "Uma aplicação tenta ler um blob na camada Archive". Resultado: Falha com erro de cliente! O blob deve ser reidratado primeiro ou copiado via Copy Blob.',
+      'Pegadinha de Camadas: O exame cobra rigorosamente a tríade Hot (0 dias) -> Cool (30 dias) -> Archive (180 dias, offline). Lembre-se: em contas de armazenamento, a camada padrão só pode ser Hot ou Cool.',
+      'Leitura direta no Archive: Questão clássica. "Uma aplicação tenta ler um blob na camada Archive". Resultado: Falha com erro de cliente! O blob deve ser reidratado primeiro ou copiado via Copy Blob para Hot ou Cool.',
       'Reidratação vs Cópia: Usar Copy Blob permite criar uma versão Hot em outro contêiner mantendo o arquivo arquivado original intocado.'
     ],
     commands: [

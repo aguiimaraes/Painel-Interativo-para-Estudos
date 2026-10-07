@@ -87,10 +87,9 @@ AULA 03: ARMAZENAMENTO (STORAGE ACCOUNTS, BLOBS, FILES & SYNC)
 
 - Camadas de Blobs:
   * Hot (Frequente): Retenção mínima 0 dias; menor custo de transação, maior custo de armazenamento.
-  * Cool (Esporádico): Retenção mínima cobrada de 30 dias.
-  * Cold (Frio): Retenção mínima cobrada de 90 dias; dados online com disponibilidade imediata.
-  * Archive (Arquivo): Retenção mínima cobrada de 180 dias; menor custo por GB. Fica OFFLINE e não pode ser lido diretamente. Reidratação Padrão (até 15h) ou Alta Prioridade (<1h para <10GB).
-  * Lifecycle Management: Regras automáticas diárias baseadas em dias após modificação, criação ou último acesso.
+  * Cool (Esporádico): Retenção mínima cobrada de 30 dias; menor custo por GB que a Hot e disponibilidade imediata.
+  * Archive (Arquivo): Retenção mínima cobrada de 180 dias; menor custo por GB de todo o Azure. Fica OFFLINE e não pode ser lido diretamente. Reidratação Padrão (até 15h) ou Alta Prioridade (<1h para <10GB) para Hot ou Cool.
+  * Lifecycle Management: Regras automáticas diárias baseadas em dias após modificação, criação ou último acesso para mover entre Hot, Cool e Archive.
 
 - Segurança e Acesso:
   * Access Keys (Key1 e Key2): Acesso total sem restrição.

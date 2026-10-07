@@ -183,7 +183,7 @@ export const questionsSimulado2: Question[] = [
     options: [
       "Mover para a camada Cool após 30 dias, mover para a camada Archive após 90 dias e excluir após 2555 dias (7 anos).",
       "Mover para a camada Archive imediatamente após 30 dias e reidratar mensalmente para consultas em lote programadas.",
-      "Mover para a camada Cold no dia 1, manter retenção estática e desabilitar o controle de versões de blobs da conta.",
+      "Mover para a camada Cool no dia 1 e desabilitar o controle de versões de blobs da conta sem transição para Archive.",
       "Criar uma política de replicação contínua de objetos direcionada a uma conta Premium Block Blob com tier Ultra."
     ],
     answer: 0,
