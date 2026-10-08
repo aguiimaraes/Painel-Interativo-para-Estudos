@@ -27,13 +27,16 @@ cd az-104-command-center
 ```
 
 ### 2. Configurar Variáveis de Ambiente (`.env`)
-Crie ou edite o arquivo `.env` na raiz do projeto:
+Crie ou edite o arquivo `.env` na raiz do projeto (consulte `.env.example` como referência):
 ```env
 # Porta do servidor (padrão: 3000)
 PORT=3000
 
 # Chave do Google Gemini (obtenha gratuitamente em https://aistudio.google.com/app/apikey)
 GEMINI_API_KEY=sua_chave_gemini_aqui
+
+# Modelo padrão do Gemini para o Tutor IA e geração de simulados (opcional; padrão: gemini-3.1-flash-lite)
+GEMINI_MODEL=gemini-3.1-flash-lite
 ```
 
 ### 3. Instalar Dependências
@@ -57,8 +60,18 @@ Acesse no navegador: **[http://localhost:3000](http://localhost:3000)**
 | `npm run dev` | Inicia o servidor backend Express (com middleware Vite) em `http://localhost:3000`. |
 | `npm run build` | Compila o frontend React (Vite) e empacota o backend (`server.ts` -> `dist/server.cjs`). |
 | `npm start` | Executa a versão compilada em ambiente de produção (`node dist/server.cjs`). |
+| `npm run preview` | Executa o servidor de pré-visualização estática do Vite para inspecionar os arquivos da pasta `dist`. |
 | `npm run lint` | Executa a validação de tipagem estática do TypeScript (`tsc --noEmit`). |
 | `npm run clean` | Remove as pastas de compilação temporárias (`dist`). |
+
+---
+
+## 🏠 Hospedagem em Servidor Caseiro (Home Server / Homelab)
+
+Para executar a aplicação 24/7 na sua própria infraestrutura doméstica (notebook antigo, Mini PC, Raspberry Pi ou Docker):
+
+- Consulte o guia completo e detalhado no arquivo **[`HOME_SERVER_DEPLOY.md`](./HOME_SERVER_DEPLOY.md)**.
+- Inclui instruções para execução com **PM2**, containerização com **Docker Compose**, acesso seguro remoto com **Cloudflare Tunnel** ou **Tailscale VPN** e rotinas de backup.
 
 ---
 
@@ -68,10 +81,15 @@ Abaixo está o mapa completo da arquitetura e organização dos arquivos:
 
 ```text
 az-104-command-center/
+├── .github/                               # Automação de CI/CD e workflows do GitHub
+│   └── workflows/
+│       └── deploy.yml                     # Workflow de build e automação CI/CD
+│
 ├── .data/                                # Armazenamento persistente local no backend
 │   └── user_storage.json                 # Backup sincronizado de respostas, simulados e histórico
 │
 ├── public/                               # Arquivos estáticos e suporte a PWA Offline
+│   ├── 404.html                          # Redirecionamento SPA para roteamento de páginas estáticas
 │   ├── manifest.json                     # Manifesto do Progressive Web App (instalável)
 │   └── sw.js                             # Service Worker para cache e funcionamento offline
 │
@@ -115,10 +133,12 @@ az-104-command-center/
 │   └── index.css                         # Estilos globais e importação do Tailwind CSS v4
 │
 ├── server.ts                             # Servidor Express com rotas de API, proxy Gemini e persistência
-├── vite.config.ts                        # Configurações do Vite (React, Tailwind e watchers ignorados)
+├── vite.config.ts                        # Configurações do Vite (React, Tailwind, base relativa e watchers)
 ├── tsconfig.json                         # Configuração do compilador TypeScript
 ├── package.json                          # Dependências, metadados e scripts de execução
 ├── metadata.json                         # Metadados e permissões da aplicação no AI Studio
+├── .env.example                          # Modelo de configuração de variáveis de ambiente
+├── HOME_SERVER_DEPLOY.md                 # Guia de implantação em servidor doméstico / homelab
 └── README.md                             # Documentação geral e guia do projeto
 ```
 
@@ -141,7 +161,7 @@ az-104-command-center/
 - **Detector de Pontos Fracos**: Cruza automaticamente as respostas com os pesos de cada domínio, emitindo diagnósticos e atalhos diretos para os tópicos que precisam de reforço.
 
 ### 4. Gestão e Edição de Simulados por IA
-- Gere simulados inéditos sob medida utilizando o modelo Gemini 3.8.
+- Gere simulados inéditos sob medida utilizando o modelo Gemini (padrão: **Gemini 3.1 Flash Lite**, customizável via `GEMINI_MODEL`).
 - **Edição e exclusão granular**: Edite enunciados, alternativas, explicações ou remova questões individuais dentro de simulados criados por IA.
 
 ### 5. Persistência Dupla e Backup
@@ -161,7 +181,7 @@ az-104-command-center/
 | Domínio | Descrição | Peso no Exame |
 | :---: | :--- | :---: |
 | **Domínio 1** | Gerenciar Identidades e Governança do Azure (*Entra ID, PIM, SSPR, RBAC, Policy, Locks*) | 20–25% |
-| **Domínio 2** | Implementar e Gerenciar Armazenamento (*Storage Accounts, Blobs, Ciclo de Vida, SAS, Azure Files*) | 15–20% |
+| **Domínio 2** | Implementar e Gerenciar Armazenamento (*Storage Accounts, Blobs, Camadas Hot/Cool/Archive, Ciclo de Vida, SAS, Azure Files*) | 15–20% |
 | **Domínio 3** | Implantar e Gerenciar Recursos de Computação (*VMs, VMSS, Disponibilidade, Containers, App Service*) | 20–25% |
 | **Domínio 4** | Configurar e Gerenciar Redes Virtuais (*VNets, Peering, NSG, ASG, Bastion, Load Balancers, DNS*) | 15–20% |
 | **Domínio 5** | Monitorar e Manter Recursos do Azure (*Azure Monitor, Log Analytics, KQL, Alertas, Backup, ASR*) | 10–15% |
