@@ -54,10 +54,12 @@ export const BackupModal: React.FC<BackupModalProps> = ({
           throw new Error("Arquivo JSON inválido ou incompatível.");
         }
 
+        const flashcardCount = (parsed.spacedCards || []).length;
+        const flashcardMsg = flashcardCount > 0 ? `, ${flashcardCount} flashcards SM-2` : '';
         onRestoreBackup(parsed);
         setImportStatus({
           success: true,
-          message: `Backup restaurado com sucesso! (${Object.keys(parsed.userAnswers || {}).length} respostas e ${(parsed.customSimulados || []).length} simulados restaurados).`,
+          message: `Backup restaurado com sucesso! (${Object.keys(parsed.userAnswers || {}).length} respostas, ${(parsed.customSimulados || []).length} simulados${flashcardMsg}).`,
         });
       } catch (err: any) {
         setImportStatus({

@@ -149,7 +149,10 @@ export default function App() {
 
   // Load from backend on initial mount if localStorage is empty
   useEffect(() => {
-    const hasLocalData = Object.keys(userAnswers).length > 0 || examAttempts.length > 0;
+    const hasLocalData =
+      Object.keys(userAnswers).length > 0 ||
+      examAttempts.length > 0 ||
+      (spacedCards && spacedCards.some((c) => c.repetitions > 0));
     if (!hasLocalData) {
       fetch('/api/storage/load')
         .then((res) => {
@@ -164,7 +167,12 @@ export default function App() {
             if (serverData.customSimulados) setCustomSimulados(serverData.customSimulados);
             if (serverData.examAttempts) setExamAttempts(serverData.examAttempts);
             if (serverData.streak) setStreak(serverData.streak);
-            if (serverData.spacedCards) setSpacedCards(serverData.spacedCards);
+            if (serverData.spacedCards && Array.isArray(serverData.spacedCards)) {
+              setSpacedCards(serverData.spacedCards);
+            }
+            if (typeof serverData.flashcardReviewsCount === 'number') {
+              setFlashcardReviewsCount(serverData.flashcardReviewsCount);
+            }
             if (serverData.lastServerSync) {
               setLastServerSync(new Date(serverData.lastServerSync).toLocaleTimeString('pt-BR'));
             }
@@ -184,6 +192,8 @@ export default function App() {
         customSimulados,
         examAttempts,
         streak,
+        spacedCards,
+        flashcardReviewsCount,
       };
       const res = await fetch('/api/storage/sync', {
         method: 'POST',
@@ -200,7 +210,7 @@ export default function App() {
     } catch {
       return false;
     }
-  }, [userAnswers, customSimulados, examAttempts, streak]);
+  }, [userAnswers, customSimulados, examAttempts, streak, spacedCards, flashcardReviewsCount]);
 
   // Referência para evitar sincronização no primeiro carregamento
   const isFirstMountRef = React.useRef(true);
@@ -216,7 +226,7 @@ export default function App() {
       syncToBackend();
     }, 60000);
     return () => clearTimeout(timer);
-  }, [userAnswers, customSimulados, examAttempts, streak, syncToBackend]);
+  }, [userAnswers, customSimulados, examAttempts, streak, spacedCards, flashcardReviewsCount, syncToBackend]);
 
   const handleAnswerQuestion = (questionId: number, optionIndex: number) => {
     setUserAnswers((prev) => ({
@@ -290,6 +300,8 @@ export default function App() {
     if (data.customSimulados) setCustomSimulados(data.customSimulados);
     if (data.examAttempts) setExamAttempts(data.examAttempts);
     if (data.streak) setStreak(data.streak);
+    if (data.spacedCards && Array.isArray(data.spacedCards)) setSpacedCards(data.spacedCards);
+    if (typeof data.flashcardReviewsCount === 'number') setFlashcardReviewsCount(data.flashcardReviewsCount);
     syncToBackend();
   };
 
@@ -411,6 +423,8 @@ export default function App() {
     customSimulados,
     examAttempts,
     streak,
+    spacedCards,
+    flashcardReviewsCount,
   };
 
   return (

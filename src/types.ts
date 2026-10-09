@@ -83,6 +83,8 @@ export interface AppDataBackup {
   examAttempts: ExamAttempt[];
   streak: StudyStreak;
   flashcardProgress?: Record<string, SpacedFlashcard>;
+  spacedCards?: SpacedFlashcard[];
+  flashcardReviewsCount?: number;
 }
 
 export interface SummaryTopic {

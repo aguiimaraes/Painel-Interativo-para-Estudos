@@ -14,7 +14,7 @@ O **AZ-104 Command Center** é uma aplicação web full-stack desenvolvida para 
 - **Simulação Fiel do Exame:** Execução de simulados com questões autorais e tempo corrido, pontuação na escala de referência Microsoft (0 a 1000, nota de corte 700) e calibração estatística de respostas.
 - **Aprendizado Ativo e Retenção:** Algoritmo SuperMemo SM-2 para repetição espaçada em flashcards e detecção automática de lacunas de conhecimento com navegação direta para tópicos teóricos.
 - **Tutor IA com Resiliência Offline:** Integração server-side com Google Gemini (modelo `gemini-3.1-flash-lite`), com grounding em apostilas técnicas e fallback determinístico local para indisponibilidade de rede ou ausência de chave de API.
-- **Persistência Híbrida e PWA:** Funcionamento offline via Service Worker, armazenamento síncrono no `localStorage` e persistência centralizada em arquivo no backend.
+- **Persistência Híbrida e PWA:** Funcionamento offline via Service Worker (`az104-cache-v2`, estratégia Network-First para navegação HTML e pré-cache com caminhos relativos), armazenamento síncrono no `localStorage` e persistência centralizada em arquivo no backend.
 
 ---
 
@@ -83,7 +83,7 @@ A aplicação adota o padrão de **SPA Full-Stack Desacoplada com Proxy Seguro d
 ### Princípios Arquiteturais Chave:
 1. **Segurança de Credenciais:** A chave `GEMINI_API_KEY` nunca trafega nem é exposta ao cliente web. Todas as requisições de IA passam pelo backend Express via proxy `/api/ai/*`.
 2. **Resiliência a Falhas de Rede:** Se a API externa do Gemini retornar erro temporário (503, 429, limite de cota) ou se a chave não for configurada, o backend aciona imediatamente a `generateDomainFallbackResponse`, que faz parsing semântico e responde utilizando a base técnica interna.
-3. **Persistência Dupla (Dual Storage):** A escrita de progresso ocorre sincronicamente no `localStorage` do navegador para latência zero na UI e é assincronamente sincronizada com o backend (`/api/storage/sync`), persistindo em `.data/user_storage.json`.
+3. **Persistência Dupla (Dual Storage):** A escrita de progresso (respostas, histórico de simulados, streak diário, progresso de flashcards SM-2 e contagem de revisões) ocorre sincronicamente no `localStorage` do navegador para latência zero na UI e é assincronamente sincronizada com o backend (`/api/storage/sync`), persistindo em `.data/user_storage.json`. O parser JSON no backend possui limite expandido (50 MB) para suportar backups de grande porte com múltiplos simulados e histórico detalhado.
 
 ---
 
