@@ -6,7 +6,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 import dotenv from "dotenv";
 import { createServer as createViteServer } from "vite";
 import { theoreticalSummaries } from "./src/data/summaries";
-import { allSimuladosQuestions, questionsOneNote } from "./src/data/questions";
+import { allSimuladosQuestions } from "./src/data/questions";
 import { defaultFlashcards } from "./src/data/flashcards";
 import { notebookTranscript } from "./src/data/transcript";
 

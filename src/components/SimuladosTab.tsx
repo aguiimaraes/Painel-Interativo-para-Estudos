@@ -1049,7 +1049,7 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
                 type="text"
                 value={generateTitle}
                 onChange={(e) => setGenerateTitle(e.target.value)}
-                placeholder="Ex: Simulado Especial - Redes & Storage"
+                placeholder="Ex: Simulado Personalizado - Redes & Storage"
                 className="w-full bg-slate-950 text-slate-200 px-3.5 py-2.5 rounded-xl border border-slate-800 focus:outline-none focus:border-purple-400 text-xs"
               />
             </div>

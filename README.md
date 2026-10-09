@@ -117,7 +117,6 @@ az-104-command-center/
 │   ├── data/                             # Banco de questões autorais, resumos e dados técnicos
 │   │   ├── flashcards.ts                 # Base de flashcards com intervalos SM-2 dos 5 domínios
 │   │   ├── questions.ts                  # Agregador e exportador central de todas as questões
-│   │   ├── questionsOneNote.ts           # 5 questões autorais extraídas de anotações reais
 │   │   ├── questionsSimulado1.ts         # Simulado 1: Questões 1 a 50 (balanceadas)
 │   │   ├── questionsSimulado2.ts         # Simulado 2: Questões 51 a 100 (respostas calibradas)
 │   │   ├── questionsSimulado3.ts         # Simulado 3: Questões 101 a 150 (respostas calibradas)

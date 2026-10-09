@@ -2,12 +2,10 @@ import { Question } from '../types';
 import { questionsSimulado1 } from './questionsSimulado1';
 import { questionsSimulado2 } from './questionsSimulado2';
 import { questionsSimulado3 } from './questionsSimulado3';
-import { questionsOneNote } from './questionsOneNote';
 
 export { questionsSimulado1 } from './questionsSimulado1';
 export { questionsSimulado2 } from './questionsSimulado2';
 export { questionsSimulado3 } from './questionsSimulado3';
-export { questionsOneNote } from './questionsOneNote';
 
 /**
  * Coleção completa dos 150 itens de avaliação reformulados para a certificação AZ-104.

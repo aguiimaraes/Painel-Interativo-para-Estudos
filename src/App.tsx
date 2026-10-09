@@ -8,7 +8,7 @@ import {
   ActiveTab, DomainStats, SimuladoId, CustomSimulado,
   ExamAttempt, StudyStreak, SpacedFlashcard, AppDataBackup
 } from './types';
-import { allSimuladosQuestions, questionsOneNote } from './data/questions';
+import { allSimuladosQuestions } from './data/questions';
 import { defaultSpacedFlashcards } from './data/flashcards';
 import { updateStudyStreak, computeAchievements } from './utils/gamification';
 import { Header } from './components/Header';
@@ -50,30 +50,10 @@ export default function App() {
     try {
       const saved = localStorage.getItem('az104_custom_simulados');
       const loaded: CustomSimulado[] = saved ? JSON.parse(saved) : [];
-      const hasOneNoteSim = loaded.some((s) => s.id === 'simulado-onenote-oficial');
-      if (!hasOneNoteSim) {
-        return [
-          {
-            id: 'simulado-onenote-oficial',
-            title: 'Simulado Especial: Questões Autorais das Aulas & Anotações',
-            description: '5 questões autorais detalhadas extraídas diretamente dos cenários reais de exames e cadernos de aula do AZ-104.',
-            createdAt: '24/09/2026',
-            questions: questionsOneNote,
-          },
-          ...loaded,
-        ];
-      }
-      return loaded;
+      // Filtra e exclui qualquer instância legada do simulado especial
+      return loaded.filter((s) => s.id !== 'simulado-onenote-oficial');
     } catch {
-      return [
-        {
-          id: 'simulado-onenote-oficial',
-          title: 'Simulado Especial: Questões Autorais das Aulas & Anotações',
-          description: '5 questões autorais detalhadas extraídas diretamente dos cenários reais de exames e cadernos de aula do AZ-104.',
-          createdAt: '24/09/2026',
-          questions: questionsOneNote,
-        },
-      ];
+      return [];
     }
   });
 
@@ -81,7 +61,8 @@ export default function App() {
   const [examAttempts, setExamAttempts] = useState<ExamAttempt[]>(() => {
     try {
       const saved = localStorage.getItem('az104_exam_attempts');
-      return saved ? JSON.parse(saved) : [];
+      const loaded: ExamAttempt[] = saved ? JSON.parse(saved) : [];
+      return loaded.filter((a) => a.simuladoId !== 'simulado-onenote-oficial');
     } catch {
       return [];
     }
