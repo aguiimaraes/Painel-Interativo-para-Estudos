@@ -2,7 +2,9 @@
 
 Plataforma completa e avançada de estudos e preparação para o exame **Microsoft Certified: Azure Administrator Associate (AZ-104)**. 
 
-O projeto conta com **150 questões de simulados rigorosamente calibradas**, modo exame cronometrado no estilo oficial da Microsoft, algoritmo de repetição espaçada (SM-2 / Anki) nos flashcards, detector automatizado de pontos fracos, tutor inteligente integrado com Google Gemini, debugger interativo de comandos Azure CLI/PowerShell, geração e edição de simulados personalizados por IA, gamificação (streaks e conquistas), backup/sincronização de dados e suporte offline como PWA (Progressive Web App).
+O projeto conta com **150 questões de simulados autorais rigorosamente calibradas**, modo exame cronometrado no estilo do exame da Microsoft, algoritmo de repetição espaçada (SM-2 / Anki) nos flashcards, detector automatizado de pontos fracos, tutor inteligente integrado com Google Gemini, debugger interativo de comandos Azure CLI/PowerShell, geração e edição de simulados personalizados por IA, gamificação (streaks e conquistas), backup/sincronização de dados e suporte offline como PWA (Progressive Web App).
+
+> **Aviso Legal / Disclaimer:** Este projeto é uma ferramenta independente de estudos e preparação técnica com **questões autorais**. Não possui qualquer vínculo, afiliação, endosso ou patrocínio pela **Microsoft Corporation**. Todas as marcas registradas mencionadas (como Microsoft, Azure, Entra ID, etc.) pertencem aos seus respectivos proprietários.
 
 ---
 
@@ -112,10 +114,10 @@ az-104-command-center/
 │   │   ├── SyllabusTab.tsx               # Guia oficial de objetivos de estudo e pesos do exame
 │   │   └── WeakSpotDetector.tsx          # Detector inteligente de pontos fracos e diagnósticos
 │   │
-│   ├── data/                             # Banco de questões oficiais, resumos e dados técnicos
+│   ├── data/                             # Banco de questões autorais, resumos e dados técnicos
 │   │   ├── flashcards.ts                 # Base de flashcards com intervalos SM-2 dos 5 domínios
 │   │   ├── questions.ts                  # Agregador e exportador central de todas as questões
-│   │   ├── questionsOneNote.ts           # 5 questões oficiais extraídas de anotações reais
+│   │   ├── questionsOneNote.ts           # 5 questões autorais extraídas de anotações reais
 │   │   ├── questionsSimulado1.ts         # Simulado 1: Questões 1 a 50 (balanceadas)
 │   │   ├── questionsSimulado2.ts         # Simulado 2: Questões 51 a 100 (respostas calibradas)
 │   │   ├── questionsSimulado3.ts         # Simulado 3: Questões 101 a 150 (respostas calibradas)
@@ -146,8 +148,8 @@ az-104-command-center/
 
 ## 🌟 Funcionalidades Principais
 
-### 1. Simulados Oficiais & Calibração de Respostas
-- **150 questões exclusivas** divididas em 3 simulados com 50 questões cada, cobrindo os 5 domínios oficiais.
+### 1. Simulados com Questões Autorais & Calibração de Respostas
+- **150 questões exclusivas e autorais** divididas em 3 simulados com 50 questões cada, cobrindo os 5 domínios do exame.
 - **Distribuição estatística balanceada**: As alternativas corretas são distribuídas homogeneamente entre as posições A, B, C e D (~25% cada).
 - **Eliminação de viés de tamanho**: Distratores enriquecidos tecnicamente com parâmetros oficiais do Azure, garantindo que o tamanho da resposta não revele a alternativa correta.
 

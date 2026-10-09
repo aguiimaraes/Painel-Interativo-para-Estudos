@@ -1,7 +1,7 @@
 import { Question } from '../types';
 
 /**
- * Questões oficiais autênticas extraídas do caderno de estudos e revisões teóricas (OneNote).
+ * Questões autorais autênticas extraídas do caderno de estudos e revisões teóricas (OneNote).
  * Cada questão foi estruturada com foco em cenários de exames da Microsoft,
  * alternativas balanceadas e justificativas técnicas fundamentadas nos Guias Teóricos.
  */

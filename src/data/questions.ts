@@ -11,7 +11,7 @@ export { questionsOneNote } from './questionsOneNote';
 
 /**
  * Coleção completa dos 150 itens de avaliação reformulados para a certificação AZ-104.
- * Cada um dos 3 simulados oficiais possui exatamente 50 questões estruturadas de acordo com
+ * Cada um dos 3 simulados possui exatamente 50 questões estruturadas de acordo com
  * os pesos oficiais dos 5 domínios do exame:
  * - Domínio 1: Identidade & Governança (11 questões)
  * - Domínio 2: Armazenamento (9 questões)

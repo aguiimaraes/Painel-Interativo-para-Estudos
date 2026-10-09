@@ -152,7 +152,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                 Peso dos Domínios no Exame Oficial AZ-104
               </h2>
               <p className="text-xs text-slate-400 mt-0.5">
-                Total de 150 Questões únicas e sem repetição distribuídas em 3 simulados oficiais
+                Total de 150 Questões únicas e sem repetição distribuídas em 3 simulados autorais
               </p>
             </div>
             <span className="text-xs font-bold bg-sky-950 text-sky-300 border border-sky-700 px-3 py-1.5 rounded-full flex items-center gap-1.5 self-start sm:self-auto">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Search, BookOpen, ArrowRight, ShieldCheck, Terminal, AlertTriangle,
   ChevronDown, ChevronUp, Sparkles, Filter, Database, Server, Network,
@@ -9,12 +9,37 @@ import { SummaryTopic } from '../types';
 
 interface SummariesTabProps {
   onAskAi: (topic: string) => void;
+  targetDomainNumber?: number | null;
+  onClearTargetDomain?: () => void;
 }
 
-export const SummariesTab: React.FC<SummariesTabProps> = ({ onAskAi }) => {
+export const SummariesTab: React.FC<SummariesTabProps> = ({
+  onAskAi,
+  targetDomainNumber,
+  onClearTargetDomain,
+}) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedDomain, setSelectedDomain] = useState<number | 'all'>('all');
   const [expandedCardId, setExpandedCardId] = useState<string | null>(theoreticalSummaries[0].id);
+
+  // When targetDomainNumber is provided (e.g. from Weak Spot Detector), navigate directly to that domain
+  useEffect(() => {
+    if (targetDomainNumber && targetDomainNumber >= 1 && targetDomainNumber <= 5) {
+      setSelectedDomain(targetDomainNumber);
+      setSearchTerm('');
+      const targetTopic = theoreticalSummaries.find((s) => s.domainNumber === targetDomainNumber);
+      if (targetTopic) {
+        setExpandedCardId(targetTopic.id);
+        setTimeout(() => {
+          const el = document.getElementById(`summary-card-${targetTopic.id}`);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 120);
+      }
+      onClearTargetDomain?.();
+    }
+  }, [targetDomainNumber, onClearTargetDomain]);
 
   const domainOptions = [
     { id: 'all', label: 'Todos os Tópicos', icon: Layers },
@@ -92,6 +117,24 @@ export const SummariesTab: React.FC<SummariesTabProps> = ({ onAskAi }) => {
             );
           })}
         </div>
+
+        {/* Active Domain Indicator Banner */}
+        {selectedDomain !== 'all' && (
+          <div className="flex items-center justify-between bg-sky-950/40 border border-sky-800/60 px-4 py-2.5 rounded-xl text-xs text-sky-200">
+            <span className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-sky-400 flex-shrink-0" />
+              <span>
+                Foco direcionado: exibindo guias do <strong>Domínio {selectedDomain}</strong>.
+              </span>
+            </span>
+            <button
+              onClick={() => setSelectedDomain('all')}
+              className="text-xs text-sky-400 hover:text-sky-300 underline font-semibold ml-2 cursor-pointer flex-shrink-0"
+            >
+              Ver todos os domínios
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Results Count & Guide notice */}
@@ -108,8 +151,9 @@ export const SummariesTab: React.FC<SummariesTabProps> = ({ onAskAi }) => {
           return (
             <div
               key={topic.id}
+              id={`summary-card-${topic.id}`}
               className={`bg-slate-900/90 rounded-2xl border transition-all duration-200 overflow-hidden shadow-lg ${
-                isExpanded ? 'border-sky-500/50 shadow-sky-950/30' : 'border-slate-800 hover:border-slate-700'
+                isExpanded ? 'border-sky-500/50 shadow-sky-950/30 ring-1 ring-sky-500/20' : 'border-slate-800 hover:border-slate-700'
               }`}
             >
               {/* Card Header (clickable to toggle) */}

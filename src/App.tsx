@@ -27,6 +27,7 @@ import { AchievementsModal } from './components/AchievementsModal';
 export default function App() {
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
   const [aiInitialPrompt, setAiInitialPrompt] = useState<string>('');
+  const [targetSummaryDomain, setTargetSummaryDomain] = useState<number | null>(null);
   const [lastServerSync, setLastServerSync] = useState<string | undefined>(undefined);
 
   // Modals state
@@ -54,8 +55,8 @@ export default function App() {
         return [
           {
             id: 'simulado-onenote-oficial',
-            title: 'Simulado Especial: Questões Oficiais das Aulas & Anotações',
-            description: '5 questões oficiais detalhadas extraídas diretamente dos cenários reais de exames e cadernos de aula do AZ-104.',
+            title: 'Simulado Especial: Questões Autorais das Aulas & Anotações',
+            description: '5 questões autorais detalhadas extraídas diretamente dos cenários reais de exames e cadernos de aula do AZ-104.',
             createdAt: '24/09/2026',
             questions: questionsOneNote,
           },
@@ -67,8 +68,8 @@ export default function App() {
       return [
         {
           id: 'simulado-onenote-oficial',
-          title: 'Simulado Especial: Questões Oficiais das Aulas & Anotações',
-          description: '5 questões oficiais detalhadas extraídas diretamente dos cenários reais de exames e cadernos de aula do AZ-104.',
+          title: 'Simulado Especial: Questões Autorais das Aulas & Anotações',
+          description: '5 questões autorais detalhadas extraídas diretamente dos cenários reais de exames e cadernos de aula do AZ-104.',
           createdAt: '24/09/2026',
           questions: questionsOneNote,
         },
@@ -459,6 +460,7 @@ export default function App() {
             }}
             onOpenAi={() => setActiveTab('ai')}
             onOpenSummary={(domId) => {
+              setTargetSummaryDomain(domId);
               setActiveTab('resumos');
             }}
             streak={streak}
@@ -495,7 +497,13 @@ export default function App() {
           />
         )}
 
-        {activeTab === 'resumos' && <SummariesTab onAskAi={handleAskAi} />}
+        {activeTab === 'resumos' && (
+          <SummariesTab
+            onAskAi={handleAskAi}
+            targetDomainNumber={targetSummaryDomain}
+            onClearTargetDomain={() => setTargetSummaryDomain(null)}
+          />
+        )}
 
         {activeTab === 'cli' && <CliDebuggerTab />}
 
