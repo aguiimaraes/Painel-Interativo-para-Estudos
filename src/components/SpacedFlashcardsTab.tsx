@@ -109,7 +109,6 @@ export const SpacedFlashcardsTab: React.FC<SpacedFlashcardsProps> = ({
 
         {/* Quick Stats Pill */}
         <div className="flex items-center gap-3">
-<<<<<<< HEAD
           <div className="bg-amber-950 border border-amber-600/50 px-3.5 py-2 rounded-xl text-center">
             <div className="text-xs text-amber-300 font-bold uppercase tracking-wider">Para Hoje</div>
             <div className="text-lg font-black text-amber-400">{dueCount}</div>
@@ -120,18 +119,6 @@ export const SpacedFlashcardsTab: React.FC<SpacedFlashcardsProps> = ({
           </div>
           <div className="bg-slate-800 border border-slate-700 px-3.5 py-2 rounded-xl text-center">
             <div className="text-xs text-slate-300 font-bold uppercase tracking-wider">Total</div>
-=======
-          <div className="bg-amber-950/40 border border-amber-500/40 px-3.5 py-2 rounded-xl text-center">
-            <div className="text-[0.6875rem] text-amber-300 font-bold uppercase tracking-wider">Para Hoje</div>
-            <div className="text-lg font-black text-amber-400">{dueCount}</div>
-          </div>
-          <div className="bg-emerald-950/40 border border-emerald-500/40 px-3.5 py-2 rounded-xl text-center">
-            <div className="text-[0.6875rem] text-emerald-300 font-bold uppercase tracking-wider">Dominados</div>
-            <div className="text-lg font-black text-emerald-400">{masteredCount}</div>
-          </div>
-          <div className="bg-slate-800 border border-slate-700 px-3.5 py-2 rounded-xl text-center">
-            <div className="text-[0.6875rem] text-slate-400 font-bold uppercase tracking-wider">Total</div>
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
             <div className="text-lg font-black text-slate-200">{cards.length}</div>
           </div>
         </div>
@@ -226,11 +213,7 @@ export const SpacedFlashcardsTab: React.FC<SpacedFlashcardsProps> = ({
             </span>
             <div className="flex items-center gap-2">
               <span>Card {currentIndex + 1} de {filteredCards.length}</span>
-<<<<<<< HEAD
               <span className="text-xs bg-slate-800 px-2 py-0.5 rounded text-slate-300">
-=======
-              <span className="text-[0.625rem] bg-slate-800 px-2 py-0.5 rounded text-slate-300">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                 Repetições: {currentCard.repetitions}
               </span>
             </div>
@@ -252,22 +235,14 @@ export const SpacedFlashcardsTab: React.FC<SpacedFlashcardsProps> = ({
                   <span className="flex items-center gap-1 font-semibold text-purple-400">
                     <Brain className="w-3.5 h-3.5" /> Frente &bull; Pergunta / Cenário
                   </span>
-<<<<<<< HEAD
                   <span className="text-xs text-slate-300 italic">Clique para ver o gabarito</span>
-=======
-                  <span className="text-[0.6875rem] text-slate-400 italic">Clique para ver o gabarito</span>
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                 </div>
                 <div className="my-auto py-4">
                   <h3 className="text-base font-bold text-slate-100 leading-relaxed text-center">
                     {currentCard.front}
                   </h3>
                 </div>
-<<<<<<< HEAD
                 <div className="text-center text-xs text-slate-300 font-mono">
-=======
-                <div className="text-center text-[0.6875rem] text-slate-400 font-mono">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                   Toque para revelar a explicação técnica
                 </div>
               </div>
@@ -278,11 +253,7 @@ export const SpacedFlashcardsTab: React.FC<SpacedFlashcardsProps> = ({
                   <span className="flex items-center gap-1 font-semibold text-emerald-400">
                     <CheckCircle className="w-3.5 h-3.5" /> Verso &bull; Fundamento Técnico
                   </span>
-<<<<<<< HEAD
                   <span className="text-xs text-slate-300 font-mono">
-=======
-                  <span className="text-[0.625rem] text-slate-400 font-mono">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                     Facilidade: {currentCard.easeFactor}x
                   </span>
                 </div>
@@ -291,11 +262,7 @@ export const SpacedFlashcardsTab: React.FC<SpacedFlashcardsProps> = ({
                     {currentCard.back}
                   </p>
                 </div>
-<<<<<<< HEAD
                 <div className="text-xs text-amber-300 text-center italic">
-=======
-                <div className="text-[0.625rem] text-amber-300/80 text-center italic">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                   Avalie como foi sua lembrança abaixo para agendar a próxima repetição
                 </div>
               </div>
@@ -314,11 +281,7 @@ export const SpacedFlashcardsTab: React.FC<SpacedFlashcardsProps> = ({
                   className="bg-rose-950/80 hover:bg-rose-900 border border-rose-700/80 text-rose-200 p-2.5 rounded-xl flex flex-col items-center gap-1 transition cursor-pointer"
                 >
                   <span className="font-black text-sm">Errei</span>
-<<<<<<< HEAD
                   <span className="text-xs text-rose-300 font-mono">
-=======
-                  <span className="text-[0.625rem] text-rose-300/80 font-mono">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                     {getNextIntervalPreview(currentCard, 0)}
                   </span>
                 </button>
@@ -327,11 +290,7 @@ export const SpacedFlashcardsTab: React.FC<SpacedFlashcardsProps> = ({
                   className="bg-amber-950/80 hover:bg-amber-900 border border-amber-700/80 text-amber-200 p-2.5 rounded-xl flex flex-col items-center gap-1 transition cursor-pointer"
                 >
                   <span className="font-black text-sm">Difícil</span>
-<<<<<<< HEAD
                   <span className="text-xs text-amber-300 font-mono">
-=======
-                  <span className="text-[0.625rem] text-amber-300/80 font-mono">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                     {getNextIntervalPreview(currentCard, 1)}
                   </span>
                 </button>
@@ -340,11 +299,7 @@ export const SpacedFlashcardsTab: React.FC<SpacedFlashcardsProps> = ({
                   className="bg-sky-950/80 hover:bg-sky-900 border border-sky-700/80 text-sky-200 p-2.5 rounded-xl flex flex-col items-center gap-1 transition cursor-pointer"
                 >
                   <span className="font-black text-sm">Bom</span>
-<<<<<<< HEAD
                   <span className="text-xs text-sky-300 font-mono">
-=======
-                  <span className="text-[0.625rem] text-sky-300/80 font-mono">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                     {getNextIntervalPreview(currentCard, 2)}
                   </span>
                 </button>
@@ -353,11 +308,7 @@ export const SpacedFlashcardsTab: React.FC<SpacedFlashcardsProps> = ({
                   className="bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-700/80 text-emerald-200 p-2.5 rounded-xl flex flex-col items-center gap-1 transition cursor-pointer"
                 >
                   <span className="font-black text-sm">Fácil</span>
-<<<<<<< HEAD
                   <span className="text-xs text-emerald-300 font-mono">
-=======
-                  <span className="text-[0.625rem] text-emerald-300/80 font-mono">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                     {getNextIntervalPreview(currentCard, 3)}
                   </span>
                 </button>

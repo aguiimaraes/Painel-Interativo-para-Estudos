@@ -8,18 +8,9 @@ html {
   font-size: 17px;
 }
 
-<<<<<<< HEAD
-:root {
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-}
-
-b, strong {
-  font-weight: 700;
-=======
 b, strong {
   font-weight: 800 !important;
   color: #ffffff !important;
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
 }
 
 @layer utilities {
@@ -38,7 +29,6 @@ b, strong {
   }
 }
 
-<<<<<<< HEAD
 /* Focus visible - WCAG 2.4.7 */
 *:focus-visible {
   outline: 2px solid #1f6feb;
@@ -46,25 +36,16 @@ b, strong {
   border-radius: 4px;
 }
 
-=======
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
 /* Custom scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-<<<<<<< HEAD
-  background: #0d1117;
-}
-::-webkit-scrollbar-thumb {
-  background: #21262d;
-=======
   background: #090d16;
 }
 ::-webkit-scrollbar-thumb {
   background: #1e293b;
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {

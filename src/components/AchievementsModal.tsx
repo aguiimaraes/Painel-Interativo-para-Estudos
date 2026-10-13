@@ -78,7 +78,6 @@ export const AchievementsModal: React.FC<AchievementsModalProps> = ({
                     {ach.title}
                   </span>
                   {ach.isUnlocked ? (
-<<<<<<< HEAD
                     <span className="text-xs text-emerald-400 font-bold flex items-center gap-1">
                       <CheckCircle2 className="w-3.5 h-3.5" /> Conquistada
                     </span>
@@ -89,18 +88,6 @@ export const AchievementsModal: React.FC<AchievementsModalProps> = ({
                   )}
                 </div>
                 <p className="text-xs text-slate-300 leading-relaxed">
-=======
-                    <span className="text-[0.625rem] text-emerald-400 font-bold flex items-center gap-1">
-                      <CheckCircle2 className="w-3 h-3" /> Conquistada
-                    </span>
-                  ) : (
-                    <span className="text-[0.625rem] text-slate-500 font-bold flex items-center gap-1">
-                      <Lock className="w-3 h-3" /> Bloqueada
-                    </span>
-                  )}
-                </div>
-                <p className="text-[0.6875rem] text-slate-400 leading-relaxed">
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                   {ach.description}
                 </p>
                 {/* Progress bar */}

@@ -6,7 +6,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 import dotenv from "dotenv";
 import { createServer as createViteServer } from "vite";
 import { theoreticalSummaries } from "./src/data/summaries";
-import { allSimuladosQuestions, questionsOneNote } from "./src/data/questions";
+import { allSimuladosQuestions } from "./src/data/questions";
 import { defaultFlashcards } from "./src/data/flashcards";
 import { notebookTranscript } from "./src/data/transcript";
 
@@ -18,7 +18,8 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = 3000;
 
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
 // Helper to provide domain-grounded knowledge from in-depth theoretical guides
 function getDomainGrounding(domainNumber?: number): string {
@@ -145,7 +146,7 @@ function getGeminiClient(): GoogleGenAI | null {
   });
 }
 
-const PRIMARY_MODEL = "gemini-3.8-flash";
+const PRIMARY_MODEL = process.env.GEMINI_MODEL || "gemini-3.1-flash-lite";
 const FALLBACK_MODEL = "gemini-3.1-flash-lite";
 
 function isTransientError(error: any): boolean {
@@ -281,8 +282,15 @@ app.post("/api/storage/sync", async (req, res) => {
     if (!payload || typeof payload !== "object") {
       return res.status(400).json({ error: "Payload inválido para sincronização." });
     }
+    const cleanPayload = { ...payload };
+    if (Array.isArray(cleanPayload.customSimulados)) {
+      cleanPayload.customSimulados = cleanPayload.customSimulados.filter((s: any) => s.id !== "simulado-onenote-oficial");
+    }
+    if (Array.isArray(cleanPayload.examAttempts)) {
+      cleanPayload.examAttempts = cleanPayload.examAttempts.filter((a: any) => a.simuladoId !== "simulado-onenote-oficial");
+    }
     const dataToWrite = {
-      ...payload,
+      ...cleanPayload,
       lastServerSync: new Date().toISOString(),
     };
     await fs.promises.writeFile(STORAGE_FILE_PATH, JSON.stringify(dataToWrite, null, 2), "utf-8");
@@ -306,6 +314,12 @@ app.get("/api/storage/load", async (_req, res) => {
     }
     const raw = await fs.promises.readFile(filePathToRead, "utf-8");
     const parsed = JSON.parse(raw);
+    if (parsed && Array.isArray(parsed.customSimulados)) {
+      parsed.customSimulados = parsed.customSimulados.filter((s: any) => s.id !== "simulado-onenote-oficial");
+    }
+    if (parsed && Array.isArray(parsed.examAttempts)) {
+      parsed.examAttempts = parsed.examAttempts.filter((a: any) => a.simuladoId !== "simulado-onenote-oficial");
+    }
     return res.json({ empty: false, data: parsed });
   } catch (err: any) {
     console.error("Erro ao carregar dados do servidor:", err);

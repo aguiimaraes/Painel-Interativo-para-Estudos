@@ -53,23 +53,14 @@ export const SyllabusTab: React.FC = () => {
 
           <div className="flex items-center space-x-3">
             <div className="text-right">
-<<<<<<< HEAD
               <span className="text-xs text-slate-300 block font-semibold">Progresso no Edital</span>
-=======
-              <span className="text-[0.625rem] text-slate-400 block font-semibold">Progresso no Edital</span>
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
               <span className="text-xs font-bold text-sky-400">{completedItems} de {totalItems} tópicos ({progressPercent}%)</span>
             </div>
             <button
               onClick={handleReset}
-<<<<<<< HEAD
               className="text-slate-400 hover:text-white p-2.5 rounded-xl bg-slate-800 border border-slate-700 transition cursor-pointer min-h-[36px] min-w-[36px] flex items-center justify-center"
               title="Reiniciar checklist"
               aria-label="Reiniciar checklist"
-=======
-              className="text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800 border border-slate-700 transition cursor-pointer"
-              title="Reiniciar checklist"
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
             >
               <RotateCcw className="w-3.5 h-3.5" />
             </button>
@@ -105,11 +96,7 @@ export const SyllabusTab: React.FC = () => {
                         ) : (
                           <Square className="w-4 h-4 text-slate-600 flex-shrink-0 mt-0.5" />
                         )}
-<<<<<<< HEAD
                         <span className={isChecked ? 'line-through text-slate-400' : 'text-slate-200'}>
-=======
-                        <span className={isChecked ? 'line-through text-slate-500' : 'text-slate-300'}>
->>>>>>> aa3c4471f1eeb7ced3260df3c4cb483596460500
                           {item}
                         </span>
                       </div>

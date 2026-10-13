@@ -8,7 +8,7 @@ import {
   ActiveTab, DomainStats, SimuladoId, CustomSimulado,
   ExamAttempt, StudyStreak, SpacedFlashcard, AppDataBackup
 } from './types';
-import { allSimuladosQuestions, questionsOneNote } from './data/questions';
+import { allSimuladosQuestions } from './data/questions';
 import { defaultSpacedFlashcards } from './data/flashcards';
 import { updateStudyStreak, computeAchievements } from './utils/gamification';
 import { Header } from './components/Header';
@@ -27,6 +27,7 @@ import { AchievementsModal } from './components/AchievementsModal';
 export default function App() {
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
   const [aiInitialPrompt, setAiInitialPrompt] = useState<string>('');
+  const [targetSummaryDomain, setTargetSummaryDomain] = useState<number | null>(null);
   const [lastServerSync, setLastServerSync] = useState<string | undefined>(undefined);
 
   // Modals state
@@ -49,30 +50,10 @@ export default function App() {
     try {
       const saved = localStorage.getItem('az104_custom_simulados');
       const loaded: CustomSimulado[] = saved ? JSON.parse(saved) : [];
-      const hasOneNoteSim = loaded.some((s) => s.id === 'simulado-onenote-oficial');
-      if (!hasOneNoteSim) {
-        return [
-          {
-            id: 'simulado-onenote-oficial',
-            title: 'Simulado Especial: Questões Oficiais das Aulas & Anotações',
-            description: '5 questões oficiais detalhadas extraídas diretamente dos cenários reais de exames e cadernos de aula do AZ-104.',
-            createdAt: '24/09/2026',
-            questions: questionsOneNote,
-          },
-          ...loaded,
-        ];
-      }
-      return loaded;
+      // Filtra e exclui qualquer instância legada do simulado especial
+      return loaded.filter((s) => s.id !== 'simulado-onenote-oficial');
     } catch {
-      return [
-        {
-          id: 'simulado-onenote-oficial',
-          title: 'Simulado Especial: Questões Oficiais das Aulas & Anotações',
-          description: '5 questões oficiais detalhadas extraídas diretamente dos cenários reais de exames e cadernos de aula do AZ-104.',
-          createdAt: '24/09/2026',
-          questions: questionsOneNote,
-        },
-      ];
+      return [];
     }
   });
 
@@ -80,7 +61,8 @@ export default function App() {
   const [examAttempts, setExamAttempts] = useState<ExamAttempt[]>(() => {
     try {
       const saved = localStorage.getItem('az104_exam_attempts');
-      return saved ? JSON.parse(saved) : [];
+      const loaded: ExamAttempt[] = saved ? JSON.parse(saved) : [];
+      return loaded.filter((a) => a.simuladoId !== 'simulado-onenote-oficial');
     } catch {
       return [];
     }
@@ -167,7 +149,10 @@ export default function App() {
 
   // Load from backend on initial mount if localStorage is empty
   useEffect(() => {
-    const hasLocalData = Object.keys(userAnswers).length > 0 || examAttempts.length > 0;
+    const hasLocalData =
+      Object.keys(userAnswers).length > 0 ||
+      examAttempts.length > 0 ||
+      (spacedCards && spacedCards.some((c) => c.repetitions > 0));
     if (!hasLocalData) {
       fetch('/api/storage/load')
         .then((res) => {
@@ -182,7 +167,12 @@ export default function App() {
             if (serverData.customSimulados) setCustomSimulados(serverData.customSimulados);
             if (serverData.examAttempts) setExamAttempts(serverData.examAttempts);
             if (serverData.streak) setStreak(serverData.streak);
-            if (serverData.spacedCards) setSpacedCards(serverData.spacedCards);
+            if (serverData.spacedCards && Array.isArray(serverData.spacedCards)) {
+              setSpacedCards(serverData.spacedCards);
+            }
+            if (typeof serverData.flashcardReviewsCount === 'number') {
+              setFlashcardReviewsCount(serverData.flashcardReviewsCount);
+            }
             if (serverData.lastServerSync) {
               setLastServerSync(new Date(serverData.lastServerSync).toLocaleTimeString('pt-BR'));
             }
@@ -202,6 +192,8 @@ export default function App() {
         customSimulados,
         examAttempts,
         streak,
+        spacedCards,
+        flashcardReviewsCount,
       };
       const res = await fetch('/api/storage/sync', {
         method: 'POST',
@@ -218,7 +210,7 @@ export default function App() {
     } catch {
       return false;
     }
-  }, [userAnswers, customSimulados, examAttempts, streak]);
+  }, [userAnswers, customSimulados, examAttempts, streak, spacedCards, flashcardReviewsCount]);
 
   // Referência para evitar sincronização no primeiro carregamento
   const isFirstMountRef = React.useRef(true);
@@ -234,7 +226,7 @@ export default function App() {
       syncToBackend();
     }, 60000);
     return () => clearTimeout(timer);
-  }, [userAnswers, customSimulados, examAttempts, streak, syncToBackend]);
+  }, [userAnswers, customSimulados, examAttempts, streak, spacedCards, flashcardReviewsCount, syncToBackend]);
 
   const handleAnswerQuestion = (questionId: number, optionIndex: number) => {
     setUserAnswers((prev) => ({
@@ -308,6 +300,8 @@ export default function App() {
     if (data.customSimulados) setCustomSimulados(data.customSimulados);
     if (data.examAttempts) setExamAttempts(data.examAttempts);
     if (data.streak) setStreak(data.streak);
+    if (data.spacedCards && Array.isArray(data.spacedCards)) setSpacedCards(data.spacedCards);
+    if (typeof data.flashcardReviewsCount === 'number') setFlashcardReviewsCount(data.flashcardReviewsCount);
     syncToBackend();
   };
 
@@ -429,6 +423,8 @@ export default function App() {
     customSimulados,
     examAttempts,
     streak,
+    spacedCards,
+    flashcardReviewsCount,
   };
 
   return (
@@ -459,6 +455,7 @@ export default function App() {
             }}
             onOpenAi={() => setActiveTab('ai')}
             onOpenSummary={(domId) => {
+              setTargetSummaryDomain(domId);
               setActiveTab('resumos');
             }}
             streak={streak}
@@ -495,7 +492,13 @@ export default function App() {
           />
         )}
 
-        {activeTab === 'resumos' && <SummariesTab onAskAi={handleAskAi} />}
+        {activeTab === 'resumos' && (
+          <SummariesTab
+            onAskAi={handleAskAi}
+            targetDomainNumber={targetSummaryDomain}
+            onClearTargetDomain={() => setTargetSummaryDomain(null)}
+          />
+        )}
 
         {activeTab === 'cli' && <CliDebuggerTab />}
 
