@@ -63,7 +63,19 @@ export const SummariesTab: React.FC<SummariesTabProps> = ({
   });
 
   const toggleExpand = (id: string) => {
-    setExpandedCardId((prev) => (prev === id ? null : id));
+    setExpandedCardId((prev) => {
+      const willExpand = prev !== id;
+      if (willExpand) {
+        setTimeout(() => {
+          const el = document.getElementById(`summary-card-${id}`);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 100);
+        return id;
+      }
+      return null;
+    });
   };
 
   return (
@@ -152,7 +164,7 @@ export const SummariesTab: React.FC<SummariesTabProps> = ({
             <div
               key={topic.id}
               id={`summary-card-${topic.id}`}
-              className={`bg-slate-900/90 rounded-2xl border transition-all duration-200 overflow-hidden shadow-lg ${
+              className={`scroll-mt-20 md:scroll-mt-24 bg-slate-900/90 rounded-2xl border transition-all duration-200 overflow-hidden shadow-lg ${
                 isExpanded ? 'border-sky-500/50 shadow-sky-950/30 ring-1 ring-sky-500/20' : 'border-slate-800 hover:border-slate-700'
               }`}
             >
@@ -259,8 +271,39 @@ export const SummariesTab: React.FC<SummariesTabProps> = ({
                     </div>
                   )}
 
-                  {/* Footer Action: Ask AI Tutor about this topic */}
-                  <div className="pt-2 flex justify-end">
+                  {/* Footer Actions: Navigation & Ask AI Tutor */}
+                  <div className="pt-2 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const el = document.getElementById(`summary-card-${topic.id}`);
+                          if (el) {
+                            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }
+                        }}
+                        className="text-xs text-slate-400 hover:text-white flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition cursor-pointer"
+                        title="Rolar de volta para o início deste tópico"
+                      >
+                        <ChevronUp className="w-3.5 h-3.5 text-sky-400" />
+                        <span>Voltar ao topo deste guia</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          toggleExpand(topic.id);
+                          const el = document.getElementById(`summary-card-${topic.id}`);
+                          if (el) {
+                            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }
+                        }}
+                        className="text-xs text-slate-400 hover:text-slate-200 flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition cursor-pointer"
+                      >
+                        <span>Recolher</span>
+                      </button>
+                    </div>
+
                     <button
                       onClick={() => onAskAi(`Explique detalhadamente o tópico oficial de AZ-104: "${topic.title}". Forneça cenários práticos de arquitetura, pegadinhas de múltipla escolha e comandos Azure CLI.`)}
                       className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow cursor-pointer"
