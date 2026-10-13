@@ -676,25 +676,56 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
           )}
 
           {/* Navigation Controls */}
-          <div className="flex justify-between items-center pt-2">
+          <div className="flex flex-wrap sm:flex-nowrap justify-between items-center gap-3 pt-3 border-t border-slate-800/80">
             <button
               onClick={() => setCurrentQIndex((prev) => Math.max(0, prev - 1))}
               disabled={currentQIndex === 0}
-              className="bg-slate-800 hover:bg-slate-700 disabled:opacity-40 text-slate-200 px-4 py-2.5 rounded-xl text-xs font-semibold transition flex items-center space-x-2 border border-slate-700 cursor-pointer disabled:cursor-not-allowed"
+              className="bg-slate-800 hover:bg-slate-700 disabled:opacity-40 text-slate-200 px-4 py-2.5 rounded-xl text-xs font-semibold transition flex items-center space-x-2 border border-slate-700 cursor-pointer disabled:cursor-not-allowed order-1"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Anterior</span>
             </button>
 
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={() => setCurrentQIndex((prev) => Math.min(simuladoQuestions.length - 1, prev + 1))}
-                disabled={currentQIndex === simuladoQuestions.length - 1}
-                className="bg-sky-600 hover:bg-sky-500 disabled:opacity-40 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center space-x-2 shadow cursor-pointer disabled:cursor-not-allowed"
-              >
-                <span>Próxima</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+            <div className="flex items-center space-x-2 order-2">
+              {currentQIndex < simuladoQuestions.length - 1 ? (
+                <button
+                  onClick={() => setCurrentQIndex((prev) => Math.min(simuladoQuestions.length - 1, prev + 1))}
+                  className="bg-sky-600 hover:bg-sky-500 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center space-x-2 shadow cursor-pointer"
+                >
+                  <span>Próxima</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              ) : (
+                <div className="flex items-center gap-2">
+                  {answeredCount < simuladoQuestions.length && (
+                    <span className="hidden sm:inline-block text-[11px] text-amber-400/90 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1.5 rounded-lg">
+                      {simuladoQuestions.length - answeredCount} pendente(s)
+                    </span>
+                  )}
+                  <button
+                    onClick={finishExam}
+                    className={`px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center space-x-2 shadow-lg cursor-pointer ${
+                      quizMode === 'exam'
+                        ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-amber-950/40 ring-1 ring-amber-400/60'
+                        : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-950/40 ring-1 ring-emerald-500/60'
+                    }`}
+                    title={
+                      quizMode === 'exam'
+                        ? 'Finalizar a prova oficial e visualizar pontuação'
+                        : 'Concluir o simulado e visualizar resultado detalhado'
+                    }
+                  >
+                    {quizMode === 'exam' ? (
+                      <Trophy className="w-4 h-4 text-slate-950" />
+                    ) : (
+                      <CheckCircle2 className="w-4 h-4 text-white" />
+                    )}
+                    <span>
+                      {quizMode === 'exam' ? 'Finalizar Prova e Ver Resultado' : 'Finalizar Simulado'}
+                    </span>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -1026,173 +1057,25 @@ export const SimuladosTab: React.FC<SimuladosTabProps> = ({
                   <Sparkles className="w-5 h-5 text-amber-300" />
                 </div>
                 <div>
-<<<<<<< HEAD
                   <h3 className="font-bold text-white text-sm sm:text-base">Gerar Novo Simulado AZ-104</h3>
                   <p className="text-xs text-slate-300">
                     Crie testes práticos com questões inéditas personalizadas
-=======
-                  <h3 className="font-bold text-white text-base">Gerar Novo Simulado AZ-104</h3>
-                  <p className="text-xs text-slate-300">
-                    Crie novos testes práticos com questões inéditas para testar seu conhecimento
->>>>>>> 0114248de0cad0635dc469acfad1f69299ec2e4a
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => setShowGenerateModal(false)}
-<<<<<<< HEAD
                 className="text-slate-400 hover:text-white text-lg font-bold cursor-pointer p-1 rounded-lg hover:bg-slate-800 transition"
-=======
-                className="text-slate-400 hover:text-white text-lg font-bold cursor-pointer p-1"
->>>>>>> 0114248de0cad0635dc469acfad1f69299ec2e4a
                 aria-label="Fechar modal"
               >
                 &times;
               </button>
             </div>
 
-<<<<<<< HEAD
             {/* Conteúdo Rolável (evita que o botão saia da tela em 1366x768) */}
             <div className="p-4 sm:p-5 overflow-y-auto flex-1 space-y-4 text-xs">
               {/* Simulado Title */}
               <div className="space-y-1.5">
-=======
-            {/* Simulado Title */}
-            <div className="space-y-1.5 text-xs">
-              <label className="text-slate-300 font-semibold block">
-                Nome do Simulado (Opcional):
-              </label>
-              <input
-                type="text"
-                value={generateTitle}
-                onChange={(e) => setGenerateTitle(e.target.value)}
-                placeholder="Ex: Simulado Personalizado - Redes & Storage"
-                className="w-full bg-slate-950 text-slate-200 px-3.5 py-2.5 rounded-xl border border-slate-800 focus:outline-none focus:border-purple-400 text-xs"
-              />
-            </div>
-
-            {/* Quantity of Questions Selector */}
-            <div className="space-y-2 text-xs bg-slate-950/80 p-3.5 rounded-xl border border-slate-800/80">
-              <div className="flex items-center justify-between">
-                <label className="text-slate-200 font-bold flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-purple-400" />
-                  Quantidade de Questões:
-                </label>
-                <span className="text-xs font-bold text-purple-200 bg-purple-950 border border-purple-700 px-2.5 py-0.5 rounded-full shadow-sm">
-                  {generateCount} questões (~{Math.round(generateCount * 2)} min)
-                </span>
-              </div>
-
-              {/* Quick Select Buttons */}
-              <div className="grid grid-cols-5 gap-1.5 pt-1">
-                {[5, 10, 20, 30, 50].map((preset) => (
-                  <button
-                    key={preset}
-                    type="button"
-                    onClick={() => setGenerateCount(preset)}
-                    className={`py-2 px-1 rounded-xl text-xs font-bold transition cursor-pointer border text-center ${
-                      generateCount === preset
-                        ? 'bg-purple-600 border-purple-400 text-white shadow-md shadow-purple-600/30'
-                        : 'bg-slate-900 border-slate-800 text-slate-300 hover:text-white hover:border-slate-700'
-                    }`}
-                  >
-                    <span>{preset} Qs</span>
-                    <span className="block text-xs font-normal opacity-90">
-                      {preset === 5 ? 'Express' : preset === 10 ? 'Revisão' : preset === 20 ? 'Médio' : preset === 30 ? 'Padrão' : 'Oficial'}
-                    </span>
-                  </button>
-                ))}
-              </div>
-
-              {/* Range Slider for fine tuning */}
-              <div className="flex items-center gap-3 pt-2">
-                <input
-                  type="range"
-                  min={5}
-                  max={50}
-                  step={5}
-                  value={generateCount}
-                  onChange={(e) => setGenerateCount(Number(e.target.value))}
-                  className="w-full accent-purple-500 cursor-pointer h-1.5 bg-slate-800 rounded-lg appearance-none"
-                />
-                <span className="text-xs text-purple-200 font-mono font-bold w-14 text-right">
-                  {generateCount} Qs
-                </span>
-              </div>
-            </div>
-
-            {/* Generation Strategy Selector */}
-            <div className="space-y-2 text-xs">
-              <label className="text-slate-300 font-semibold block">
-                Tipo de Simulado Desejado:
-              </label>
-              <div className="grid grid-cols-1 gap-2">
-                <button
-                  type="button"
-                  onClick={() => setGenerateType('balanced')}
-                  className={`p-3 rounded-xl border text-left transition cursor-pointer flex items-start space-x-3 ${
-                    generateType === 'balanced'
-                      ? 'bg-purple-950 border-purple-500 text-white'
-                      : 'bg-slate-950 border-slate-800 text-slate-300 hover:text-white'
-                  }`}
-                >
-                  <BookOpen className="w-4 h-4 text-sky-400 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <span className="font-bold block text-slate-200">
-                      Simulado Equilibrado ({generateCount} Questões)
-                    </span>
-                    <span className="text-xs text-slate-300">
-                      Distribuição balanceada entre os 5 domínios da prova oficial em ordem aleatória.
-                    </span>
-                  </div>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setGenerateType('domain')}
-                  className={`p-3 rounded-xl border text-left transition cursor-pointer flex items-start space-x-3 ${
-                    generateType === 'domain'
-                      ? 'bg-purple-950 border-purple-500 text-white'
-                      : 'bg-slate-950 border-slate-800 text-slate-300 hover:text-white'
-                  }`}
-                >
-                  <Filter className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <span className="font-bold block text-slate-200">
-                      Foco em Domínio Específico ({generateCount} Questões)
-                    </span>
-                    <span className="text-xs text-slate-300">
-                      Treino direcionado de {generateCount} questões focadas no domínio de sua preferência.
-                    </span>
-                  </div>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setGenerateType('ai')}
-                  className={`p-3 rounded-xl border text-left transition cursor-pointer flex items-start space-x-3 ${
-                    generateType === 'ai'
-                      ? 'bg-purple-950 border-purple-500 text-white'
-                      : 'bg-slate-950 border-slate-800 text-slate-300 hover:text-white'
-                  }`}
-                >
-                  <Sparkles className="w-4 h-4 text-amber-300 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <span className="font-bold block text-slate-200">
-                      Gerar Inédito com IA Gemini ({generateCount} Questões)
-                    </span>
-                    <span className="text-xs text-slate-300">
-                      Gera cenários novos com IA baseados nos Guias Teóricos Aprofundados e preenche com o banco oficial.
-                    </span>
-                  </div>
-                </button>
-              </div>
-            </div>
-
-            {/* Domain Selector if 'domain' or 'ai' */}
-            {(generateType === 'domain' || generateType === 'ai') && (
-              <div className="space-y-1.5 text-xs">
->>>>>>> 0114248de0cad0635dc469acfad1f69299ec2e4a
                 <label className="text-slate-300 font-semibold block">
                   Nome do Simulado (Opcional):
                 </label>
